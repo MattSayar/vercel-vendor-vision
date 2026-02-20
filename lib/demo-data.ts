@@ -68,6 +68,7 @@ export interface ActivityItem {
   time: string
   level: "critical" | "warning" | "success" | "info"
   vendor: string
+  vendorId: string
   description: string
 }
 
@@ -271,6 +272,7 @@ export const activityFeed: ActivityItem[] = [
     time: "12:34 PM",
     level: "critical",
     vendor: "Acme Corp",
+    vendorId: "v1",
     description: "CRITICAL: Acme Corp risk score elevated to 92. New breach indicator detected. Case #VV-2847 created.",
   },
   {
@@ -278,6 +280,7 @@ export const activityFeed: ActivityItem[] = [
     time: "11:15 AM",
     level: "warning",
     vendor: "Globex Partners",
+    vendorId: "v2",
     description: "Globex Partners: Anomalous login geography detected from vendor domain. Auto-quarantine applied to 3 pending emails.",
   },
   {
@@ -285,6 +288,7 @@ export const activityFeed: ActivityItem[] = [
     time: "10:02 AM",
     level: "warning",
     vendor: "DataFlow Inc",
+    vendorId: "v3",
     description: "DataFlow Inc: Case #VV-2841 escalated to Action Required. D&B Viability Rating dropped from 4 to 7, response times from vendor contacts increased 180%.",
   },
   {
@@ -292,6 +296,7 @@ export const activityFeed: ActivityItem[] = [
     time: "9:45 AM",
     level: "info",
     vendor: "quickbooks-invoicing.net",
+    vendorId: "v7",
     description: "Shadow vendor detected: Unknown entity 'quickbooks-invoicing.net' communicating with 4 employees in Finance.",
   },
   {
@@ -299,6 +304,7 @@ export const activityFeed: ActivityItem[] = [
     time: "9:12 AM",
     level: "success",
     vendor: "Prolia Systems",
+    vendorId: "v5",
     description: "Prolia Systems: Community risk report reviewed and confirmed false positive. Risk score unchanged.",
   },
   {
@@ -306,6 +312,7 @@ export const activityFeed: ActivityItem[] = [
     time: "8:30 AM",
     level: "warning",
     vendor: "DataFlow Inc",
+    vendorId: "v3",
     description: "DataFlow Inc: D&B financial score dropped 15 points. Financial risk component elevated.",
   },
 ]

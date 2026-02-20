@@ -126,7 +126,25 @@ export function ScreenDashboard({ onNavigateToVendor, onNavigateToCases, onNavig
           <div className="col-span-2 rounded-lg border border-border bg-card p-5">
             <h3 className="mb-4 text-sm font-semibold text-card-foreground">AI Activity Feed</h3>
             <div className="flex flex-col gap-3">
-              {activityFeed.map((item) => (
+              {activityFeed.map((item) => {
+                // Build linked description: vendor names → vendor page, case numbers → cases page
+                const linkify = (text: string) => {
+                  const tokens = text.split(/(#VV-\d+)/g)
+                  return tokens.map((token, i) => {
+                    const caseMatch = token.match(/^#VV-\d+$/)
+                    if (caseMatch) {
+                      return (
+                        <button key={`c${i}`} onClick={() => onNavigateToCases()} className="font-semibold text-primary hover:underline">
+                          {token}
+                        </button>
+                      )
+                    }
+                    return <span key={`t${i}`}>{token}</span>
+                  })
+                }
+
+                const vendorParts = item.description.split(item.vendor)
+                return (
                 <div key={item.id} className="flex gap-3">
                   <div className="flex flex-col items-center pt-1">
                     <div className={`size-2 rounded-full ${levelColors[item.level]}`} />
@@ -134,10 +152,25 @@ export function ScreenDashboard({ onNavigateToVendor, onNavigateToCases, onNavig
                   </div>
                   <div className="flex-1 pb-3">
                     <span className="text-[10px] font-medium text-muted-foreground">{item.time}</span>
-                    <p className="mt-0.5 text-xs leading-relaxed text-foreground/80">{item.description}</p>
+                    <p className="mt-0.5 text-xs leading-relaxed text-foreground/80">
+                      {vendorParts.map((part, i) => (
+                        <span key={i}>
+                          {linkify(part)}
+                          {i < vendorParts.length - 1 && (
+                            <button
+                              onClick={() => onNavigateToVendor(item.vendorId)}
+                              className="font-semibold text-primary hover:underline"
+                            >
+                              {item.vendor}
+                            </button>
+                          )}
+                        </span>
+                      ))}
+                    </p>
                   </div>
                 </div>
-              ))}
+                )
+              })}
             </div>
           </div>
         </div>
