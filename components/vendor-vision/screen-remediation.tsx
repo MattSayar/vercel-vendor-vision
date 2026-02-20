@@ -82,6 +82,21 @@ export function ScreenRemediation({ caseExecutedActions = [] }: ScreenRemediatio
 
   const pendingCount = pendingActions.filter((a) => (actionStates[a.id] || "pending") === "pending").length
 
+  // Group case executed actions by case ID
+  const groupedCaseActions: { caseId: string; vendor: string; actionLabels: string[]; timestamp: string }[] = []
+  const caseGroupIndex: Record<string, number> = {}
+  for (const action of caseExecutedActions) {
+    const match = action.description.match(/\(from Case (VV-\d+)\)$/)
+    const caseId = match ? match[1] : `unknown-${action.id}`
+    const label = action.description.replace(/\s*\(from Case VV-\d+\)$/, "")
+    if (caseId in caseGroupIndex) {
+      groupedCaseActions[caseGroupIndex[caseId]].actionLabels.push(label)
+    } else {
+      caseGroupIndex[caseId] = groupedCaseActions.length
+      groupedCaseActions.push({ caseId, vendor: action.vendor, actionLabels: [label], timestamp: action.timestamp })
+    }
+  }
+
   return (
     <ScrollArea className="h-[calc(100vh-3.5rem)]">
       <div className="p-6">
@@ -299,56 +314,101 @@ export function ScreenRemediation({ caseExecutedActions = [] }: ScreenRemediatio
               {/* Newly approved actions from pending tab */}
               {pendingActions
                 .filter((a) => actionStates[a.id] === "approved")
-                .map((action) => (
-                  <div key={action.id} className="rounded-lg border border-[#22C55E]/30 bg-[#22C55E]/[0.02] p-5">
-                    <div className="flex items-start gap-4">
-                      <div className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-[#22C55E]/10">
-                        <CheckCircle2 className="size-4.5 text-[#22C55E]" />
-                      </div>
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2">
-                          <span className="text-[10px] font-mono text-muted-foreground">Just now</span>
-                          <span className="rounded-full bg-muted px-2 py-0.5 text-[10px] font-medium text-muted-foreground">{action.type}</span>
-                          <span className="rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-medium text-primary">You approved</span>
-                          <span className="ml-auto rounded-full px-2 py-0.5 text-[10px] font-semibold bg-[#22C55E]/10 text-[#22C55E]">
-                            success
-                          </span>
+                .map((action) => {
+                  const isExpanded = expandedExecuted === action.id
+                  return (
+                    <div
+                      key={action.id}
+                      onClick={() => setExpandedExecuted(isExpanded ? null : action.id)}
+                      className="rounded-lg border border-[#22C55E]/30 bg-[#22C55E]/[0.02] p-5 hover:border-primary/20 hover:bg-muted/30 cursor-pointer transition-all"
+                    >
+                      <div className="flex items-start gap-4">
+                        <div className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-[#22C55E]/10">
+                          <CheckCircle2 className="size-4.5 text-[#22C55E]" />
                         </div>
-                        <p className="mt-2 text-xs leading-relaxed text-foreground/80">
-                          {modifiedDescriptions[action.id] || action.description}
-                        </p>
-                        <div className="mt-2 flex items-center gap-3">
-                          <button onClick={() => handleUndo(action.id)} className="flex items-center gap-1 text-[10px] font-medium text-primary hover:underline">
-                            <Undo2 className="size-3" /> Undo
-                          </button>
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2">
+                            <span className="text-[10px] font-mono text-muted-foreground">Just now</span>
+                            <span className="rounded-full bg-muted px-2 py-0.5 text-[10px] font-medium text-muted-foreground">{action.type}</span>
+                            <span className="rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-medium text-primary">You approved</span>
+                            <span className="ml-auto rounded-full px-2 py-0.5 text-[10px] font-semibold bg-[#22C55E]/10 text-[#22C55E]">
+                              success
+                            </span>
+                            <ChevronDown className={cn("size-3 text-muted-foreground transition-transform", isExpanded && "rotate-180")} />
+                          </div>
+                          <p className="mt-2 text-xs leading-relaxed text-foreground/80">
+                            {modifiedDescriptions[action.id] || action.description}
+                          </p>
+                          <div className="mt-2 flex items-center gap-3">
+                            <button onClick={(e) => { e.stopPropagation(); handleUndo(action.id) }} className="flex items-center gap-1 text-[10px] font-medium text-primary hover:underline">
+                              <Undo2 className="size-3" /> Undo
+                            </button>
+                            <button
+                              onClick={(e) => { e.stopPropagation(); setExpandedExecuted(isExpanded ? null : action.id) }}
+                              className="flex items-center gap-1 text-[10px] font-medium text-muted-foreground hover:text-foreground"
+                            >
+                              <ChevronDown className={cn("size-3 transition-transform", isExpanded && "rotate-180")} />
+                              {isExpanded ? "Hide Details" : "View Details"}
+                            </button>
+                          </div>
+                          {isExpanded && (
+                            <div className="mt-3 rounded-md border border-border bg-muted/30 p-3">
+                              <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wide">Actions Taken</p>
+                              <ol className="mt-2 flex flex-col gap-1.5">
+                                <li className="flex items-start gap-2">
+                                  <div className="mt-0.5 flex size-4 shrink-0 items-center justify-center rounded-full bg-[#22C55E]/15 text-[8px] font-bold text-[#22C55E]">{"\u2713"}</div>
+                                  <span className="text-[11px] leading-relaxed text-foreground/80">Action approved by analyst</span>
+                                  <span className="ml-auto shrink-0 text-[9px] font-medium text-[#22C55E]">success</span>
+                                </li>
+                                <li className="flex items-start gap-2">
+                                  <div className="mt-0.5 flex size-4 shrink-0 items-center justify-center rounded-full bg-[#22C55E]/15 text-[8px] font-bold text-[#22C55E]">{"\u2713"}</div>
+                                  <span className="text-[11px] leading-relaxed text-foreground/80">{modifiedDescriptions[action.id] || action.description}</span>
+                                  <span className="ml-auto shrink-0 text-[9px] font-medium text-[#22C55E]">success</span>
+                                </li>
+                                <li className="flex items-start gap-2">
+                                  <div className="mt-0.5 flex size-4 shrink-0 items-center justify-center rounded-full bg-[#22C55E]/15 text-[8px] font-bold text-[#22C55E]">{"\u2713"}</div>
+                                  <span className="text-[11px] leading-relaxed text-foreground/80">Changes applied successfully</span>
+                                  <span className="ml-auto shrink-0 text-[9px] font-medium text-[#22C55E]">success</span>
+                                </li>
+                              </ol>
+                            </div>
+                          )}
                         </div>
                       </div>
                     </div>
-                  </div>
-                ))}
-              {/* Actions executed from Cases page */}
-              {caseExecutedActions.map((action) => {
-                const isExpanded = expandedExecuted === action.id
+                  )
+                })}
+              {/* Actions executed from Cases page (grouped by case) */}
+              {groupedCaseActions.map((group) => {
+                const groupId = `case-${group.caseId}`
+                const isExpanded = expandedExecuted === groupId
                 return (
-                  <div key={action.id} className="rounded-lg border border-primary/30 bg-primary/[0.02] p-5">
+                  <div
+                    key={groupId}
+                    onClick={() => setExpandedExecuted(isExpanded ? null : groupId)}
+                    className="rounded-lg border border-border bg-card p-5 hover:border-primary/20 hover:bg-muted/30 cursor-pointer transition-all"
+                  >
                     <div className="flex items-start gap-4">
                       <div className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-[#22C55E]/10">
                         <CheckCircle2 className="size-4.5 text-[#22C55E]" />
                       </div>
                       <div className="flex-1">
                         <div className="flex items-center gap-2">
-                          <span className="text-[10px] font-mono text-muted-foreground">{action.timestamp}</span>
-                          <span className="rounded-full bg-muted px-2 py-0.5 text-[10px] font-medium text-muted-foreground">{action.type}</span>
-                          <span className="text-xs font-medium text-foreground">{action.vendor}</span>
+                          <span className="text-[10px] font-mono text-muted-foreground">{group.timestamp}</span>
+                          <span className="rounded-full bg-muted px-2 py-0.5 text-[10px] font-medium text-muted-foreground">Case Action</span>
+                          <span className="text-xs font-medium text-foreground">{group.vendor}</span>
                           <span className="rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-medium text-primary">From Cases</span>
                           <span className="ml-auto rounded-full px-2 py-0.5 text-[10px] font-semibold bg-[#22C55E]/10 text-[#22C55E]">
                             success
                           </span>
+                          <ChevronDown className={cn("size-3 text-muted-foreground transition-transform", isExpanded && "rotate-180")} />
                         </div>
-                        <p className="mt-2 text-xs leading-relaxed text-foreground/80">{action.description}</p>
+                        <p className="mt-2 text-xs leading-relaxed text-foreground/80">
+                          Executed {group.actionLabels.length} recommended action{group.actionLabels.length !== 1 ? "s" : ""} from Case {group.caseId}
+                        </p>
                         <div className="mt-2 flex items-center gap-3">
                           <button
-                            onClick={() => setExpandedExecuted(isExpanded ? null : action.id)}
+                            onClick={(e) => { e.stopPropagation(); setExpandedExecuted(isExpanded ? null : groupId) }}
                             className="flex items-center gap-1 text-[10px] font-medium text-muted-foreground hover:text-foreground"
                           >
                             <ChevronDown className={cn("size-3 transition-transform", isExpanded && "rotate-180")} />
@@ -359,13 +419,11 @@ export function ScreenRemediation({ caseExecutedActions = [] }: ScreenRemediatio
                           <div className="mt-3 rounded-md border border-border bg-muted/30 p-3">
                             <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wide">Actions Taken</p>
                             <ol className="mt-2 flex flex-col gap-1.5">
-                              {action.actions.map((a, i) => (
+                              {group.actionLabels.map((label, i) => (
                                 <li key={i} className="flex items-start gap-2">
-                                  <div className="mt-0.5 flex size-4 shrink-0 items-center justify-center rounded-full bg-[#22C55E]/15 text-[8px] font-bold text-[#22C55E]">
-                                    {"\u2713"}
-                                  </div>
-                                  <span className="text-[11px] leading-relaxed text-foreground/80">{a.step}</span>
-                                  <span className="ml-auto shrink-0 text-[9px] font-medium capitalize text-[#22C55E]">{a.result}</span>
+                                  <div className="mt-0.5 flex size-4 shrink-0 items-center justify-center rounded-full bg-[#22C55E]/15 text-[8px] font-bold text-[#22C55E]">{"\u2713"}</div>
+                                  <span className="text-[11px] leading-relaxed text-foreground/80">{label}</span>
+                                  <span className="ml-auto shrink-0 text-[9px] font-medium text-[#22C55E]">success</span>
                                 </li>
                               ))}
                             </ol>
@@ -380,7 +438,11 @@ export function ScreenRemediation({ caseExecutedActions = [] }: ScreenRemediatio
               {executedActions.map((action) => {
                 const isExpanded = expandedExecuted === action.id
                 return (
-                  <div key={action.id} className="rounded-lg border border-border bg-card p-5">
+                  <div
+                    key={action.id}
+                    onClick={() => setExpandedExecuted(isExpanded ? null : action.id)}
+                    className="rounded-lg border border-border bg-card p-5 hover:border-primary/20 hover:bg-muted/30 cursor-pointer transition-all"
+                  >
                     <div className="flex items-start gap-4">
                       <div className={cn(
                         "flex size-9 shrink-0 items-center justify-center rounded-lg",
@@ -409,16 +471,17 @@ export function ScreenRemediation({ caseExecutedActions = [] }: ScreenRemediatio
                           )}>
                             {action.outcome}
                           </span>
+                          <ChevronDown className={cn("size-3 text-muted-foreground transition-transform", isExpanded && "rotate-180")} />
                         </div>
                         <p className="mt-2 text-xs leading-relaxed text-foreground/80">{action.description}</p>
                         <div className="mt-2 flex items-center gap-3">
                           {action.reversible && (
-                            <button className="flex items-center gap-1 text-[10px] font-medium text-primary hover:underline">
+                            <button onClick={(e) => e.stopPropagation()} className="flex items-center gap-1 text-[10px] font-medium text-primary hover:underline">
                               <Undo2 className="size-3" /> Undo
                             </button>
                           )}
                           <button
-                            onClick={() => setExpandedExecuted(isExpanded ? null : action.id)}
+                            onClick={(e) => { e.stopPropagation(); setExpandedExecuted(isExpanded ? null : action.id) }}
                             className="flex items-center gap-1 text-[10px] font-medium text-muted-foreground hover:text-foreground"
                           >
                             <ChevronDown className={cn("size-3 transition-transform", isExpanded && "rotate-180")} />
