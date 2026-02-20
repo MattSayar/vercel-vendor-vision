@@ -8,7 +8,6 @@ import {
   pendingActions,
   executedActions,
   playbooks,
-  type RemediationAction,
 } from "@/lib/demo-data"
 import {
   ShieldCheck,
@@ -16,7 +15,6 @@ import {
   AlertTriangle,
   XCircle,
   ChevronDown,
-  ChevronUp,
   Undo2,
   Zap,
   Eye,
@@ -26,14 +24,39 @@ import { cn } from "@/lib/utils"
 
 export function ScreenRemediation() {
   const [actionStates, setActionStates] = useState<Record<string, "pending" | "approved" | "rejected">>({})
-  const [expandedAction, setExpandedAction] = useState<string | null>(null)
+  const [expandedReasoning, setExpandedReasoning] = useState<string | null>(null)
+  const [modifyingAction, setModifyingAction] = useState<string | null>(null)
+  const [modifiedDescriptions, setModifiedDescriptions] = useState<Record<string, string>>({})
+  const [modifiedImpacts, setModifiedImpacts] = useState<Record<string, string>>({})
   const [playbookStates, setPlaybookStates] = useState<Record<string, boolean>>(
     Object.fromEntries(playbooks.map((p) => [p.id, p.enabled]))
   )
 
   const handleAction = (id: string, action: "approved" | "rejected") => {
     setActionStates((prev) => ({ ...prev, [id]: action }))
+    setModifyingAction(null)
+    setExpandedReasoning(null)
   }
+
+  const toggleReasoning = (id: string) => {
+    setExpandedReasoning((prev) => (prev === id ? null : id))
+    setModifyingAction(null)
+  }
+
+  const toggleModify = (id: string) => {
+    const opening = modifyingAction !== id
+    setModifyingAction(opening ? id : null)
+    setExpandedReasoning(null)
+    if (opening) {
+      const action = pendingActions.find((a) => a.id === id)
+      if (action) {
+        if (!modifiedDescriptions[id]) setModifiedDescriptions((prev) => ({ ...prev, [id]: action.description }))
+        if (!modifiedImpacts[id]) setModifiedImpacts((prev) => ({ ...prev, [id]: action.impact }))
+      }
+    }
+  }
+
+  const pendingCount = pendingActions.filter((a) => (actionStates[a.id] || "pending") === "pending").length
 
   return (
     <ScrollArea className="h-[calc(100vh-3.5rem)]">
@@ -44,17 +67,19 @@ export function ScreenRemediation() {
               value="pending"
               className="rounded-none border-b-2 border-transparent px-4 py-2.5 text-xs data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none"
             >
-              Pending Approval ({pendingActions.length})
+              Pending Approval ({pendingCount})
             </TabsTrigger>
             <TabsTrigger
               value="executed"
               className="rounded-none border-b-2 border-transparent px-4 py-2.5 text-xs data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none"
+              onClick={() => { setExpandedReasoning(null); setModifyingAction(null) }}
             >
               Recently Executed
             </TabsTrigger>
             <TabsTrigger
               value="playbooks"
               className="rounded-none border-b-2 border-transparent px-4 py-2.5 text-xs data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none"
+              onClick={() => { setExpandedReasoning(null); setModifyingAction(null) }}
             >
               Playbook Library
             </TabsTrigger>
@@ -65,15 +90,19 @@ export function ScreenRemediation() {
             <div className="flex flex-col gap-3">
               {pendingActions.map((action) => {
                 const state = actionStates[action.id] || "pending"
-                const isExpanded = expandedAction === action.id
+                const isReasoningOpen = expandedReasoning === action.id
+                const isModifying = modifyingAction === action.id
+                const displayDescription = modifiedDescriptions[action.id] || action.description
+                const displayImpact = modifiedImpacts[action.id] || action.impact
                 return (
                   <div
                     key={action.id}
+                    onClick={() => state === "pending" && toggleReasoning(action.id)}
                     className={cn(
                       "rounded-lg border bg-card transition-all",
                       state === "approved" ? "border-[#22C55E]/30 bg-[#22C55E]/[0.02]" :
                       state === "rejected" ? "border-[#EF4444]/30 bg-[#EF4444]/[0.02] opacity-60" :
-                      "border-border"
+                      "border-border hover:border-primary/20 hover:bg-muted/30 cursor-pointer"
                     )}
                   >
                     <div className="p-5">
@@ -104,12 +133,15 @@ export function ScreenRemediation() {
                                 <XCircle className="size-3" /> Rejected
                               </span>
                             )}
+                            {state === "pending" && (
+                              <ChevronDown className={cn("size-3 text-muted-foreground transition-transform", isReasoningOpen && "rotate-180")} />
+                            )}
                           </div>
-                          <p className="mt-1.5 text-sm font-semibold text-foreground">{action.description}</p>
+                          <p className="mt-1.5 text-sm font-semibold text-foreground">{displayDescription}</p>
                           <p className="mt-1 text-xs text-muted-foreground">{action.trigger}</p>
                           <div className="mt-2 flex items-center gap-4">
                             <span className="text-[11px] text-muted-foreground">
-                              Impact: {action.impact}
+                              Impact: {displayImpact}
                             </span>
                             <span className="text-[11px] font-medium text-primary">
                               AI Confidence: {action.confidence}%
@@ -118,7 +150,7 @@ export function ScreenRemediation() {
                         </div>
 
                         {state === "pending" && (
-                          <div className="flex items-center gap-2">
+                          <div className="flex items-center gap-2" onClick={(e) => e.stopPropagation()}>
                             <button
                               onClick={() => handleAction(action.id, "approved")}
                               className="rounded-md bg-[#22C55E] px-3 py-1.5 text-xs font-semibold text-[#FFFFFF] hover:bg-[#22C55E]/90 transition-colors"
@@ -126,8 +158,13 @@ export function ScreenRemediation() {
                               Approve
                             </button>
                             <button
-                              onClick={() => setExpandedAction(isExpanded ? null : action.id)}
-                              className="rounded-md bg-[#3B82F6] px-3 py-1.5 text-xs font-semibold text-[#FFFFFF] hover:bg-[#3B82F6]/90 transition-colors"
+                              onClick={() => toggleModify(action.id)}
+                              className={cn(
+                                "rounded-md px-3 py-1.5 text-xs font-semibold transition-colors",
+                                isModifying
+                                  ? "bg-[#3B82F6] text-[#FFFFFF]"
+                                  : "rounded-md bg-[#3B82F6] text-[#FFFFFF] hover:bg-[#3B82F6]/90"
+                              )}
                             >
                               Modify
                             </button>
@@ -141,13 +178,88 @@ export function ScreenRemediation() {
                         )}
                       </div>
 
-                      {/* Expanded reasoning */}
-                      {isExpanded && (
+                      {/* AI Reasoning Chain */}
+                      {isReasoningOpen && !isModifying && (
                         <div className="mt-4 rounded-md border border-primary/10 bg-primary/[0.03] p-4">
                           <p className="text-[11px] font-semibold text-foreground">AI Reasoning Chain</p>
-                          <p className="mt-2 text-xs leading-relaxed text-foreground/80">
-                            The agent detected behavioral anomalies correlated with threat intelligence signals. Based on the configured playbook thresholds and the {action.confidence}% confidence score, this action was recommended for human approval. The reasoning includes cross-validation against community intelligence from {Math.floor(Math.random() * 5 + 2)} other Abnormal customers.
-                          </p>
+                          <ol className="mt-3 flex flex-col gap-2.5">
+                            <ReasoningStep
+                              step={1}
+                              title="Signal Detection"
+                              detail={`Detected anomalous signals from ${action.trigger.split(":")[0].replace("Triggered by ", "")}. Initial signal confidence: ${action.confidence - 8}%.`}
+                            />
+                            <ReasoningStep
+                              step={2}
+                              title="Cross-Correlation"
+                              detail={`Correlated with threat intelligence feeds and behavioral baselines. ${action.type === "Quarantine Emails" ? "Email volume spike of 340% vs. 30-day average." : action.type === "Escalate to Procurement" ? "Financial risk indicators from 2 independent sources." : "Domain reputation score decreased 15 points in 7 days."}`}
+                            />
+                            <ReasoningStep
+                              step={3}
+                              title="Community Validation"
+                              detail={`Cross-validated against community intelligence from ${action.confidence > 85 ? "4" : "2"} other Abnormal customers seeing similar patterns for this vendor.`}
+                            />
+                            <ReasoningStep
+                              step={4}
+                              title="Playbook Match"
+                              detail={`Matched playbook rule: "${action.type}" with confidence threshold met (${action.confidence}% >= 60% required). Action queued for human approval.`}
+                            />
+                            <ReasoningStep
+                              step={5}
+                              title="Impact Assessment"
+                              detail={`Estimated impact: ${action.impact}. Action classified as reversible. No conflicting remediations in queue.`}
+                            />
+                          </ol>
+                        </div>
+                      )}
+
+                      {/* Modify Panel */}
+                      {isModifying && (
+                        <div className="mt-4 rounded-md border border-[#3B82F6]/20 bg-[#3B82F6]/[0.03] p-4" onClick={(e) => e.stopPropagation()}>
+                          <p className="text-[11px] font-semibold text-foreground">Modify Remediation Action</p>
+                          <div className="mt-3 flex flex-col gap-3">
+                            <div>
+                              <label className="text-[10px] font-medium text-muted-foreground">Action Type</label>
+                              <select className="mt-1 h-8 w-full rounded-md border border-input bg-background px-2.5 text-xs text-foreground focus:border-ring focus:outline-none">
+                                <option>{action.type}</option>
+                                <option>Quarantine Emails</option>
+                                <option>Block Sender Domain</option>
+                                <option>Escalate to Procurement</option>
+                                <option>Enhanced Monitoring</option>
+                                <option>Security Questionnaire</option>
+                                <option>Restrict File Sharing</option>
+                              </select>
+                            </div>
+                            <div>
+                              <label className="text-[10px] font-medium text-muted-foreground">Description</label>
+                              <textarea
+                                value={modifiedDescriptions[action.id] || action.description}
+                                onChange={(e) => setModifiedDescriptions((prev) => ({ ...prev, [action.id]: e.target.value }))}
+                                className="mt-1 h-16 w-full rounded-md border border-input bg-background px-2.5 py-2 text-xs text-foreground resize-none focus:border-ring focus:outline-none"
+                              />
+                            </div>
+                            <div>
+                              <label className="text-[10px] font-medium text-muted-foreground">Expected Impact</label>
+                              <textarea
+                                value={modifiedImpacts[action.id] || action.impact}
+                                onChange={(e) => setModifiedImpacts((prev) => ({ ...prev, [action.id]: e.target.value }))}
+                                className="mt-1 h-12 w-full rounded-md border border-input bg-background px-2.5 py-2 text-xs text-foreground resize-none focus:border-ring focus:outline-none"
+                              />
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <button
+                                onClick={() => handleAction(action.id, "approved")}
+                                className="rounded-md bg-[#22C55E] px-3 py-1.5 text-xs font-semibold text-[#FFFFFF] hover:bg-[#22C55E]/90 transition-colors"
+                              >
+                                Save & Approve
+                              </button>
+                              <button
+                                onClick={() => setModifyingAction(null)}
+                                className="rounded-md border border-input px-3 py-1.5 text-xs font-semibold text-foreground hover:bg-muted transition-colors"
+                              >
+                                Cancel
+                              </button>
+                            </div>
+                          </div>
                         </div>
                       )}
                     </div>
@@ -269,5 +381,19 @@ export function ScreenRemediation() {
         </Tabs>
       </div>
     </ScrollArea>
+  )
+}
+
+function ReasoningStep({ step, title, detail }: { step: number; title: string; detail: string }) {
+  return (
+    <li className="flex gap-3">
+      <div className="flex size-5 shrink-0 items-center justify-center rounded-full bg-primary/15 text-[9px] font-bold text-primary">
+        {step}
+      </div>
+      <div>
+        <p className="text-[11px] font-semibold text-foreground">{title}</p>
+        <p className="mt-0.5 text-xs leading-relaxed text-foreground/70">{detail}</p>
+      </div>
+    </li>
   )
 }
