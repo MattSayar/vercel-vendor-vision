@@ -36,6 +36,7 @@ export function ScreenCases() {
   const [selectedCase, setSelectedCase] = useState<RiskCase>(riskCases[0])
   const [statusFilter, setStatusFilter] = useState<CaseStatus | "all">("all")
   const [activeSeverities, setActiveSeverities] = useState<Set<Severity>>(new Set(severityFilters))
+  const [searchQuery, setSearchQuery] = useState("")
   const [actionStates, setActionStates] = useState<Record<string, "pending" | "approved">>({})
   const [allApproved, setAllApproved] = useState(false)
 
@@ -51,6 +52,11 @@ export function ScreenCases() {
   const filteredCases = riskCases.filter((c) => {
     if (statusFilter !== "all" && c.status !== statusFilter) return false
     if (!activeSeverities.has(c.severity)) return false
+    if (searchQuery) {
+      const q = searchQuery.toLowerCase()
+      const haystack = `${c.id} ${c.vendorName} ${c.summary} ${c.tags.join(" ")}`.toLowerCase()
+      if (!haystack.includes(q)) return false
+    }
     return true
   })
 
@@ -110,6 +116,8 @@ export function ScreenCases() {
             <Search className="absolute left-2.5 top-1/2 size-3 -translate-y-1/2 text-muted-foreground" />
             <input
               type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search within cases..."
               className="h-7 w-full rounded-md border border-input bg-background pl-7 pr-3 text-xs text-foreground placeholder:text-muted-foreground focus:border-ring focus:outline-none"
             />
