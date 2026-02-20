@@ -278,57 +278,19 @@ export function ScreenVendorDetail({ vendorId, onBack }: VendorDetailProps) {
             <div className="grid grid-cols-3 gap-4">
               <div className="col-span-2 rounded-lg border border-border bg-card p-5">
                 <h3 className="text-sm font-semibold text-foreground">Department Communication Map</h3>
-                <div className="mt-4 flex items-center justify-center py-8">
-                  {/* Simple network visualization */}
-                  <div className="relative">
-                    {/* Center vendor node */}
-                    <div className="flex size-20 items-center justify-center rounded-full bg-primary text-xs font-bold text-primary-foreground shadow-lg">
-                      {vendor.name.split(" ")[0]}
-                    </div>
-                    {/* Department nodes */}
-                    {detail.departmentContacts.map((dept, i) => {
-                      const angle = (i * (360 / detail.departmentContacts.length) - 90) * (Math.PI / 180)
-                      const radius = 120
-                      const x = Math.cos(angle) * radius
-                      const y = Math.sin(angle) * radius
-                      return (
-                        <div
-                          key={dept.dept}
-                          className="absolute flex flex-col items-center gap-1"
-                          style={{
-                            left: `calc(50% + ${x}px - 35px)`,
-                            top: `calc(50% + ${y}px - 20px)`,
-                          }}
-                        >
-                          <div
-                            className="flex items-center justify-center rounded-full text-[10px] font-semibold text-[#FFFFFF] shadow-md"
-                            style={{
-                              backgroundColor: dept.color,
-                              width: 24 + dept.contacts * 1.5,
-                              height: 24 + dept.contacts * 1.5,
-                            }}
-                          >
-                            {dept.contacts}
-                          </div>
-                          <span className="text-[10px] font-medium text-foreground">{dept.dept}</span>
-                        </div>
-                      )
-                    })}
-                    {/* SVG lines */}
-                    <svg
-                      className="absolute inset-0 pointer-events-none"
-                      width="300"
-                      height="300"
-                      style={{ left: "calc(50% - 150px)", top: "calc(50% - 150px)" }}
-                    >
+                <div className="mt-4 flex items-center justify-center">
+                  {/* Network visualization with explicit dimensions */}
+                  <div className="relative" style={{ width: 400, height: 300 }}>
+                    {/* SVG connection lines */}
+                    <svg className="absolute inset-0 pointer-events-none" width="400" height="300">
                       {detail.departmentContacts.map((dept, i) => {
                         const angle = (i * (360 / detail.departmentContacts.length) - 90) * (Math.PI / 180)
-                        const radius = 120
+                        const radius = 100
                         return (
                           <line
                             key={dept.dept}
-                            x1="150" y1="150"
-                            x2={150 + Math.cos(angle) * radius}
+                            x1={200} y1={150}
+                            x2={200 + Math.cos(angle) * radius}
                             y2={150 + Math.sin(angle) * radius}
                             stroke={dept.color}
                             strokeWidth={Math.max(1, dept.contacts / 5)}
@@ -337,6 +299,43 @@ export function ScreenVendorDetail({ vendorId, onBack }: VendorDetailProps) {
                         )
                       })}
                     </svg>
+                    {/* Center vendor node */}
+                    <div
+                      className="absolute flex size-20 items-center justify-center rounded-full bg-primary text-xs font-bold text-primary-foreground shadow-lg"
+                      style={{ left: 200 - 40, top: 150 - 40 }}
+                    >
+                      {vendor.name.split(" ")[0]}
+                    </div>
+                    {/* Department nodes */}
+                    {detail.departmentContacts.map((dept, i) => {
+                      const angle = (i * (360 / detail.departmentContacts.length) - 90) * (Math.PI / 180)
+                      const radius = 100
+                      const x = 200 + Math.cos(angle) * radius
+                      const y = 150 + Math.sin(angle) * radius
+                      const nodeSize = 24 + dept.contacts * 1.5
+                      return (
+                        <div
+                          key={dept.dept}
+                          className="absolute flex flex-col items-center gap-1"
+                          style={{
+                            left: x - 35,
+                            top: y - nodeSize / 2 - 2,
+                          }}
+                        >
+                          <div
+                            className="flex items-center justify-center rounded-full text-[10px] font-semibold text-[#FFFFFF] shadow-md"
+                            style={{
+                              backgroundColor: dept.color,
+                              width: nodeSize,
+                              height: nodeSize,
+                            }}
+                          >
+                            {dept.contacts}
+                          </div>
+                          <span className="text-[10px] font-medium text-foreground whitespace-nowrap">{dept.dept}</span>
+                        </div>
+                      )
+                    })}
                   </div>
                 </div>
               </div>
