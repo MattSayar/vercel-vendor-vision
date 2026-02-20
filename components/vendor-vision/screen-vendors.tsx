@@ -16,6 +16,7 @@ import {
   Mail,
   Users,
   FileWarning,
+  X,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 
@@ -100,15 +101,20 @@ export function ScreenVendors({ onNavigateToVendor }: VendorsProps) {
 
         {/* Filters */}
         <div className="flex items-center gap-4">
-          <div className="relative flex-1">
+          <div className="relative flex-1 max-w-sm">
             <Search className="absolute left-3 top-1/2 size-3.5 -translate-y-1/2 text-muted-foreground" />
             <input
               type="text"
               placeholder="Search by vendor name or domain..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="h-8 w-full max-w-sm rounded-md border border-input bg-background pl-9 pr-3 text-xs text-foreground placeholder:text-muted-foreground focus:border-ring focus:outline-none"
+              className="h-8 w-full rounded-md border border-input bg-background pl-9 pr-8 text-xs text-foreground placeholder:text-muted-foreground focus:border-ring focus:outline-none"
             />
+            {searchQuery && (
+              <button onClick={() => setSearchQuery("")} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground">
+                <X className="size-3.5" />
+              </button>
+            )}
           </div>
           <div className="flex items-center gap-2">
             {severityFilters.map((s) => (

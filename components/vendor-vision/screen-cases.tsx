@@ -19,6 +19,7 @@ import {
   CheckCircle2,
   XCircle,
   Search,
+  X,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 
@@ -128,8 +129,13 @@ export function ScreenCases({ initialSearch = "" }: ScreenCasesProps) {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search within cases..."
-              className="h-7 w-full rounded-md border border-input bg-background pl-7 pr-3 text-xs text-foreground placeholder:text-muted-foreground focus:border-ring focus:outline-none"
+              className="h-7 w-full rounded-md border border-input bg-background pl-7 pr-7 text-xs text-foreground placeholder:text-muted-foreground focus:border-ring focus:outline-none"
             />
+            {searchQuery && (
+              <button onClick={() => setSearchQuery("")} className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground">
+                <X className="size-3" />
+              </button>
+            )}
           </div>
         </div>
 

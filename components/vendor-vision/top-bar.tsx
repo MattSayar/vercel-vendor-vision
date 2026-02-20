@@ -1,6 +1,6 @@
 "use client"
 
-import { Search, Bell, ChevronRight, Sun, Moon } from "lucide-react"
+import { Search, Bell, ChevronRight, Sun, Moon, X } from "lucide-react"
 import { useTheme } from "next-themes"
 import { useEffect, useState } from "react"
 import type { Screen } from "./sidebar-nav"
@@ -27,6 +27,7 @@ const timeRanges = ["Last 24h", "7d", "30d", "90d"]
 export function TopBar({ screen, timeRange, onTimeRangeChange, onNavigate }: TopBarProps) {
   const { resolvedTheme, setTheme } = useTheme()
   const [mounted, setMounted] = useState(false)
+  const [globalSearch, setGlobalSearch] = useState("")
   useEffect(() => setMounted(true), [])
 
   return (
@@ -55,9 +56,16 @@ export function TopBar({ screen, timeRange, onTimeRangeChange, onNavigate }: Top
         <Search className="absolute left-3 size-3.5 text-muted-foreground" />
         <input
           type="text"
+          value={globalSearch}
+          onChange={(e) => setGlobalSearch(e.target.value)}
           placeholder="Search vendors, cases, indicators..."
-          className="h-8 w-72 rounded-md border border-input bg-background pl-9 pr-3 text-xs text-foreground placeholder:text-muted-foreground focus:border-ring focus:outline-none"
+          className="h-8 w-72 rounded-md border border-input bg-background pl-9 pr-8 text-xs text-foreground placeholder:text-muted-foreground focus:border-ring focus:outline-none"
         />
+        {globalSearch && (
+          <button onClick={() => setGlobalSearch("")} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground">
+            <X className="size-3.5" />
+          </button>
+        )}
       </div>
 
       {/* Theme Toggle */}
