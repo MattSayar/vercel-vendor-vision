@@ -42,11 +42,11 @@ const levelColors: Record<string, string> = {
 }
 
 const trendingVendors = [
-  { vendor: vendors[0], change: "+18", topSignal: "Breach feed match", trend: "up" as const },
-  { vendor: vendors[1], change: "+12", topSignal: "Behavioral anomaly", trend: "up" as const },
-  { vendor: vendors[2], change: "+9", topSignal: "D&B score drop", trend: "up" as const },
-  { vendor: vendors[3], change: "+3", topSignal: "Domain reputation drop", trend: "up" as const },
-  { vendor: vendors[4], change: "-5", topSignal: "Community report resolved", trend: "down" as const },
+  { vendor: vendors[0], change: "+18", topSignal: "Breach feed match", trend: "up" as const },       // 74 → 92
+  { vendor: vendors[1], change: "+12", topSignal: "Behavioral anomaly", trend: "up" as const },      // 62 → 74
+  { vendor: vendors[2], change: "+9", topSignal: "D&B score drop", trend: "up" as const },           // 59 → 68
+  { vendor: vendors[3], change: "+3", topSignal: "Domain reputation change", trend: "up" as const }, // 42 → 45
+  { vendor: vendors[4], change: "-5", topSignal: "Community report resolved", trend: "down" as const }, // 43 → 38
 ]
 
 export function ScreenDashboard({ onNavigateToVendor, onNavigateToCases }: DashboardProps) {

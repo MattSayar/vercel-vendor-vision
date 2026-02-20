@@ -6,7 +6,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 import { Badge } from "@/components/ui/badge"
 import {
   vendors,
-  acmeIntelSignals,
+  vendorDetailData,
   getSeverityColor,
   getConfidenceColor,
   type Vendor,
@@ -43,32 +43,9 @@ interface VendorDetailProps {
   onBack: () => void
 }
 
-const emailActivityData = [
-  { day: "Feb 1", sent: 12, received: 38 },
-  { day: "Feb 4", sent: 15, received: 42 },
-  { day: "Feb 7", sent: 8, received: 35 },
-  { day: "Feb 10", sent: 22, received: 65 },
-  { day: "Feb 13", sent: 18, received: 48 },
-  { day: "Feb 16", sent: 45, received: 120, anomaly: true },
-  { day: "Feb 19", sent: 38, received: 95 },
-]
-
-const historicalRisk = [
-  { date: "Nov", score: 45 },
-  { date: "Dec", score: 52 },
-  { date: "Jan", score: 68 },
-  { date: "Feb", score: 92 },
-]
-
-const departmentContacts = [
-  { dept: "Engineering", contacts: 18, color: "#3B82F6" },
-  { dept: "Finance", contacts: 14, color: "#22C55E" },
-  { dept: "Legal", contacts: 8, color: "#818CF8" },
-  { dept: "Operations", contacts: 7, color: "#F97316" },
-]
-
 export function ScreenVendorDetail({ vendorId, onBack }: VendorDetailProps) {
   const vendor = vendors.find((v) => v.id === vendorId) || vendors[0]
+  const detail = vendorDetailData[vendor.id] || vendorDetailData["v1"]
   const [sourceFilter, setSourceFilter] = useState<string>("all")
 
   const radarData = [
@@ -80,8 +57,8 @@ export function ScreenVendorDetail({ vendorId, onBack }: VendorDetailProps) {
   ]
 
   const filteredSignals = sourceFilter === "all"
-    ? acmeIntelSignals
-    : acmeIntelSignals.filter(s => s.source.toLowerCase().includes(sourceFilter))
+    ? detail.intelSignals
+    : detail.intelSignals.filter(s => s.source.toLowerCase().includes(sourceFilter))
 
   return (
     <ScrollArea className="h-[calc(100vh-3.5rem)]">
@@ -214,7 +191,7 @@ export function ScreenVendorDetail({ vendorId, onBack }: VendorDetailProps) {
 
                 <h4 className="mt-6 text-xs font-semibold text-foreground">Historical Risk Trend</h4>
                 <ResponsiveContainer width="100%" height={120}>
-                  <LineChart data={historicalRisk} margin={{ top: 10, right: 5, left: -20, bottom: 0 }}>
+                  <LineChart data={detail.historicalRisk} margin={{ top: 10, right: 5, left: -20, bottom: 0 }}>
                     <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
                     <XAxis dataKey="date" tick={{ fontSize: 10, fill: "var(--muted-foreground)" }} tickLine={false} axisLine={false} />
                     <YAxis domain={[0, 100]} tick={{ fontSize: 10, fill: "var(--muted-foreground)" }} tickLine={false} axisLine={false} />
@@ -309,8 +286,8 @@ export function ScreenVendorDetail({ vendorId, onBack }: VendorDetailProps) {
                       {vendor.name.split(" ")[0]}
                     </div>
                     {/* Department nodes */}
-                    {departmentContacts.map((dept, i) => {
-                      const angle = (i * (360 / departmentContacts.length) - 90) * (Math.PI / 180)
+                    {detail.departmentContacts.map((dept, i) => {
+                      const angle = (i * (360 / detail.departmentContacts.length) - 90) * (Math.PI / 180)
                       const radius = 120
                       const x = Math.cos(angle) * radius
                       const y = Math.sin(angle) * radius
@@ -344,8 +321,8 @@ export function ScreenVendorDetail({ vendorId, onBack }: VendorDetailProps) {
                       height="300"
                       style={{ left: "calc(50% - 150px)", top: "calc(50% - 150px)" }}
                     >
-                      {departmentContacts.map((dept, i) => {
-                        const angle = (i * (360 / departmentContacts.length) - 90) * (Math.PI / 180)
+                      {detail.departmentContacts.map((dept, i) => {
+                        const angle = (i * (360 / detail.departmentContacts.length) - 90) * (Math.PI / 180)
                         const radius = 120
                         return (
                           <line
@@ -399,7 +376,7 @@ export function ScreenVendorDetail({ vendorId, onBack }: VendorDetailProps) {
             <div className="rounded-lg border border-border bg-card p-5">
               <h3 className="text-sm font-semibold text-foreground">Email Volume Over Time</h3>
               <ResponsiveContainer width="100%" height={250}>
-                <BarChart data={emailActivityData} margin={{ top: 10, right: 5, left: -20, bottom: 0 }}>
+                <BarChart data={detail.emailActivity} margin={{ top: 10, right: 5, left: -20, bottom: 0 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
                   <XAxis dataKey="day" tick={{ fontSize: 10, fill: "var(--muted-foreground)" }} tickLine={false} axisLine={false} />
                   <YAxis tick={{ fontSize: 10, fill: "var(--muted-foreground)" }} tickLine={false} axisLine={false} />
@@ -430,7 +407,7 @@ export function ScreenVendorDetail({ vendorId, onBack }: VendorDetailProps) {
                     </tr>
                   </thead>
                   <tbody>
-                    {emailMetadata.map((e, i) => (
+                    {detail.emailMetadata.map((e, i) => (
                       <tr key={i} className="border-b border-border last:border-0">
                         <td className="px-3 py-2 font-mono text-muted-foreground">{e.date}</td>
                         <td className="px-3 py-2 text-foreground">{e.from}</td>
@@ -465,7 +442,7 @@ export function ScreenVendorDetail({ vendorId, onBack }: VendorDetailProps) {
             <div className="rounded-lg border border-border bg-card p-5">
               <h3 className="text-sm font-semibold text-foreground">Audit Log</h3>
               <div className="mt-3 flex flex-col gap-2">
-                {auditEntries.map((entry, i) => (
+                {detail.auditEntries.map((entry, i) => (
                   <div key={i} className="flex items-center gap-3 rounded-md border border-border p-3">
                     <span className="font-mono text-[10px] text-muted-foreground">{entry.date}</span>
                     <span className="text-xs text-foreground">{entry.action}</span>
@@ -509,18 +486,3 @@ function MiniStat({ label, value, change }: { label: string; value: string; chan
   )
 }
 
-const emailMetadata = [
-  { date: "Feb 18", from: "s.chen@acmecorp.com", to: "j.doe@company.com", subject: "RE: Q1 Integration Timeline", attachment: true, anomaly: false },
-  { date: "Feb 18", from: "billing@acmecorp.com", to: "finance@company.com", subject: "Invoice #ACM-2026-0218", attachment: true, anomaly: true },
-  { date: "Feb 17", from: "j.doe@company.com", to: "support@acmecorp.com", subject: "API Rate Limit Issue", attachment: false, anomaly: false },
-  { date: "Feb 17", from: "noreply@acmecorp.com", to: "m.torres@company.com", subject: "Security Advisory: Action Required", attachment: true, anomaly: true },
-  { date: "Feb 16", from: "s.chen@acmecorp.com", to: "engineering@company.com", subject: "Updated SDK Documentation", attachment: true, anomaly: false },
-]
-
-const auditEntries = [
-  { date: "Feb 18, 2:15 PM", action: "Case #VV-2847 created — Breach indicator detected", by: "AI Agent" },
-  { date: "Feb 17, 4:00 PM", action: "Risk score updated: 68 → 92 (Critical)", by: "System" },
-  { date: "Feb 15, 3:00 PM", action: "Domain infrastructure change detected (SPF/MX)", by: "AI Agent" },
-  { date: "Feb 10, 9:00 AM", action: "Quarterly vendor assessment completed — Score: 68", by: "Jane Doe" },
-  { date: "Jan 15, 11:00 AM", action: "Vendor profile reviewed — No action required", by: "Jane Doe" },
-]

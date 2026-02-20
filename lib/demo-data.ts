@@ -250,7 +250,7 @@ export const vendors: Vendor[] = [
     activeSince: "Feb 2026",
     internalContacts: 4,
     departments: 1,
-    openCases: 1,
+    openCases: 0,
     emails30d: 12,
     industry: "Unknown",
     size: "Unknown",
@@ -282,9 +282,9 @@ export const activityFeed: ActivityItem[] = [
   {
     id: "a3",
     time: "10:02 AM",
-    level: "success",
+    level: "warning",
     vendor: "DataFlow Inc",
-    description: "DataFlow Inc: Elevated risk case #VV-2841 auto-resolved. Dark web mention confirmed as false positive after enrichment.",
+    description: "DataFlow Inc: Case #VV-2841 escalated to Action Required. D&B Viability Rating dropped from 4 to 7, response times from vendor contacts increased 180%.",
   },
   {
     id: "a4",
@@ -489,79 +489,290 @@ export const riskCases: RiskCase[] = [
   },
 ]
 
-// ---- Intel Signals for Acme Corp ----
-export const acmeIntelSignals: IntelSignal[] = [
-  {
-    id: "is1",
-    timestamp: "Feb 18, 2:15 PM",
-    source: "VendorBase Behavioral",
-    sourceColor: "bg-[#818CF8]/10 text-[#818CF8]",
-    signalType: "Behavioral Anomaly",
-    description: "Communication volume with Finance team increased 340% in past 7 days",
-    confidence: 82,
-    status: "Active",
+// ---- Per-Vendor Detail Data ----
+export interface VendorDetailData {
+  historicalRisk: { date: string; score: number }[]
+  departmentContacts: { dept: string; contacts: number; color: string }[]
+  emailActivity: { day: string; sent: number; received: number; anomaly?: boolean }[]
+  emailMetadata: { date: string; from: string; to: string; subject: string; attachment: boolean; anomaly: boolean }[]
+  intelSignals: IntelSignal[]
+  auditEntries: { date: string; action: string; by: string }[]
+}
+
+export const vendorDetailData: Record<string, VendorDetailData> = {
+  v1: {
+    historicalRisk: [
+      { date: "Nov", score: 35 },
+      { date: "Dec", score: 48 },
+      { date: "Jan", score: 74 },
+      { date: "Feb", score: 92 },
+    ],
+    departmentContacts: [
+      { dept: "Engineering", contacts: 18, color: "#3B82F6" },
+      { dept: "Finance", contacts: 14, color: "#22C55E" },
+      { dept: "Legal", contacts: 8, color: "#818CF8" },
+      { dept: "Operations", contacts: 7, color: "#F97316" },
+    ],
+    emailActivity: [
+      { day: "Feb 1", sent: 12, received: 38 },
+      { day: "Feb 4", sent: 15, received: 42 },
+      { day: "Feb 7", sent: 8, received: 35 },
+      { day: "Feb 10", sent: 22, received: 65 },
+      { day: "Feb 13", sent: 18, received: 48 },
+      { day: "Feb 16", sent: 45, received: 120, anomaly: true },
+      { day: "Feb 19", sent: 38, received: 95 },
+    ],
+    emailMetadata: [
+      { date: "Feb 18", from: "s.chen@acmecorp.com", to: "j.doe@company.com", subject: "RE: Q1 Integration Timeline", attachment: true, anomaly: false },
+      { date: "Feb 18", from: "billing@acmecorp.com", to: "finance@company.com", subject: "Invoice #ACM-2026-0218", attachment: true, anomaly: true },
+      { date: "Feb 17", from: "j.doe@company.com", to: "support@acmecorp.com", subject: "API Rate Limit Issue", attachment: false, anomaly: false },
+      { date: "Feb 17", from: "noreply@acmecorp.com", to: "m.torres@company.com", subject: "Security Advisory: Action Required", attachment: true, anomaly: true },
+      { date: "Feb 16", from: "s.chen@acmecorp.com", to: "engineering@company.com", subject: "Updated SDK Documentation", attachment: true, anomaly: false },
+    ],
+    intelSignals: [
+      { id: "is1", timestamp: "Feb 18, 2:15 PM", source: "VendorBase Behavioral", sourceColor: "bg-[#818CF8]/10 text-[#818CF8]", signalType: "Behavioral Anomaly", description: "Communication volume with Finance team increased 340% in past 7 days", confidence: 82, status: "Active" },
+      { id: "is2", timestamp: "Feb 17, 6:00 AM", source: "Breach Intelligence", sourceColor: "bg-[#EF4444]/10 text-[#EF4444]", signalType: "Credential Exposure", description: "acmecorp.com found in HaveIBeenPwned database (Feb 17, 2026)", confidence: 95, status: "Confirmed" },
+      { id: "is3", timestamp: "Feb 17, 11:30 PM", source: "Dark Web Monitoring", sourceColor: "bg-[#F97316]/10 text-[#F97316]", signalType: "Credential Exposure", description: "3 credential pairs matching @acmecorp.com listed on dark web marketplace", confidence: 88, status: "Active" },
+      { id: "is4", timestamp: "Feb 15, 3:00 PM", source: "Domain & Infrastructure", sourceColor: "bg-[#3B82F6]/10 text-[#3B82F6]", signalType: "Infrastructure Change", description: "SPF record modified on Feb 15, MX record change detected", confidence: 71, status: "Monitoring" },
+      { id: "is5", timestamp: "Feb 18, 8:00 AM", source: "Community Intelligence", sourceColor: "bg-[#22C55E]/10 text-[#22C55E]", signalType: "Community Report", description: "2 other Abnormal customers flagged Acme Corp vendor risk in past 48h", confidence: 76, status: "Active" },
+      { id: "is6", timestamp: "Feb 14, 10:00 AM", source: "Financial Risk", sourceColor: "bg-[#14B8A6]/10 text-[#14B8A6]", signalType: "Financial Distress", description: "No financial risk indicators detected. D&B score stable at 3 (low risk).", confidence: 90, status: "Clear" },
+      { id: "is7", timestamp: "Feb 12, 1:00 PM", source: "VendorBase Behavioral", sourceColor: "bg-[#818CF8]/10 text-[#818CF8]", signalType: "Behavioral Anomaly", description: "Email response time from Acme contacts shifted 2h later than historical baseline", confidence: 45, status: "Resolved" },
+    ],
+    auditEntries: [
+      { date: "Feb 18, 2:15 PM", action: "Case #VV-2847 created — Breach indicator detected", by: "AI Agent" },
+      { date: "Feb 17, 4:00 PM", action: "Risk score updated: 74 → 92 (Critical)", by: "System" },
+      { date: "Feb 15, 3:00 PM", action: "Domain infrastructure change detected (SPF/MX)", by: "AI Agent" },
+      { date: "Feb 10, 9:00 AM", action: "Quarterly vendor assessment completed — Score: 74", by: "Jane Doe" },
+      { date: "Jan 15, 11:00 AM", action: "Vendor profile reviewed — No action required", by: "Jane Doe" },
+    ],
   },
-  {
-    id: "is2",
-    timestamp: "Feb 17, 6:00 AM",
-    source: "Breach Intelligence",
-    sourceColor: "bg-[#EF4444]/10 text-[#EF4444]",
-    signalType: "Credential Exposure",
-    description: "acmecorp.com found in HaveIBeenPwned database (Feb 17, 2026)",
-    confidence: 95,
-    status: "Confirmed",
+  v2: {
+    historicalRisk: [
+      { date: "Nov", score: 42 },
+      { date: "Dec", score: 51 },
+      { date: "Jan", score: 62 },
+      { date: "Feb", score: 74 },
+    ],
+    departmentContacts: [
+      { dept: "Finance", contacts: 10, color: "#22C55E" },
+      { dept: "Engineering", contacts: 8, color: "#3B82F6" },
+      { dept: "Compliance", contacts: 5, color: "#818CF8" },
+    ],
+    emailActivity: [
+      { day: "Feb 1", sent: 8, received: 22 },
+      { day: "Feb 4", sent: 10, received: 18 },
+      { day: "Feb 7", sent: 6, received: 20 },
+      { day: "Feb 10", sent: 9, received: 24 },
+      { day: "Feb 13", sent: 7, received: 19 },
+      { day: "Feb 16", sent: 22, received: 58, anomaly: true },
+      { day: "Feb 19", sent: 15, received: 42 },
+    ],
+    emailMetadata: [
+      { date: "Feb 18", from: "j.rodriguez@globex.io", to: "finance@company.com", subject: "Q1 Portfolio Review Deck", attachment: true, anomaly: false },
+      { date: "Feb 18", from: "reports@globex.io", to: "compliance@company.com", subject: "Monthly Risk Metrics Export", attachment: true, anomaly: true },
+      { date: "Feb 17", from: "j.doe@company.com", to: "support@globex.io", subject: "API Latency Issues — Ticket #GL-4421", attachment: false, anomaly: false },
+      { date: "Feb 16", from: "noreply@globex.io", to: "m.torres@company.com", subject: "Scheduled Maintenance Window Feb 20", attachment: false, anomaly: false },
+      { date: "Feb 16", from: "billing@globex.io", to: "finance@company.com", subject: "Invoice #GLX-2026-0216", attachment: true, anomaly: true },
+    ],
+    intelSignals: [
+      { id: "gis1", timestamp: "Feb 18, 10:00 AM", source: "VendorBase Behavioral", sourceColor: "bg-[#818CF8]/10 text-[#818CF8]", signalType: "Behavioral Anomaly", description: "3x increase in attachment-bearing emails from Globex in 48h", confidence: 72, status: "Active" },
+      { id: "gis2", timestamp: "Feb 18, 8:30 AM", source: "Domain & Infrastructure", sourceColor: "bg-[#3B82F6]/10 text-[#3B82F6]", signalType: "Login Anomaly", description: "Login events from 3 new geographic locations (RO, BR, VN)", confidence: 68, status: "Active" },
+      { id: "gis3", timestamp: "Feb 18, 11:00 AM", source: "Community Intelligence", sourceColor: "bg-[#22C55E]/10 text-[#22C55E]", signalType: "Community Report", description: "1 other Abnormal customer reported similar Globex anomalies", confidence: 55, status: "Active" },
+      { id: "gis4", timestamp: "Feb 14, 9:00 AM", source: "Financial Risk", sourceColor: "bg-[#14B8A6]/10 text-[#14B8A6]", signalType: "Financial Health", description: "No financial risk indicators. D&B score stable at 4.", confidence: 85, status: "Clear" },
+      { id: "gis5", timestamp: "Feb 10, 2:00 PM", source: "VendorBase Behavioral", sourceColor: "bg-[#818CF8]/10 text-[#818CF8]", signalType: "Behavioral Baseline", description: "Email volume within normal range. No anomalies detected.", confidence: 90, status: "Resolved" },
+    ],
+    auditEntries: [
+      { date: "Feb 18, 10:30 AM", action: "Case #VV-2845 created — Anomalous login geography detected", by: "AI Agent" },
+      { date: "Feb 18, 8:30 AM", action: "Risk score updated: 62 → 74 (High)", by: "System" },
+      { date: "Feb 16, 11:00 AM", action: "Enhanced email filtering applied to globex.io", by: "AI Agent" },
+      { date: "Feb 1, 10:00 AM", action: "Quarterly vendor assessment completed — Score: 62", by: "Jane Doe" },
+      { date: "Dec 15, 3:00 PM", action: "Vendor profile reviewed — Monitoring continued", by: "Jane Doe" },
+    ],
   },
-  {
-    id: "is3",
-    timestamp: "Feb 17, 11:30 PM",
-    source: "Dark Web Monitoring",
-    sourceColor: "bg-[#F97316]/10 text-[#F97316]",
-    signalType: "Credential Exposure",
-    description: "3 credential pairs matching @acmecorp.com listed on dark web marketplace",
-    confidence: 88,
-    status: "Active",
+  v3: {
+    historicalRisk: [
+      { date: "Nov", score: 30 },
+      { date: "Dec", score: 38 },
+      { date: "Jan", score: 59 },
+      { date: "Feb", score: 68 },
+    ],
+    departmentContacts: [
+      { dept: "Engineering", contacts: 19, color: "#3B82F6" },
+      { dept: "Analytics", contacts: 12, color: "#818CF8" },
+    ],
+    emailActivity: [
+      { day: "Feb 1", sent: 14, received: 32 },
+      { day: "Feb 4", sent: 16, received: 28 },
+      { day: "Feb 7", sent: 12, received: 30 },
+      { day: "Feb 10", sent: 10, received: 25 },
+      { day: "Feb 13", sent: 8, received: 18 },
+      { day: "Feb 16", sent: 5, received: 12 },
+      { day: "Feb 19", sent: 4, received: 10 },
+    ],
+    emailMetadata: [
+      { date: "Feb 18", from: "m.gonzalez@dataflow.com", to: "engineering@company.com", subject: "RE: Data Pipeline Migration Status", attachment: false, anomaly: false },
+      { date: "Feb 17", from: "support@dataflow.com", to: "j.doe@company.com", subject: "Ticket #DF-8812 — Response Time Degradation", attachment: false, anomaly: false },
+      { date: "Feb 16", from: "billing@dataflow.com", to: "finance@company.com", subject: "Invoice #DF-2026-0216 — Payment Terms Update", attachment: true, anomaly: true },
+      { date: "Feb 14", from: "j.doe@company.com", to: "m.gonzalez@dataflow.com", subject: "Contract Contingency Discussion", attachment: false, anomaly: false },
+      { date: "Feb 12", from: "noreply@dataflow.com", to: "engineering@company.com", subject: "Scheduled Maintenance — Reduced Capacity Feb 15-17", attachment: false, anomaly: false },
+    ],
+    intelSignals: [
+      { id: "dis1", timestamp: "Feb 18, 6:00 AM", source: "Financial Risk", sourceColor: "bg-[#14B8A6]/10 text-[#14B8A6]", signalType: "Financial Distress", description: "D&B Viability Rating dropped from 4 to 7 (elevated risk)", confidence: 91, status: "Confirmed" },
+      { id: "dis2", timestamp: "Feb 17, 2:00 PM", source: "VendorBase Behavioral", sourceColor: "bg-[#818CF8]/10 text-[#818CF8]", signalType: "Behavioral Anomaly", description: "Response times from DataFlow contacts increased 180% this week", confidence: 65, status: "Active" },
+      { id: "dis3", timestamp: "Feb 15, 10:00 AM", source: "Financial Risk", sourceColor: "bg-[#14B8A6]/10 text-[#14B8A6]", signalType: "Workforce Change", description: "Layoff announcements: 23% workforce reduction reported in SEC filing", confidence: 88, status: "Confirmed" },
+      { id: "dis4", timestamp: "Feb 12, 8:00 AM", source: "Financial Risk", sourceColor: "bg-[#14B8A6]/10 text-[#14B8A6]", signalType: "Executive Departure", description: "CTO and VP Engineering departures confirmed via LinkedIn", confidence: 82, status: "Active" },
+      { id: "dis5", timestamp: "Feb 8, 11:00 AM", source: "Domain & Infrastructure", sourceColor: "bg-[#3B82F6]/10 text-[#3B82F6]", signalType: "Infrastructure Change", description: "No domain or infrastructure anomalies detected", confidence: 92, status: "Clear" },
+    ],
+    auditEntries: [
+      { date: "Feb 18, 6:30 AM", action: "Case #VV-2841 created — D&B financial score drop detected", by: "AI Agent" },
+      { date: "Feb 17, 2:00 PM", action: "Risk score updated: 59 → 68 (High)", by: "System" },
+      { date: "Feb 15, 10:30 AM", action: "Financial risk component elevated — Workforce reduction signal", by: "AI Agent" },
+      { date: "Feb 1, 9:00 AM", action: "Quarterly vendor assessment completed — Score: 59", by: "Jane Doe" },
+      { date: "Nov 20, 2:00 PM", action: "Vendor onboarded — Initial assessment score: 30", by: "Jane Doe" },
+    ],
   },
-  {
-    id: "is4",
-    timestamp: "Feb 15, 3:00 PM",
-    source: "Domain & Infrastructure",
-    sourceColor: "bg-[#3B82F6]/10 text-[#3B82F6]",
-    signalType: "Infrastructure Change",
-    description: "SPF record modified on Feb 15, MX record change detected",
-    confidence: 71,
-    status: "Monitoring",
+  v4: {
+    historicalRisk: [
+      { date: "Nov", score: 50 },
+      { date: "Dec", score: 47 },
+      { date: "Jan", score: 42 },
+      { date: "Feb", score: 45 },
+    ],
+    departmentContacts: [
+      { dept: "IT", contacts: 9, color: "#3B82F6" },
+      { dept: "Operations", contacts: 6, color: "#F97316" },
+    ],
+    emailActivity: [
+      { day: "Feb 1", sent: 4, received: 10 },
+      { day: "Feb 4", sent: 5, received: 12 },
+      { day: "Feb 7", sent: 3, received: 8 },
+      { day: "Feb 10", sent: 6, received: 14 },
+      { day: "Feb 13", sent: 4, received: 11 },
+      { day: "Feb 16", sent: 5, received: 10 },
+      { day: "Feb 19", sent: 4, received: 9 },
+    ],
+    emailMetadata: [
+      { date: "Feb 18", from: "b.lumbergh@initech.co", to: "it@company.com", subject: "RE: Monthly License Renewal", attachment: true, anomaly: false },
+      { date: "Feb 16", from: "support@initech.co", to: "j.doe@company.com", subject: "Ticket #IN-2201 — Resolved", attachment: false, anomaly: false },
+      { date: "Feb 14", from: "j.doe@company.com", to: "b.lumbergh@initech.co", subject: "Service Level Review Q1", attachment: false, anomaly: false },
+      { date: "Feb 10", from: "noreply@initech.co", to: "it@company.com", subject: "Patch Notes v4.2.1", attachment: true, anomaly: false },
+    ],
+    intelSignals: [
+      { id: "iis1", timestamp: "Feb 16, 9:00 AM", source: "Domain & Infrastructure", sourceColor: "bg-[#3B82F6]/10 text-[#3B82F6]", signalType: "Domain Reputation", description: "Minor DMARC policy change detected on initech.co — p=quarantine → p=none", confidence: 58, status: "Monitoring" },
+      { id: "iis2", timestamp: "Feb 10, 3:00 PM", source: "VendorBase Behavioral", sourceColor: "bg-[#818CF8]/10 text-[#818CF8]", signalType: "Behavioral Baseline", description: "Email volume and patterns within normal range", confidence: 90, status: "Clear" },
+      { id: "iis3", timestamp: "Feb 5, 11:00 AM", source: "Financial Risk", sourceColor: "bg-[#14B8A6]/10 text-[#14B8A6]", signalType: "Financial Health", description: "D&B score stable at 5 (moderate). No change.", confidence: 85, status: "Clear" },
+    ],
+    auditEntries: [
+      { date: "Feb 16, 9:30 AM", action: "Domain reputation change detected — DMARC policy modified", by: "AI Agent" },
+      { date: "Feb 10, 9:00 AM", action: "Quarterly vendor assessment completed — Score: 45", by: "Jane Doe" },
+      { date: "Nov 15, 2:00 PM", action: "Vendor profile reviewed — Score: 42, no action required", by: "Jane Doe" },
+    ],
   },
-  {
-    id: "is5",
-    timestamp: "Feb 18, 8:00 AM",
-    source: "Community Intelligence",
-    sourceColor: "bg-[#22C55E]/10 text-[#22C55E]",
-    signalType: "Community Report",
-    description: "2 other Abnormal customers flagged Acme Corp vendor risk in past 48h",
-    confidence: 76,
-    status: "Active",
+  v5: {
+    historicalRisk: [
+      { date: "Nov", score: 55 },
+      { date: "Dec", score: 48 },
+      { date: "Jan", score: 43 },
+      { date: "Feb", score: 38 },
+    ],
+    departmentContacts: [
+      { dept: "Engineering", contacts: 8, color: "#3B82F6" },
+    ],
+    emailActivity: [
+      { day: "Feb 1", sent: 2, received: 6 },
+      { day: "Feb 4", sent: 3, received: 5 },
+      { day: "Feb 7", sent: 2, received: 4 },
+      { day: "Feb 10", sent: 1, received: 5 },
+      { day: "Feb 13", sent: 2, received: 4 },
+      { day: "Feb 16", sent: 3, received: 6 },
+      { day: "Feb 19", sent: 2, received: 5 },
+    ],
+    emailMetadata: [
+      { date: "Feb 18", from: "a.kim@proliasys.com", to: "engineering@company.com", subject: "Infrastructure Status — All Systems Normal", attachment: false, anomaly: false },
+      { date: "Feb 14", from: "j.doe@company.com", to: "support@proliasys.com", subject: "Capacity Planning for Q2", attachment: true, anomaly: false },
+      { date: "Feb 10", from: "noreply@proliasys.com", to: "engineering@company.com", subject: "Maintenance Complete — No Downtime", attachment: false, anomaly: false },
+    ],
+    intelSignals: [
+      { id: "pis1", timestamp: "Feb 12, 10:00 AM", source: "Community Intelligence", sourceColor: "bg-[#22C55E]/10 text-[#22C55E]", signalType: "Community Report", description: "Previous community risk report reviewed — confirmed false positive", confidence: 88, status: "Resolved" },
+      { id: "pis2", timestamp: "Feb 5, 2:00 PM", source: "VendorBase Behavioral", sourceColor: "bg-[#818CF8]/10 text-[#818CF8]", signalType: "Behavioral Baseline", description: "All communication patterns within normal range", confidence: 92, status: "Clear" },
+      { id: "pis3", timestamp: "Jan 20, 9:00 AM", source: "Domain & Infrastructure", sourceColor: "bg-[#3B82F6]/10 text-[#3B82F6]", signalType: "Infrastructure Check", description: "SSL cert renewed. No anomalies in DNS or hosting.", confidence: 95, status: "Clear" },
+    ],
+    auditEntries: [
+      { date: "Feb 12, 10:30 AM", action: "Community risk report dismissed — Confirmed false positive", by: "AI Agent" },
+      { date: "Feb 12, 10:00 AM", action: "Risk score updated: 43 → 38 (Medium)", by: "System" },
+      { date: "Feb 1, 9:00 AM", action: "Quarterly vendor assessment completed — Score: 43", by: "Jane Doe" },
+      { date: "Nov 10, 11:00 AM", action: "Vendor onboarded — Initial assessment score: 55", by: "Jane Doe" },
+    ],
   },
-  {
-    id: "is6",
-    timestamp: "Feb 14, 10:00 AM",
-    source: "Financial Risk",
-    sourceColor: "bg-[#14B8A6]/10 text-[#14B8A6]",
-    signalType: "Financial Distress",
-    description: "No financial risk indicators detected. D&B score stable at 3 (low risk).",
-    confidence: 90,
-    status: "Clear",
+  v6: {
+    historicalRisk: [
+      { date: "Nov", score: 14 },
+      { date: "Dec", score: 13 },
+      { date: "Jan", score: 12 },
+      { date: "Feb", score: 12 },
+    ],
+    departmentContacts: [
+      { dept: "Legal", contacts: 16, color: "#818CF8" },
+      { dept: "Compliance", contacts: 12, color: "#22C55E" },
+      { dept: "Finance", contacts: 10, color: "#14B8A6" },
+      { dept: "Executive", contacts: 8, color: "#F97316" },
+      { dept: "Operations", contacts: 6, color: "#3B82F6" },
+    ],
+    emailActivity: [
+      { day: "Feb 1", sent: 30, received: 68 },
+      { day: "Feb 4", sent: 28, received: 72 },
+      { day: "Feb 7", sent: 32, received: 65 },
+      { day: "Feb 10", sent: 35, received: 70 },
+      { day: "Feb 13", sent: 30, received: 74 },
+      { day: "Feb 16", sent: 33, received: 71 },
+      { day: "Feb 19", sent: 31, received: 68 },
+    ],
+    emailMetadata: [
+      { date: "Feb 18", from: "p.sterling@sterling-assoc.com", to: "legal@company.com", subject: "RE: Master Services Agreement — Redline v3", attachment: true, anomaly: false },
+      { date: "Feb 17", from: "billing@sterling-assoc.com", to: "finance@company.com", subject: "Invoice #STA-2026-0217 — February Retainer", attachment: true, anomaly: false },
+      { date: "Feb 16", from: "j.doe@company.com", to: "p.sterling@sterling-assoc.com", subject: "Board Meeting Prep Materials", attachment: true, anomaly: false },
+      { date: "Feb 14", from: "compliance@sterling-assoc.com", to: "compliance@company.com", subject: "Annual Compliance Certification — 2026", attachment: true, anomaly: false },
+    ],
+    intelSignals: [
+      { id: "sis1", timestamp: "Feb 15, 9:00 AM", source: "VendorBase Behavioral", sourceColor: "bg-[#818CF8]/10 text-[#818CF8]", signalType: "Behavioral Baseline", description: "All communication patterns stable. Volume consistent with 5-year baseline.", confidence: 96, status: "Clear" },
+      { id: "sis2", timestamp: "Feb 10, 2:00 PM", source: "Financial Risk", sourceColor: "bg-[#14B8A6]/10 text-[#14B8A6]", signalType: "Financial Health", description: "D&B score stable at 2 (low risk). Excellent financial health.", confidence: 94, status: "Clear" },
+      { id: "sis3", timestamp: "Feb 5, 11:00 AM", source: "Domain & Infrastructure", sourceColor: "bg-[#3B82F6]/10 text-[#3B82F6]", signalType: "Infrastructure Check", description: "All domain records nominal. DMARC/SPF/DKIM fully configured.", confidence: 97, status: "Clear" },
+    ],
+    auditEntries: [
+      { date: "Feb 10, 9:00 AM", action: "Quarterly vendor assessment completed — Score: 12 (Low Risk)", by: "Jane Doe" },
+      { date: "Nov 12, 2:00 PM", action: "Annual vendor review completed — Score: 14, exemplary record", by: "Jane Doe" },
+      { date: "Feb 15, 2021", action: "Vendor onboarded — Initial assessment score: 10", by: "Jane Doe" },
+    ],
   },
-  {
-    id: "is7",
-    timestamp: "Feb 12, 1:00 PM",
-    source: "VendorBase Behavioral",
-    sourceColor: "bg-[#818CF8]/10 text-[#818CF8]",
-    signalType: "Behavioral Anomaly",
-    description: "Email response time from Acme contacts shifted 2h later than historical baseline",
-    confidence: 45,
-    status: "Resolved",
+  v7: {
+    historicalRisk: [
+      { date: "Feb 17", score: 95 },
+    ],
+    departmentContacts: [
+      { dept: "Finance", contacts: 4, color: "#22C55E" },
+    ],
+    emailActivity: [
+      { day: "Feb 17", sent: 0, received: 8, anomaly: true },
+      { day: "Feb 18", sent: 0, received: 4, anomaly: true },
+    ],
+    emailMetadata: [
+      { date: "Feb 18", from: "billing@quickbooks-invoicing.net", to: "finance@company.com", subject: "URGENT: Invoice #QB-99281 Past Due — Immediate Action Required", attachment: true, anomaly: true },
+      { date: "Feb 17", from: "support@quickbooks-invoicing.net", to: "ap@company.com", subject: "Your QuickBooks Subscription — Verify Payment Method", attachment: true, anomaly: true },
+      { date: "Feb 17", from: "noreply@quickbooks-invoicing.net", to: "finance@company.com", subject: "Account Suspended — Click to Reactivate", attachment: false, anomaly: true },
+    ],
+    intelSignals: [
+      { id: "qis1", timestamp: "Feb 17, 4:00 PM", source: "Domain & Infrastructure", sourceColor: "bg-[#3B82F6]/10 text-[#3B82F6]", signalType: "Suspicious Domain", description: "Domain registered 3 days ago; hosting on known phishing infrastructure", confidence: 96, status: "Confirmed" },
+      { id: "qis2", timestamp: "Feb 17, 4:05 PM", source: "VendorBase Behavioral", sourceColor: "bg-[#818CF8]/10 text-[#818CF8]", signalType: "Shadow Vendor", description: "Zero prior communication history; 4 recipients all in Finance dept", confidence: 94, status: "Confirmed" },
+      { id: "qis3", timestamp: "Feb 17, 5:00 PM", source: "Community Intelligence", sourceColor: "bg-[#22C55E]/10 text-[#22C55E]", signalType: "Community Report", description: "Domain reported by 12 other Abnormal customers in past 24h", confidence: 98, status: "Confirmed" },
+    ],
+    auditEntries: [
+      { date: "Feb 17, 5:30 PM", action: "Domain quickbooks-invoicing.net permanently blocked", by: "AI Agent" },
+      { date: "Feb 17, 4:10 PM", action: "Case #VV-2839 auto-resolved — Shadow vendor impersonation confirmed", by: "AI Agent" },
+      { date: "Feb 17, 4:05 PM", action: "12 emails auto-quarantined from quickbooks-invoicing.net", by: "AI Agent" },
+      { date: "Feb 17, 4:00 PM", action: "Shadow vendor detected — quickbooks-invoicing.net, risk score: 95", by: "System" },
+    ],
   },
-]
+}
 
 // ---- Remediation Actions ----
 export const pendingActions: RemediationAction[] = [
