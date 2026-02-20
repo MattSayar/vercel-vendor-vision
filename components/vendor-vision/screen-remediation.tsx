@@ -28,6 +28,7 @@ export function ScreenRemediation() {
   const [modifyingAction, setModifyingAction] = useState<string | null>(null)
   const [modifiedDescriptions, setModifiedDescriptions] = useState<Record<string, string>>({})
   const [modifiedImpacts, setModifiedImpacts] = useState<Record<string, string>>({})
+  const [expandedExecuted, setExpandedExecuted] = useState<string | null>(null)
   const [playbookStates, setPlaybookStates] = useState<Record<string, boolean>>(
     Object.fromEntries(playbooks.map((p) => [p.id, p.enabled]))
   )
@@ -321,52 +322,98 @@ export function ScreenRemediation() {
                   </div>
                 ))}
               {/* Pre-existing executed actions */}
-              {executedActions.map((action) => (
-                <div key={action.id} className="rounded-lg border border-border bg-card p-5">
-                  <div className="flex items-start gap-4">
-                    <div className={cn(
-                      "flex size-9 shrink-0 items-center justify-center rounded-lg",
-                      action.outcome === "success" ? "bg-[#22C55E]/10" :
-                      action.outcome === "partial" ? "bg-[#EAB308]/10" :
-                      "bg-[#EF4444]/10"
-                    )}>
-                      {action.outcome === "success" ? (
-                        <CheckCircle2 className="size-4.5 text-[#22C55E]" />
-                      ) : action.outcome === "partial" ? (
-                        <AlertTriangle className="size-4.5 text-[#EAB308]" />
-                      ) : (
-                        <XCircle className="size-4.5 text-[#EF4444]" />
-                      )}
-                    </div>
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2">
-                        <span className="text-[10px] font-mono text-muted-foreground">{action.timestamp}</span>
-                        <span className="rounded-full bg-muted px-2 py-0.5 text-[10px] font-medium text-muted-foreground">{action.type}</span>
-                        <span className="text-xs font-medium text-foreground">{action.vendor}</span>
-                        <span className={cn(
-                          "ml-auto rounded-full px-2 py-0.5 text-[10px] font-semibold capitalize",
-                          action.outcome === "success" ? "bg-[#22C55E]/10 text-[#22C55E]" :
-                          action.outcome === "partial" ? "bg-[#EAB308]/10 text-[#EAB308]" :
-                          "bg-[#EF4444]/10 text-[#EF4444]"
-                        )}>
-                          {action.outcome}
-                        </span>
-                      </div>
-                      <p className="mt-2 text-xs leading-relaxed text-foreground/80">{action.description}</p>
-                      <div className="mt-2 flex items-center gap-3">
-                        {action.reversible && (
-                          <button className="flex items-center gap-1 text-[10px] font-medium text-primary hover:underline">
-                            <Undo2 className="size-3" /> Undo
-                          </button>
+              {executedActions.map((action) => {
+                const isExpanded = expandedExecuted === action.id
+                return (
+                  <div key={action.id} className="rounded-lg border border-border bg-card p-5">
+                    <div className="flex items-start gap-4">
+                      <div className={cn(
+                        "flex size-9 shrink-0 items-center justify-center rounded-lg",
+                        action.outcome === "success" ? "bg-[#22C55E]/10" :
+                        action.outcome === "partial" ? "bg-[#EAB308]/10" :
+                        "bg-[#EF4444]/10"
+                      )}>
+                        {action.outcome === "success" ? (
+                          <CheckCircle2 className="size-4.5 text-[#22C55E]" />
+                        ) : action.outcome === "partial" ? (
+                          <AlertTriangle className="size-4.5 text-[#EAB308]" />
+                        ) : (
+                          <XCircle className="size-4.5 text-[#EF4444]" />
                         )}
-                        <button className="flex items-center gap-1 text-[10px] font-medium text-muted-foreground hover:text-foreground">
-                          View Details
-                        </button>
+                      </div>
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2">
+                          <span className="text-[10px] font-mono text-muted-foreground">{action.timestamp}</span>
+                          <span className="rounded-full bg-muted px-2 py-0.5 text-[10px] font-medium text-muted-foreground">{action.type}</span>
+                          <span className="text-xs font-medium text-foreground">{action.vendor}</span>
+                          <span className={cn(
+                            "ml-auto rounded-full px-2 py-0.5 text-[10px] font-semibold capitalize",
+                            action.outcome === "success" ? "bg-[#22C55E]/10 text-[#22C55E]" :
+                            action.outcome === "partial" ? "bg-[#EAB308]/10 text-[#EAB308]" :
+                            "bg-[#EF4444]/10 text-[#EF4444]"
+                          )}>
+                            {action.outcome}
+                          </span>
+                        </div>
+                        <p className="mt-2 text-xs leading-relaxed text-foreground/80">{action.description}</p>
+                        <div className="mt-2 flex items-center gap-3">
+                          {action.reversible && (
+                            <button className="flex items-center gap-1 text-[10px] font-medium text-primary hover:underline">
+                              <Undo2 className="size-3" /> Undo
+                            </button>
+                          )}
+                          <button
+                            onClick={() => setExpandedExecuted(isExpanded ? null : action.id)}
+                            className="flex items-center gap-1 text-[10px] font-medium text-muted-foreground hover:text-foreground"
+                          >
+                            <ChevronDown className={cn("size-3 transition-transform", isExpanded && "rotate-180")} />
+                            {isExpanded ? "Hide Details" : "View Details"}
+                          </button>
+                        </div>
+
+                        {/* Expanded action steps */}
+                        {isExpanded && (
+                          <div className="mt-3 rounded-md border border-border bg-muted/30 p-3">
+                            <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wide">Actions Taken</p>
+                            <ol className="mt-2 flex flex-col gap-1.5">
+                              {action.actions.map((a, i) => (
+                                <li key={i} className="flex items-start gap-2">
+                                  <div className={cn(
+                                    "mt-0.5 flex size-4 shrink-0 items-center justify-center rounded-full text-[8px] font-bold",
+                                    a.result === "success" ? "bg-[#22C55E]/15 text-[#22C55E]" :
+                                    a.result === "partial" ? "bg-[#EAB308]/15 text-[#EAB308]" :
+                                    a.result === "failed" ? "bg-[#EF4444]/15 text-[#EF4444]" :
+                                    "bg-muted text-muted-foreground"
+                                  )}>
+                                    {a.result === "success" ? "\u2713" :
+                                     a.result === "partial" ? "~" :
+                                     a.result === "failed" ? "\u2717" : "\u2014"}
+                                  </div>
+                                  <span className={cn(
+                                    "text-[11px] leading-relaxed",
+                                    a.result === "skipped" ? "text-muted-foreground" : "text-foreground/80"
+                                  )}>
+                                    {a.step}
+                                  </span>
+                                  <span className={cn(
+                                    "ml-auto shrink-0 text-[9px] font-medium capitalize",
+                                    a.result === "success" ? "text-[#22C55E]" :
+                                    a.result === "partial" ? "text-[#EAB308]" :
+                                    a.result === "failed" ? "text-[#EF4444]" :
+                                    "text-muted-foreground"
+                                  )}>
+                                    {a.result}
+                                  </span>
+                                </li>
+                              ))}
+                            </ol>
+                          </div>
+                        )}
                       </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                )
+              })}
             </div>
           </TabsContent>
 

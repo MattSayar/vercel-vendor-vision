@@ -100,6 +100,7 @@ export interface ExecutedAction {
   outcome: "success" | "partial" | "failed"
   description: string
   reversible: boolean
+  actions: { step: string; result: "success" | "partial" | "failed" | "skipped" }[]
 }
 
 export interface Playbook {
@@ -814,6 +815,13 @@ export const executedActions: ExecutedAction[] = [
     outcome: "success",
     description: "Auto-quarantined 5 emails from quickbooks-invoicing.net (shadow vendor). Reason: Unrecognized domain impersonating QuickBooks, 0 prior communication history.",
     reversible: true,
+    actions: [
+      { step: "Identified 5 inbound emails from quickbooks-invoicing.net in delivery queue", result: "success" },
+      { step: "Verified domain is not in approved vendor list", result: "success" },
+      { step: "Moved all 5 emails to quarantine folder", result: "success" },
+      { step: "Notified 8 internal recipients of quarantine action", result: "success" },
+      { step: "Created audit log entry for compliance review", result: "success" },
+    ],
   },
   {
     id: "ea2",
@@ -823,6 +831,12 @@ export const executedActions: ExecutedAction[] = [
     outcome: "success",
     description: "Escalated DataFlow Inc risk case to procurement@company.com. Reason: Financial risk indicator (D&B score drop) + behavioral anomaly.",
     reversible: false,
+    actions: [
+      { step: "Compiled risk summary with D&B financial data and behavioral anomaly report", result: "success" },
+      { step: "Sent escalation email to procurement@company.com", result: "success" },
+      { step: "Flagged $150K contract for contingency review in procurement dashboard", result: "success" },
+      { step: "Set 48-hour follow-up reminder for procurement team response", result: "success" },
+    ],
   },
   {
     id: "ea3",
@@ -832,6 +846,13 @@ export const executedActions: ExecutedAction[] = [
     outcome: "partial",
     description: "Attempted to trigger security questionnaire for Prolia Systems. Partial: Questionnaire sent, but vendor auto-responder returned OOO.",
     reversible: false,
+    actions: [
+      { step: "Generated security questionnaire from template (SOC 2 compliance)", result: "success" },
+      { step: "Sent questionnaire to vendor contact alex.kim@proliasys.com", result: "success" },
+      { step: "Awaiting vendor response — auto-responder detected (OOO until Feb 24)", result: "partial" },
+      { step: "Scheduled automatic follow-up for Feb 25", result: "success" },
+      { step: "Notify internal stakeholder of delayed response", result: "skipped" },
+    ],
   },
   {
     id: "ea4",
@@ -841,6 +862,12 @@ export const executedActions: ExecutedAction[] = [
     outcome: "success",
     description: "Permanently blocked domain quickbooks-invoicing.net. Reason: Confirmed impersonation attempt targeting Finance department.",
     reversible: true,
+    actions: [
+      { step: "Added quickbooks-invoicing.net to organization-wide block list", result: "success" },
+      { step: "Configured email gateway rule to reject all future inbound from domain", result: "success" },
+      { step: "Notified Finance department (4 users) of the blocked domain", result: "success" },
+      { step: "Submitted domain to Abnormal community threat feed", result: "success" },
+    ],
   },
 ]
 
