@@ -15,13 +15,15 @@ export default function VendorVisionApp() {
   const [screen, setScreen] = useState<Screen>("dashboard")
   const [timeRange, setTimeRange] = useState("30d")
   const [selectedVendorId, setSelectedVendorId] = useState("v1")
+  const [caseSearchQuery, setCaseSearchQuery] = useState("")
 
   const navigateToVendor = (vendorId: string) => {
     setSelectedVendorId(vendorId)
     setScreen("vendor-detail")
   }
 
-  const navigateToCases = () => {
+  const navigateToCases = (search?: string) => {
+    setCaseSearchQuery(search || "")
     setScreen("cases")
   }
 
@@ -40,7 +42,7 @@ export default function VendorVisionApp() {
               onNavigateToRemediation={() => setScreen("remediation")}
             />
           )}
-          {screen === "cases" && <ScreenCases />}
+          {screen === "cases" && <ScreenCases initialSearch={caseSearchQuery} />}
           {screen === "vendors" && (
             <ScreenVendors onNavigateToVendor={navigateToVendor} />
           )}

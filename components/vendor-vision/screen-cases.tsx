@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Badge } from "@/components/ui/badge"
 import { Switch } from "@/components/ui/switch"
@@ -32,11 +32,20 @@ const statusTabs: { label: string; value: CaseStatus | "all" }[] = [
 
 const severityFilters: Severity[] = ["critical", "high", "medium", "low"]
 
-export function ScreenCases() {
+interface ScreenCasesProps {
+  initialSearch?: string
+}
+
+export function ScreenCases({ initialSearch = "" }: ScreenCasesProps) {
   const [selectedCase, setSelectedCase] = useState<RiskCase>(riskCases[0])
   const [statusFilter, setStatusFilter] = useState<CaseStatus | "all">("all")
   const [activeSeverities, setActiveSeverities] = useState<Set<Severity>>(new Set(severityFilters))
-  const [searchQuery, setSearchQuery] = useState("")
+  const [searchQuery, setSearchQuery] = useState(initialSearch)
+
+  useEffect(() => {
+    setSearchQuery(initialSearch)
+  }, [initialSearch])
+
   const [actionStates, setActionStates] = useState<Record<string, "pending" | "approved">>({})
   const [allApproved, setAllApproved] = useState(false)
 

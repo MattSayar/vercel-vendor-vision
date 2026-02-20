@@ -31,7 +31,7 @@ import {
 
 interface DashboardProps {
   onNavigateToVendor: (vendorId: string) => void
-  onNavigateToCases: () => void
+  onNavigateToCases: (search?: string) => void
   onNavigateToVendors: () => void
   onNavigateToReports: () => void
   onNavigateToRemediation: () => void
@@ -134,7 +134,7 @@ export function ScreenDashboard({ onNavigateToVendor, onNavigateToCases, onNavig
                     const caseMatch = token.match(/^#VV-\d+$/)
                     if (caseMatch) {
                       return (
-                        <button key={`c${i}`} onClick={() => onNavigateToCases()} className="font-semibold text-primary hover:underline">
+                        <button key={`c${i}`} onClick={() => onNavigateToCases(token.replace("#", ""))} className="font-semibold text-primary hover:underline">
                           {token}
                         </button>
                       )
