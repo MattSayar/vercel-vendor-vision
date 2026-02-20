@@ -103,7 +103,7 @@ export function ScreenDashboard({ onNavigateToVendor, onNavigateToCases, onNavig
           <div className="col-span-3 rounded-lg border border-border bg-card p-5">
             <h3 className="mb-4 text-sm font-semibold text-card-foreground">Vendor Ecosystem Risk Map</h3>
             <div className="grid grid-cols-4 gap-2">
-              {vendors.map((v) => (
+              {[...vendors].sort((a, b) => b.riskScore - a.riskScore).map((v) => (
                 <VendorTile key={v.id} vendor={v} onClick={() => onNavigateToVendor(v.id)} />
               ))}
               {/* Extra filler tiles for visual density */}
