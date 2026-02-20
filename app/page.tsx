@@ -5,6 +5,7 @@ import { SidebarNav, type Screen } from "@/components/vendor-vision/sidebar-nav"
 import { TopBar } from "@/components/vendor-vision/top-bar"
 import { ScreenDashboard } from "@/components/vendor-vision/screen-dashboard"
 import { ScreenCases } from "@/components/vendor-vision/screen-cases"
+import { ScreenVendors } from "@/components/vendor-vision/screen-vendors"
 import { ScreenVendorDetail } from "@/components/vendor-vision/screen-vendor-detail"
 import { ScreenRemediation } from "@/components/vendor-vision/screen-remediation"
 import { ScreenReports } from "@/components/vendor-vision/screen-reports"
@@ -36,10 +37,13 @@ export default function VendorVisionApp() {
             />
           )}
           {screen === "cases" && <ScreenCases />}
+          {screen === "vendors" && (
+            <ScreenVendors onNavigateToVendor={navigateToVendor} />
+          )}
           {screen === "vendor-detail" && (
             <ScreenVendorDetail
               vendorId={selectedVendorId}
-              onBack={() => setScreen("dashboard")}
+              onBack={() => setScreen("vendors")}
             />
           )}
           {screen === "remediation" && <ScreenRemediation />}

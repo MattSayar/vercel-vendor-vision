@@ -11,12 +11,12 @@ import {
   ShieldCheck,
 } from "lucide-react"
 
-export type Screen = "dashboard" | "cases" | "vendor-detail" | "remediation" | "reports"
+export type Screen = "dashboard" | "cases" | "vendors" | "vendor-detail" | "remediation" | "reports"
 
 const navItems: { id: Screen; label: string; icon: React.ElementType }[] = [
   { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
   { id: "cases", label: "Cases", icon: Inbox },
-  { id: "vendor-detail", label: "Vendors", icon: Building2 },
+  { id: "vendors", label: "Vendors", icon: Building2 },
   { id: "remediation", label: "Remediation", icon: Network },
   { id: "reports", label: "Reports", icon: BarChart3 },
 ]
@@ -47,7 +47,7 @@ export function SidebarNav({ active, onNavigate }: SidebarNavProps) {
       {/* Nav Items */}
       <nav className="mt-2 flex flex-1 flex-col gap-0.5 px-3">
         {navItems.map((item) => {
-          const isActive = active === item.id
+          const isActive = active === item.id || (item.id === "vendors" && active === "vendor-detail")
           return (
             <button
               key={item.id}
