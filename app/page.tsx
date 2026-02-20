@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import type { ExecutedAction } from "@/lib/demo-data"
 import { SidebarNav, type Screen } from "@/components/vendor-vision/sidebar-nav"
 import { TopBar } from "@/components/vendor-vision/top-bar"
 import { ScreenDashboard } from "@/components/vendor-vision/screen-dashboard"
@@ -16,6 +17,11 @@ export default function VendorVisionApp() {
   const [timeRange, setTimeRange] = useState("30d")
   const [selectedVendorId, setSelectedVendorId] = useState("v1")
   const [caseSearchQuery, setCaseSearchQuery] = useState("")
+  const [caseExecutedActions, setCaseExecutedActions] = useState<ExecutedAction[]>([])
+
+  const handleCaseActionExecuted = (action: ExecutedAction) => {
+    setCaseExecutedActions((prev) => [action, ...prev])
+  }
 
   const navigateToVendor = (vendorId: string) => {
     setSelectedVendorId(vendorId)
@@ -42,7 +48,7 @@ export default function VendorVisionApp() {
               onNavigateToRemediation={() => setScreen("remediation")}
             />
           )}
-          {screen === "cases" && <ScreenCases initialSearch={caseSearchQuery} />}
+          {screen === "cases" && <ScreenCases initialSearch={caseSearchQuery} onActionExecuted={handleCaseActionExecuted} />}
           {screen === "vendors" && (
             <ScreenVendors onNavigateToVendor={navigateToVendor} />
           )}
@@ -52,7 +58,7 @@ export default function VendorVisionApp() {
               onBack={() => setScreen("vendors")}
             />
           )}
-          {screen === "remediation" && <ScreenRemediation />}
+          {screen === "remediation" && <ScreenRemediation caseExecutedActions={caseExecutedActions} />}
           {screen === "reports" && (
             <ScreenReports onNavigateToVendor={navigateToVendor} />
           )}

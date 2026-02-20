@@ -8,6 +8,7 @@ import {
   pendingActions,
   executedActions,
   playbooks,
+  type ExecutedAction,
 } from "@/lib/demo-data"
 import {
   ShieldCheck,
@@ -22,7 +23,11 @@ import {
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 
-export function ScreenRemediation() {
+interface ScreenRemediationProps {
+  caseExecutedActions?: ExecutedAction[]
+}
+
+export function ScreenRemediation({ caseExecutedActions = [] }: ScreenRemediationProps) {
   const [actionStates, setActionStates] = useState<Record<string, "pending" | "approved" | "rejected">>({})
   const [expandedReasoning, setExpandedReasoning] = useState<string | null>(null)
   const [modifyingAction, setModifyingAction] = useState<string | null>(null)
@@ -321,6 +326,56 @@ export function ScreenRemediation() {
                     </div>
                   </div>
                 ))}
+              {/* Actions executed from Cases page */}
+              {caseExecutedActions.map((action) => {
+                const isExpanded = expandedExecuted === action.id
+                return (
+                  <div key={action.id} className="rounded-lg border border-primary/30 bg-primary/[0.02] p-5">
+                    <div className="flex items-start gap-4">
+                      <div className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-[#22C55E]/10">
+                        <CheckCircle2 className="size-4.5 text-[#22C55E]" />
+                      </div>
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2">
+                          <span className="text-[10px] font-mono text-muted-foreground">{action.timestamp}</span>
+                          <span className="rounded-full bg-muted px-2 py-0.5 text-[10px] font-medium text-muted-foreground">{action.type}</span>
+                          <span className="text-xs font-medium text-foreground">{action.vendor}</span>
+                          <span className="rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-medium text-primary">From Cases</span>
+                          <span className="ml-auto rounded-full px-2 py-0.5 text-[10px] font-semibold bg-[#22C55E]/10 text-[#22C55E]">
+                            success
+                          </span>
+                        </div>
+                        <p className="mt-2 text-xs leading-relaxed text-foreground/80">{action.description}</p>
+                        <div className="mt-2 flex items-center gap-3">
+                          <button
+                            onClick={() => setExpandedExecuted(isExpanded ? null : action.id)}
+                            className="flex items-center gap-1 text-[10px] font-medium text-muted-foreground hover:text-foreground"
+                          >
+                            <ChevronDown className={cn("size-3 transition-transform", isExpanded && "rotate-180")} />
+                            {isExpanded ? "Hide Details" : "View Details"}
+                          </button>
+                        </div>
+                        {isExpanded && (
+                          <div className="mt-3 rounded-md border border-border bg-muted/30 p-3">
+                            <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wide">Actions Taken</p>
+                            <ol className="mt-2 flex flex-col gap-1.5">
+                              {action.actions.map((a, i) => (
+                                <li key={i} className="flex items-start gap-2">
+                                  <div className="mt-0.5 flex size-4 shrink-0 items-center justify-center rounded-full bg-[#22C55E]/15 text-[8px] font-bold text-[#22C55E]">
+                                    {"\u2713"}
+                                  </div>
+                                  <span className="text-[11px] leading-relaxed text-foreground/80">{a.step}</span>
+                                  <span className="ml-auto shrink-0 text-[9px] font-medium capitalize text-[#22C55E]">{a.result}</span>
+                                </li>
+                              ))}
+                            </ol>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                )
+              })}
               {/* Pre-existing executed actions */}
               {executedActions.map((action) => {
                 const isExpanded = expandedExecuted === action.id

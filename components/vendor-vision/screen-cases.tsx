@@ -12,6 +12,7 @@ import {
   type RiskCase,
   type Severity,
   type CaseStatus,
+  type ExecutedAction,
 } from "@/lib/demo-data"
 import {
   Sparkles,
@@ -35,9 +36,10 @@ const severityFilters: Severity[] = ["critical", "high", "medium", "low"]
 
 interface ScreenCasesProps {
   initialSearch?: string
+  onActionExecuted?: (action: ExecutedAction) => void
 }
 
-export function ScreenCases({ initialSearch = "" }: ScreenCasesProps) {
+export function ScreenCases({ initialSearch = "", onActionExecuted }: ScreenCasesProps) {
   const [selectedCase, setSelectedCase] = useState<RiskCase>(riskCases[0])
   const [statusFilter, setStatusFilter] = useState<CaseStatus | "all">("all")
   const [activeSeverities, setActiveSeverities] = useState<Set<Severity>>(new Set(severityFilters))
@@ -70,17 +72,42 @@ export function ScreenCases({ initialSearch = "" }: ScreenCasesProps) {
     return true
   })
 
+  const emitExecuted = (actionLabel: string) => {
+    if (!onActionExecuted) return
+    onActionExecuted({
+      id: `ce-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
+      timestamp: "Just now",
+      type: "Case Action",
+      vendor: selectedCase.vendorName,
+      outcome: "success",
+      description: `${actionLabel} (from Case ${selectedCase.id})`,
+      reversible: true,
+      actions: [
+        { step: `Action approved by analyst from Case ${selectedCase.id}`, result: "success" },
+        { step: actionLabel, result: "success" },
+      ],
+    })
+  }
+
   const handleApproveAll = () => {
     const newStates: Record<string, "approved"> = {}
     selectedCase.recommendedActions.forEach((a) => {
-      newStates[a.id] = "approved"
+      if (actionStates[a.id] !== "approved") {
+        newStates[a.id] = "approved"
+        emitExecuted(a.label)
+      }
     })
     setActionStates((prev) => ({ ...prev, ...newStates }))
     setAllApproved(true)
   }
 
   const handleApproveAction = (actionId: string) => {
-    setActionStates((prev) => ({ ...prev, [actionId]: prev[actionId] === "approved" ? "pending" : "approved" }))
+    const wasApproved = actionStates[actionId] === "approved"
+    setActionStates((prev) => ({ ...prev, [actionId]: wasApproved ? "pending" : "approved" }))
+    if (!wasApproved) {
+      const action = selectedCase.recommendedActions.find((a) => a.id === actionId)
+      if (action) emitExecuted(action.label)
+    }
   }
 
   return (
