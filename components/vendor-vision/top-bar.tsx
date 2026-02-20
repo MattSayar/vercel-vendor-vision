@@ -12,6 +12,7 @@ const screenLabels: Record<Screen, string> = {
   "vendor-detail": "Vendor Deep-Dive",
   remediation: "Automated Remediation",
   reports: "Executive Summary",
+  "easter-egg": "Settings",
 }
 
 interface TopBarProps {

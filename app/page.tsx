@@ -9,6 +9,7 @@ import { ScreenVendors } from "@/components/vendor-vision/screen-vendors"
 import { ScreenVendorDetail } from "@/components/vendor-vision/screen-vendor-detail"
 import { ScreenRemediation } from "@/components/vendor-vision/screen-remediation"
 import { ScreenReports } from "@/components/vendor-vision/screen-reports"
+import { ScreenEasterEgg } from "@/components/vendor-vision/screen-easter-egg"
 
 export default function VendorVisionApp() {
   const [screen, setScreen] = useState<Screen>("dashboard")
@@ -53,6 +54,7 @@ export default function VendorVisionApp() {
           {screen === "reports" && (
             <ScreenReports onNavigateToVendor={navigateToVendor} />
           )}
+          {screen === "easter-egg" && <ScreenEasterEgg />}
         </main>
       </div>
     </div>

@@ -11,7 +11,7 @@ import {
   ShieldCheck,
 } from "lucide-react"
 
-export type Screen = "dashboard" | "cases" | "vendors" | "vendor-detail" | "remediation" | "reports"
+export type Screen = "dashboard" | "cases" | "vendors" | "vendor-detail" | "remediation" | "reports" | "easter-egg"
 
 const navItems: { id: Screen; label: string; icon: React.ElementType }[] = [
   { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
@@ -75,7 +75,7 @@ export function SidebarNav({ active, onNavigate }: SidebarNavProps) {
           <span className="text-xs font-medium text-sidebar-foreground">Jane Doe</span>
           <span className="text-[10px] text-sidebar-foreground/50">SOC Analyst</span>
         </div>
-        <button className="ml-auto text-sidebar-foreground/40 hover:text-sidebar-foreground/70">
+        <button onClick={() => onNavigate("easter-egg")} className="ml-auto text-sidebar-foreground/40 hover:text-sidebar-foreground/70">
           <Settings className="size-3.5" />
         </button>
       </div>
