@@ -272,6 +272,37 @@ export function ScreenRemediation() {
           {/* Recently Executed */}
           <TabsContent value="executed" className="mt-4">
             <div className="flex flex-col gap-3">
+              {/* Newly approved actions from pending tab */}
+              {pendingActions
+                .filter((a) => actionStates[a.id] === "approved")
+                .map((action) => (
+                  <div key={action.id} className="rounded-lg border border-[#22C55E]/30 bg-[#22C55E]/[0.02] p-5">
+                    <div className="flex items-start gap-4">
+                      <div className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-[#22C55E]/10">
+                        <CheckCircle2 className="size-4.5 text-[#22C55E]" />
+                      </div>
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2">
+                          <span className="text-[10px] font-mono text-muted-foreground">Just now</span>
+                          <span className="rounded-full bg-muted px-2 py-0.5 text-[10px] font-medium text-muted-foreground">{action.type}</span>
+                          <span className="rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-medium text-primary">You approved</span>
+                          <span className="ml-auto rounded-full px-2 py-0.5 text-[10px] font-semibold bg-[#22C55E]/10 text-[#22C55E]">
+                            success
+                          </span>
+                        </div>
+                        <p className="mt-2 text-xs leading-relaxed text-foreground/80">
+                          {modifiedDescriptions[action.id] || action.description}
+                        </p>
+                        <div className="mt-2 flex items-center gap-3">
+                          <button className="flex items-center gap-1 text-[10px] font-medium text-primary hover:underline">
+                            <Undo2 className="size-3" /> Undo
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              {/* Pre-existing executed actions */}
               {executedActions.map((action) => (
                 <div key={action.id} className="rounded-lg border border-border bg-card p-5">
                   <div className="flex items-start gap-4">
