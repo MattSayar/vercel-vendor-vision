@@ -30,11 +30,11 @@ export function SidebarNav({ active, onNavigate }: SidebarNavProps) {
   return (
     <aside className="flex h-screen w-[220px] shrink-0 flex-col bg-sidebar text-sidebar-foreground">
       {/* Logo */}
-      <div className="flex items-center gap-2.5 px-5 py-5">
+      <button onClick={() => onNavigate("dashboard")} className="flex items-center gap-2.5 px-5 py-5 transition-opacity hover:opacity-80">
         <div className="flex size-8 items-center justify-center rounded-lg bg-sidebar-primary">
           <ShieldCheck className="size-4.5 text-sidebar-primary-foreground" />
         </div>
-        <div className="flex flex-col">
+        <div className="flex flex-col text-left">
           <span className="text-sm font-semibold tracking-tight text-sidebar-foreground">
             VendorVision
           </span>
@@ -42,7 +42,7 @@ export function SidebarNav({ active, onNavigate }: SidebarNavProps) {
             Abnormal
           </span>
         </div>
-      </div>
+      </button>
 
       {/* Nav Items */}
       <nav className="mt-2 flex flex-1 flex-col gap-0.5 px-3">

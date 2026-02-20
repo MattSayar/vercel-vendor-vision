@@ -28,7 +28,7 @@ export default function VendorVisionApp() {
     <div className="flex h-screen overflow-hidden bg-background">
       <SidebarNav active={screen} onNavigate={setScreen} />
       <div className="flex flex-1 flex-col overflow-hidden">
-        <TopBar screen={screen} timeRange={timeRange} onTimeRangeChange={setTimeRange} />
+        <TopBar screen={screen} timeRange={timeRange} onTimeRangeChange={setTimeRange} onNavigate={setScreen} />
         <main className="flex-1 overflow-hidden">
           {screen === "dashboard" && (
             <ScreenDashboard

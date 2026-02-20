@@ -18,11 +18,12 @@ interface TopBarProps {
   screen: Screen
   timeRange: string
   onTimeRangeChange: (range: string) => void
+  onNavigate: (screen: Screen) => void
 }
 
 const timeRanges = ["Last 24h", "7d", "30d", "90d"]
 
-export function TopBar({ screen, timeRange, onTimeRangeChange }: TopBarProps) {
+export function TopBar({ screen, timeRange, onTimeRangeChange, onNavigate }: TopBarProps) {
   const { resolvedTheme, setTheme } = useTheme()
   const [mounted, setMounted] = useState(false)
   useEffect(() => setMounted(true), [])
@@ -31,9 +32,21 @@ export function TopBar({ screen, timeRange, onTimeRangeChange }: TopBarProps) {
     <header className="flex h-14 shrink-0 items-center gap-4 border-b border-border bg-card px-6">
       {/* Breadcrumb */}
       <nav className="flex items-center gap-1.5 text-sm" aria-label="Breadcrumb">
-        <span className="text-muted-foreground">VendorVision</span>
+        <button onClick={() => onNavigate("dashboard")} className="text-muted-foreground hover:text-foreground transition-colors">
+          VendorVision
+        </button>
         <ChevronRight className="size-3 text-muted-foreground/50" />
-        <span className="font-medium text-foreground">{screenLabels[screen]}</span>
+        {screen === "vendor-detail" ? (
+          <>
+            <button onClick={() => onNavigate("vendors")} className="text-muted-foreground hover:text-foreground transition-colors">
+              Vendor Directory
+            </button>
+            <ChevronRight className="size-3 text-muted-foreground/50" />
+            <span className="font-medium text-foreground">{screenLabels[screen]}</span>
+          </>
+        ) : (
+          <span className="font-medium text-foreground">{screenLabels[screen]}</span>
+        )}
       </nav>
 
       {/* Search */}
