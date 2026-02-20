@@ -106,19 +106,6 @@ export function ScreenDashboard({ onNavigateToVendor, onNavigateToCases, onNavig
               {[...vendors].sort((a, b) => b.riskScore - a.riskScore).map((v) => (
                 <VendorTile key={v.id} vendor={v} onClick={() => onNavigateToVendor(v.id)} />
               ))}
-              {/* Extra filler tiles for visual density */}
-              {fillerVendors.map((v, i) => (
-                <div
-                  key={`filler-${i}`}
-                  className="flex flex-col justify-between rounded-md border border-[#22C55E]/20 bg-[#22C55E]/5 p-2.5"
-                >
-                  <span className="text-[10px] font-medium text-foreground/70 truncate">{v.name}</span>
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs font-semibold text-[#22C55E]">{v.score}</span>
-                    <span className="rounded-sm bg-[#22C55E]/10 px-1.5 py-0.5 text-[9px] font-medium text-[#22C55E]">Low</span>
-                  </div>
-                </div>
-              ))}
             </div>
           </div>
 
@@ -319,10 +306,3 @@ function VendorTile({ vendor, onClick }: { vendor: Vendor; onClick: () => void }
   )
 }
 
-const fillerVendors = [
-  { name: "CloudSync Pro", score: 15 },
-  { name: "NetGuard Ltd", score: 8 },
-  { name: "PayFlow Systems", score: 11 },
-  { name: "SecureStack", score: 6 },
-  { name: "TechBridge Co", score: 19 },
-]
