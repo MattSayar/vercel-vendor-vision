@@ -34,6 +34,9 @@ export default function VendorVisionApp() {
             <ScreenDashboard
               onNavigateToVendor={navigateToVendor}
               onNavigateToCases={navigateToCases}
+              onNavigateToVendors={() => setScreen("vendors")}
+              onNavigateToReports={() => setScreen("reports")}
+              onNavigateToRemediation={() => setScreen("remediation")}
             />
           )}
           {screen === "cases" && <ScreenCases />}

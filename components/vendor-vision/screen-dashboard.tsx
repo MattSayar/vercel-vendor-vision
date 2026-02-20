@@ -32,6 +32,9 @@ import {
 interface DashboardProps {
   onNavigateToVendor: (vendorId: string) => void
   onNavigateToCases: () => void
+  onNavigateToVendors: () => void
+  onNavigateToReports: () => void
+  onNavigateToRemediation: () => void
 }
 
 const levelColors: Record<string, string> = {
@@ -49,7 +52,7 @@ const trendingVendors = [
   { vendor: vendors[4], change: "-5", topSignal: "Community report resolved", trend: "down" as const }, // 43 → 38
 ]
 
-export function ScreenDashboard({ onNavigateToVendor, onNavigateToCases }: DashboardProps) {
+export function ScreenDashboard({ onNavigateToVendor, onNavigateToCases, onNavigateToVendors, onNavigateToReports, onNavigateToRemediation }: DashboardProps) {
   return (
     <ScrollArea className="h-[calc(100vh-3.5rem)]">
       <div className="flex flex-col gap-6 p-6">
@@ -61,6 +64,7 @@ export function ScreenDashboard({ onNavigateToVendor, onNavigateToCases }: Dashb
             label="Total Vendors Monitored"
             value="3,847"
             sub="142 new this month"
+            onClick={onNavigateToVendors}
           />
           <MetricCard
             icon={<AlertTriangle className="size-4" />}
@@ -76,6 +80,7 @@ export function ScreenDashboard({ onNavigateToVendor, onNavigateToCases }: Dashb
             label="Auto-Resolved (30d)"
             value="187"
             sub="73% autonomous resolution rate"
+            onClick={onNavigateToReports}
           />
           <MetricCard
             icon={<Clock className="size-4" />}
@@ -88,6 +93,7 @@ export function ScreenDashboard({ onNavigateToVendor, onNavigateToCases }: Dashb
                 89% vs. manual baseline
               </span>
             }
+            onClick={onNavigateToRemediation}
           />
         </div>
 
