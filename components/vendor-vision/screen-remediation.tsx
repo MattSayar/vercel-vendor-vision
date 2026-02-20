@@ -38,6 +38,24 @@ export function ScreenRemediation() {
     setExpandedReasoning(null)
   }
 
+  const handleUndo = (id: string) => {
+    setActionStates((prev) => {
+      const next = { ...prev }
+      delete next[id]
+      return next
+    })
+    setModifiedDescriptions((prev) => {
+      const next = { ...prev }
+      delete next[id]
+      return next
+    })
+    setModifiedImpacts((prev) => {
+      const next = { ...prev }
+      delete next[id]
+      return next
+    })
+  }
+
   const toggleReasoning = (id: string) => {
     setExpandedReasoning((prev) => (prev === id ? null : id))
     setModifyingAction(null)
@@ -294,7 +312,7 @@ export function ScreenRemediation() {
                           {modifiedDescriptions[action.id] || action.description}
                         </p>
                         <div className="mt-2 flex items-center gap-3">
-                          <button className="flex items-center gap-1 text-[10px] font-medium text-primary hover:underline">
+                          <button onClick={() => handleUndo(action.id)} className="flex items-center gap-1 text-[10px] font-medium text-primary hover:underline">
                             <Undo2 className="size-3" /> Undo
                           </button>
                         </div>
