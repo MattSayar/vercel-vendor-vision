@@ -1,6 +1,8 @@
 "use client"
 
-import { Search, Bell, ChevronRight } from "lucide-react"
+import { Search, Bell, ChevronRight, Sun, Moon } from "lucide-react"
+import { useTheme } from "next-themes"
+import { useEffect, useState } from "react"
 import type { Screen } from "./sidebar-nav"
 
 const screenLabels: Record<Screen, string> = {
@@ -20,6 +22,10 @@ interface TopBarProps {
 const timeRanges = ["Last 24h", "7d", "30d", "90d"]
 
 export function TopBar({ screen, timeRange, onTimeRangeChange }: TopBarProps) {
+  const { resolvedTheme, setTheme } = useTheme()
+  const [mounted, setMounted] = useState(false)
+  useEffect(() => setMounted(true), [])
+
   return (
     <header className="flex h-14 shrink-0 items-center gap-4 border-b border-border bg-card px-6">
       {/* Breadcrumb */}
@@ -38,6 +44,17 @@ export function TopBar({ screen, timeRange, onTimeRangeChange }: TopBarProps) {
           className="h-8 w-72 rounded-md border border-input bg-background pl-9 pr-3 text-xs text-foreground placeholder:text-muted-foreground focus:border-ring focus:outline-none"
         />
       </div>
+
+      {/* Theme Toggle */}
+      {mounted && (
+        <button
+          onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
+          className="flex size-8 items-center justify-center rounded-md text-muted-foreground hover:bg-muted hover:text-foreground"
+          aria-label="Toggle theme"
+        >
+          {resolvedTheme === "dark" ? <Sun className="size-4" /> : <Moon className="size-4" />}
+        </button>
+      )}
 
       {/* Notification Bell */}
       <button className="relative flex size-8 items-center justify-center rounded-md text-muted-foreground hover:bg-muted hover:text-foreground">
