@@ -21,6 +21,7 @@ import {
   XCircle,
   Search,
   X,
+  ArrowRight,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 
@@ -37,9 +38,10 @@ const severityFilters: Severity[] = ["critical", "high", "medium", "low"]
 interface ScreenCasesProps {
   initialSearch?: string
   onActionExecuted?: (action: ExecutedAction) => void
+  onNavigateToRemediation?: () => void
 }
 
-export function ScreenCases({ initialSearch = "", onActionExecuted }: ScreenCasesProps) {
+export function ScreenCases({ initialSearch = "", onActionExecuted, onNavigateToRemediation }: ScreenCasesProps) {
   const [selectedCase, setSelectedCase] = useState<RiskCase>(riskCases[0])
   const [statusFilter, setStatusFilter] = useState<CaseStatus | "all">("all")
   const [activeSeverities, setActiveSeverities] = useState<Set<Severity>>(new Set(severityFilters))
@@ -298,6 +300,16 @@ export function ScreenCases({ initialSearch = "", onActionExecuted }: ScreenCase
                 <XCircle className="size-3" /> Dismiss Case
               </button>
             </div>
+            {onNavigateToRemediation && Object.values(actionStates).some((s) => s === "approved") && (
+              <button
+                onClick={onNavigateToRemediation}
+                className="mt-3 flex w-full items-center justify-center gap-2 rounded-md border border-[#22C55E]/30 bg-[#22C55E]/[0.04] px-4 py-2 text-xs font-medium text-[#22C55E] transition-colors hover:bg-[#22C55E]/10"
+              >
+                <CheckCircle2 className="size-3.5" />
+                View executed actions in Remediation
+                <ArrowRight className="size-3.5" />
+              </button>
+            )}
           </div>
 
           {/* AI Investigation Summary */}

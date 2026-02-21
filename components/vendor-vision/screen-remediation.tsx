@@ -25,9 +25,10 @@ import { cn } from "@/lib/utils"
 
 interface ScreenRemediationProps {
   caseExecutedActions?: ExecutedAction[]
+  initialTab?: string
 }
 
-export function ScreenRemediation({ caseExecutedActions = [] }: ScreenRemediationProps) {
+export function ScreenRemediation({ caseExecutedActions = [], initialTab = "pending" }: ScreenRemediationProps) {
   const [actionStates, setActionStates] = useState<Record<string, "pending" | "approved" | "rejected">>({})
   const [expandedReasoning, setExpandedReasoning] = useState<string | null>(null)
   const [modifyingAction, setModifyingAction] = useState<string | null>(null)
@@ -100,7 +101,7 @@ export function ScreenRemediation({ caseExecutedActions = [] }: ScreenRemediatio
   return (
     <ScrollArea className="h-[calc(100vh-3.5rem)]">
       <div className="p-6">
-        <Tabs defaultValue="pending" className="w-full">
+        <Tabs defaultValue={initialTab} className="w-full">
           <TabsList className="w-full justify-start gap-0 bg-transparent p-0 border-b border-border rounded-none">
             <TabsTrigger
               value="pending"

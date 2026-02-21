@@ -18,6 +18,7 @@ export default function VendorVisionApp() {
   const [selectedVendorId, setSelectedVendorId] = useState("v1")
   const [caseSearchQuery, setCaseSearchQuery] = useState("")
   const [caseExecutedActions, setCaseExecutedActions] = useState<ExecutedAction[]>([])
+  const [remediationTab, setRemediationTab] = useState("pending")
 
   const handleCaseActionExecuted = (action: ExecutedAction) => {
     setCaseExecutedActions((prev) => [action, ...prev])
@@ -33,11 +34,21 @@ export default function VendorVisionApp() {
     setScreen("cases")
   }
 
+  const navigateToRemediationExecuted = () => {
+    setRemediationTab("executed")
+    setScreen("remediation")
+  }
+
+  const handleNavigate = (s: Screen) => {
+    if (s === "remediation") setRemediationTab("pending")
+    setScreen(s)
+  }
+
   return (
     <div className="flex h-screen overflow-hidden bg-background">
-      <SidebarNav active={screen} onNavigate={setScreen} />
+      <SidebarNav active={screen} onNavigate={handleNavigate} />
       <div className="flex flex-1 flex-col overflow-hidden">
-        <TopBar screen={screen} timeRange={timeRange} onTimeRangeChange={setTimeRange} onNavigate={setScreen} />
+        <TopBar screen={screen} timeRange={timeRange} onTimeRangeChange={setTimeRange} onNavigate={handleNavigate} />
         <main className="flex-1 overflow-hidden">
           {screen === "dashboard" && (
             <ScreenDashboard
@@ -45,10 +56,10 @@ export default function VendorVisionApp() {
               onNavigateToCases={navigateToCases}
               onNavigateToVendors={() => setScreen("vendors")}
               onNavigateToReports={() => setScreen("reports")}
-              onNavigateToRemediation={() => setScreen("remediation")}
+              onNavigateToRemediation={() => { setRemediationTab("pending"); setScreen("remediation") }}
             />
           )}
-          {screen === "cases" && <ScreenCases initialSearch={caseSearchQuery} onActionExecuted={handleCaseActionExecuted} />}
+          {screen === "cases" && <ScreenCases initialSearch={caseSearchQuery} onActionExecuted={handleCaseActionExecuted} onNavigateToRemediation={navigateToRemediationExecuted} />}
           {screen === "vendors" && (
             <ScreenVendors onNavigateToVendor={navigateToVendor} />
           )}
@@ -59,7 +70,7 @@ export default function VendorVisionApp() {
               onNavigateToCases={navigateToCases}
             />
           )}
-          {screen === "remediation" && <ScreenRemediation caseExecutedActions={caseExecutedActions} />}
+          {screen === "remediation" && <ScreenRemediation caseExecutedActions={caseExecutedActions} initialTab={remediationTab} />}
           {screen === "reports" && (
             <ScreenReports onNavigateToVendor={navigateToVendor} />
           )}
