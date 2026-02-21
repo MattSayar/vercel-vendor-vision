@@ -108,7 +108,7 @@ export function ScreenVendors({ onNavigateToVendor }: VendorsProps) {
               placeholder="Search by vendor name or domain..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="h-8 w-full rounded-md border border-input bg-background pl-9 pr-8 text-sm text-foreground placeholder:text-muted-foreground focus:border-ring focus:outline-none"
+              className="h-8 w-full rounded-md border border-input bg-background pl-9 pr-8 text-base text-foreground placeholder:text-muted-foreground focus:border-ring focus:outline-none"
             />
             {searchQuery && (
               <button onClick={() => setSearchQuery("")} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground">
@@ -122,7 +122,7 @@ export function ScreenVendors({ onNavigateToVendor }: VendorsProps) {
                 key={s}
                 onClick={() => toggleSeverity(s)}
                 className={cn(
-                  "flex items-center gap-1.5 rounded-md border px-2.5 py-1 text-[12px] font-semibold capitalize transition-colors",
+                  "flex items-center gap-1.5 rounded-md border px-2.5 py-1 text-sm font-semibold capitalize transition-colors",
                   activeSeverities.has(s)
                     ? getSeverityColor(s)
                     : "border-border bg-muted/50 text-muted-foreground"
@@ -138,7 +138,7 @@ export function ScreenVendors({ onNavigateToVendor }: VendorsProps) {
         {/* Vendor Table */}
         <div className="rounded-lg border border-border bg-card">
           <div className="overflow-hidden rounded-lg">
-            <table className="w-full text-sm">
+            <table className="w-full text-base">
               <thead>
                 <tr className="border-b border-border bg-muted/50">
                   <th className="px-4 py-3 text-left font-medium text-muted-foreground">Vendor</th>
@@ -160,17 +160,17 @@ export function ScreenVendors({ onNavigateToVendor }: VendorsProps) {
                   >
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-3">
-                        <div className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-sm font-bold text-primary">
+                        <div className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-base font-bold text-primary">
                           {v.name.charAt(0)}
                         </div>
                         <div>
                           <p className="font-medium text-foreground">{v.name}</p>
-                          <p className="text-[12px] text-muted-foreground">{v.domain}</p>
+                          <p className="text-sm text-muted-foreground">{v.domain}</p>
                         </div>
                       </div>
                     </td>
                     <td className="px-4 py-3">
-                      <span className={cn("inline-flex items-center gap-1.5 rounded-full border px-2 py-0.5 text-[12px] font-semibold", getSeverityColor(v.severity))}>
+                      <span className={cn("inline-flex items-center gap-1.5 rounded-full border px-2 py-0.5 text-sm font-semibold", getSeverityColor(v.severity))}>
                         <span className={cn("size-1.5 rounded-full", getSeverityDot(v.severity))} />
                         {v.riskScore}
                       </span>
@@ -186,7 +186,7 @@ export function ScreenVendors({ onNavigateToVendor }: VendorsProps) {
                     </td>
                     <td className="px-4 py-3">
                       {v.openCases > 0 ? (
-                        <span className="rounded-full bg-[#EF4444]/10 px-2 py-0.5 text-[12px] font-medium text-[#EF4444]">
+                        <span className="rounded-full bg-[#EF4444]/10 px-2 py-0.5 text-sm font-medium text-[#EF4444]">
                           {v.openCases} open
                         </span>
                       ) : (
@@ -195,7 +195,7 @@ export function ScreenVendors({ onNavigateToVendor }: VendorsProps) {
                     </td>
                     <td className="px-4 py-3">
                       <span className={cn(
-                        "rounded-full px-2 py-0.5 text-[12px] font-medium",
+                        "rounded-full px-2 py-0.5 text-sm font-medium",
                         v.contractStatus === "Active"
                           ? "bg-[#22C55E]/10 text-[#22C55E]"
                           : "bg-muted text-muted-foreground"
@@ -211,7 +211,7 @@ export function ScreenVendors({ onNavigateToVendor }: VendorsProps) {
           {filteredVendors.length === 0 && (
             <div className="flex flex-col items-center justify-center py-12">
               <Building2 className="size-8 text-muted-foreground/30" />
-              <p className="mt-2 text-sm text-muted-foreground">No vendors match your filters</p>
+              <p className="mt-2 text-base text-muted-foreground">No vendors match your filters</p>
             </div>
           )}
         </div>
@@ -235,7 +235,7 @@ function SummaryCard({
     <div className="rounded-lg border border-border bg-card p-4">
       <div className="flex items-center gap-2">
         <div className={cn("flex size-7 items-center justify-center rounded-md", iconBg)}>{icon}</div>
-        <span className="text-sm font-medium text-muted-foreground">{label}</span>
+        <span className="text-base font-medium text-muted-foreground">{label}</span>
       </div>
       <p className="mt-3 text-2xl font-bold tracking-tight text-card-foreground">{value}</p>
     </div>

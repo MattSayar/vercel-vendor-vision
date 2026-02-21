@@ -130,20 +130,20 @@ export function ScreenRemediation({ caseExecutedActions = [], initialTab = "pend
           <TabsList className="w-full justify-start gap-0 bg-transparent p-0 border-b border-border rounded-none">
             <TabsTrigger
               value="pending"
-              className="rounded-none border-b-2 border-transparent px-4 py-2.5 text-sm data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none"
+              className="rounded-none border-b-2 border-transparent px-4 py-2.5 text-base data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none"
             >
               Pending Approval ({pendingCount})
             </TabsTrigger>
             <TabsTrigger
               value="executed"
-              className="rounded-none border-b-2 border-transparent px-4 py-2.5 text-sm data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none"
+              className="rounded-none border-b-2 border-transparent px-4 py-2.5 text-base data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none"
               onClick={() => { setExpandedReasoning(null); setModifyingAction(null) }}
             >
               Recently Executed
             </TabsTrigger>
             <TabsTrigger
               value="playbooks"
-              className="rounded-none border-b-2 border-transparent px-4 py-2.5 text-sm data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none"
+              className="rounded-none border-b-2 border-transparent px-4 py-2.5 text-base data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none"
               onClick={() => { setExpandedReasoning(null); setModifyingAction(null) }}
             >
               Playbook Library
@@ -158,7 +158,7 @@ export function ScreenRemediation({ caseExecutedActions = [], initialTab = "pend
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Filter actions, vendors, playbooks..."
-              className="h-8 w-full rounded-md border border-input bg-background pl-7 pr-7 text-sm text-foreground placeholder:text-muted-foreground focus:border-ring focus:outline-none"
+              className="h-8 w-full rounded-md border border-input bg-background pl-7 pr-7 text-base text-foreground placeholder:text-muted-foreground focus:border-ring focus:outline-none"
             />
             {searchQuery && (
               <button onClick={() => setSearchQuery("")} className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground">
@@ -204,14 +204,14 @@ export function ScreenRemediation({ caseExecutedActions = [], initialTab = "pend
                         </div>
                         <div className="flex-1">
                           <div className="flex items-center gap-2">
-                            <span className="rounded-full bg-muted px-2 py-0.5 text-[12px] font-medium text-muted-foreground">{action.type}</span>
+                            <span className="rounded-full bg-muted px-2 py-0.5 text-sm font-medium text-muted-foreground">{action.type}</span>
                             {state === "approved" && (
-                              <span className="flex items-center gap-1 text-[12px] font-medium text-[#22C55E]">
+                              <span className="flex items-center gap-1 text-sm font-medium text-[#22C55E]">
                                 <CheckCircle2 className="size-3" /> Approved
                               </span>
                             )}
                             {state === "rejected" && (
-                              <span className="flex items-center gap-1 text-[12px] font-medium text-[#EF4444]">
+                              <span className="flex items-center gap-1 text-sm font-medium text-[#EF4444]">
                                 <XCircle className="size-3" /> Rejected
                               </span>
                             )}
@@ -219,13 +219,13 @@ export function ScreenRemediation({ caseExecutedActions = [], initialTab = "pend
                               <ChevronDown className={cn("size-3 text-muted-foreground transition-transform", isReasoningOpen && "rotate-180")} />
                             )}
                           </div>
-                          <p className="mt-1.5 text-sm font-semibold text-foreground">{displayDescription}</p>
-                          <p className="mt-1 text-sm text-muted-foreground">{action.trigger}</p>
+                          <p className="mt-1.5 text-base font-semibold text-foreground">{displayDescription}</p>
+                          <p className="mt-1 text-base text-muted-foreground">{action.trigger}</p>
                           <div className="mt-2 flex items-center gap-4">
-                            <span className="text-[13px] text-muted-foreground">
+                            <span className="text-sm text-muted-foreground">
                               Impact: {displayImpact}
                             </span>
-                            <span className="text-[13px] font-medium text-primary">
+                            <span className="text-sm font-medium text-primary">
                               AI Confidence: {action.confidence}%
                             </span>
                           </div>
@@ -235,14 +235,14 @@ export function ScreenRemediation({ caseExecutedActions = [], initialTab = "pend
                           <div className="flex items-center gap-2" onClick={(e) => e.stopPropagation()}>
                             <button
                               onClick={() => handleAction(action.id, "approved")}
-                              className="rounded-md bg-[#22C55E] px-3 py-1.5 text-sm font-semibold text-[#FFFFFF] hover:bg-[#22C55E]/90 transition-colors"
+                              className="rounded-md bg-[#22C55E] px-3 py-1.5 text-base font-semibold text-[#FFFFFF] hover:bg-[#22C55E]/90 transition-colors"
                             >
                               Approve
                             </button>
                             <button
                               onClick={() => toggleModify(action.id)}
                               className={cn(
-                                "rounded-md px-3 py-1.5 text-sm font-semibold transition-colors",
+                                "rounded-md px-3 py-1.5 text-base font-semibold transition-colors",
                                 isModifying
                                   ? "bg-[#3B82F6] text-[#FFFFFF]"
                                   : "rounded-md bg-[#3B82F6] text-[#FFFFFF] hover:bg-[#3B82F6]/90"
@@ -252,7 +252,7 @@ export function ScreenRemediation({ caseExecutedActions = [], initialTab = "pend
                             </button>
                             <button
                               onClick={() => handleAction(action.id, "rejected")}
-                              className="rounded-md border border-[#EF4444]/30 px-3 py-1.5 text-sm font-semibold text-[#EF4444] hover:bg-[#EF4444]/5 transition-colors"
+                              className="rounded-md border border-[#EF4444]/30 px-3 py-1.5 text-base font-semibold text-[#EF4444] hover:bg-[#EF4444]/5 transition-colors"
                             >
                               Reject
                             </button>
@@ -263,7 +263,7 @@ export function ScreenRemediation({ caseExecutedActions = [], initialTab = "pend
                       {/* AI Reasoning Chain */}
                       {isReasoningOpen && !isModifying && (
                         <div className="mt-4 rounded-md border border-primary/10 bg-primary/[0.03] p-4">
-                          <p className="text-[13px] font-semibold text-foreground">AI Reasoning Chain</p>
+                          <p className="text-sm font-semibold text-foreground">AI Reasoning Chain</p>
                           <ol className="mt-3 flex flex-col gap-2.5">
                             <ReasoningStep
                               step={1}
@@ -297,11 +297,11 @@ export function ScreenRemediation({ caseExecutedActions = [], initialTab = "pend
                       {/* Modify Panel */}
                       {isModifying && (
                         <div className="mt-4 rounded-md border border-[#3B82F6]/20 bg-[#3B82F6]/[0.03] p-4" onClick={(e) => e.stopPropagation()}>
-                          <p className="text-[13px] font-semibold text-foreground">Modify Remediation Action</p>
+                          <p className="text-sm font-semibold text-foreground">Modify Remediation Action</p>
                           <div className="mt-3 flex flex-col gap-3">
                             <div>
-                              <label className="text-[12px] font-medium text-muted-foreground">Action Type</label>
-                              <select className="mt-1 h-8 w-full rounded-md border border-input bg-background px-2.5 text-sm text-foreground focus:border-ring focus:outline-none">
+                              <label className="text-sm font-medium text-muted-foreground">Action Type</label>
+                              <select className="mt-1 h-8 w-full rounded-md border border-input bg-background px-2.5 text-base text-foreground focus:border-ring focus:outline-none">
                                 <option>{action.type}</option>
                                 <option>Quarantine Emails</option>
                                 <option>Block Sender Domain</option>
@@ -312,31 +312,31 @@ export function ScreenRemediation({ caseExecutedActions = [], initialTab = "pend
                               </select>
                             </div>
                             <div>
-                              <label className="text-[12px] font-medium text-muted-foreground">Description</label>
+                              <label className="text-sm font-medium text-muted-foreground">Description</label>
                               <textarea
                                 value={modifiedDescriptions[action.id] || action.description}
                                 onChange={(e) => setModifiedDescriptions((prev) => ({ ...prev, [action.id]: e.target.value }))}
-                                className="mt-1 h-16 w-full rounded-md border border-input bg-background px-2.5 py-2 text-sm text-foreground resize-none focus:border-ring focus:outline-none"
+                                className="mt-1 h-16 w-full rounded-md border border-input bg-background px-2.5 py-2 text-base text-foreground resize-none focus:border-ring focus:outline-none"
                               />
                             </div>
                             <div>
-                              <label className="text-[12px] font-medium text-muted-foreground">Expected Impact</label>
+                              <label className="text-sm font-medium text-muted-foreground">Expected Impact</label>
                               <textarea
                                 value={modifiedImpacts[action.id] || action.impact}
                                 onChange={(e) => setModifiedImpacts((prev) => ({ ...prev, [action.id]: e.target.value }))}
-                                className="mt-1 h-12 w-full rounded-md border border-input bg-background px-2.5 py-2 text-sm text-foreground resize-none focus:border-ring focus:outline-none"
+                                className="mt-1 h-12 w-full rounded-md border border-input bg-background px-2.5 py-2 text-base text-foreground resize-none focus:border-ring focus:outline-none"
                               />
                             </div>
                             <div className="flex items-center gap-2">
                               <button
                                 onClick={() => handleAction(action.id, "approved")}
-                                className="rounded-md bg-[#22C55E] px-3 py-1.5 text-sm font-semibold text-[#FFFFFF] hover:bg-[#22C55E]/90 transition-colors"
+                                className="rounded-md bg-[#22C55E] px-3 py-1.5 text-base font-semibold text-[#FFFFFF] hover:bg-[#22C55E]/90 transition-colors"
                               >
                                 Save & Approve
                               </button>
                               <button
                                 onClick={() => setModifyingAction(null)}
-                                className="rounded-md border border-input px-3 py-1.5 text-sm font-semibold text-foreground hover:bg-muted transition-colors"
+                                className="rounded-md border border-input px-3 py-1.5 text-base font-semibold text-foreground hover:bg-muted transition-colors"
                               >
                                 Cancel
                               </button>
@@ -372,24 +372,24 @@ export function ScreenRemediation({ caseExecutedActions = [], initialTab = "pend
                         </div>
                         <div className="flex-1">
                           <div className="flex items-center gap-2">
-                            <span className="text-[12px] font-mono text-muted-foreground">Just now</span>
-                            <span className="rounded-full bg-muted px-2 py-0.5 text-[12px] font-medium text-muted-foreground">{action.type}</span>
-                            <span className="rounded-full bg-primary/10 px-2 py-0.5 text-[12px] font-medium text-primary">You approved</span>
-                            <span className="ml-auto rounded-full px-2 py-0.5 text-[12px] font-semibold bg-[#22C55E]/10 text-[#22C55E]">
+                            <span className="text-sm font-mono text-muted-foreground">Just now</span>
+                            <span className="rounded-full bg-muted px-2 py-0.5 text-sm font-medium text-muted-foreground">{action.type}</span>
+                            <span className="rounded-full bg-primary/10 px-2 py-0.5 text-sm font-medium text-primary">You approved</span>
+                            <span className="ml-auto rounded-full px-2 py-0.5 text-sm font-semibold bg-[#22C55E]/10 text-[#22C55E]">
                               success
                             </span>
                             <ChevronDown className={cn("size-3 text-muted-foreground transition-transform", isExpanded && "rotate-180")} />
                           </div>
-                          <p className="mt-2 text-sm leading-relaxed text-foreground/80">
+                          <p className="mt-2 text-base leading-relaxed text-foreground/80">
                             {modifiedDescriptions[action.id] || action.description}
                           </p>
                           <div className="mt-2 flex items-center gap-3">
-                            <button onClick={(e) => { e.stopPropagation(); handleUndo(action.id) }} className="flex items-center gap-1 text-[12px] font-medium text-primary hover:underline">
+                            <button onClick={(e) => { e.stopPropagation(); handleUndo(action.id) }} className="flex items-center gap-1 text-sm font-medium text-primary hover:underline">
                               <Undo2 className="size-3" /> Undo
                             </button>
                             <button
                               onClick={(e) => { e.stopPropagation(); setExpandedExecuted(isExpanded ? null : action.id) }}
-                              className="flex items-center gap-1 text-[12px] font-medium text-muted-foreground hover:text-foreground"
+                              className="flex items-center gap-1 text-sm font-medium text-muted-foreground hover:text-foreground"
                             >
                               <ChevronDown className={cn("size-3 transition-transform", isExpanded && "rotate-180")} />
                               {isExpanded ? "Hide Details" : "View Details"}
@@ -397,22 +397,22 @@ export function ScreenRemediation({ caseExecutedActions = [], initialTab = "pend
                           </div>
                           {isExpanded && (
                             <div className="mt-3 rounded-md border border-border bg-muted/30 p-3">
-                              <p className="text-[12px] font-semibold text-muted-foreground uppercase tracking-wide">Actions Taken</p>
+                              <p className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">Actions Taken</p>
                               <ol className="mt-2 flex flex-col gap-1.5">
                                 <li className="flex items-start gap-2">
-                                  <div className="mt-0.5 flex size-4 shrink-0 items-center justify-center rounded-full bg-[#22C55E]/15 text-[10px] font-bold text-[#22C55E]">{"\u2713"}</div>
-                                  <span className="text-[13px] leading-relaxed text-foreground/80">Action approved by analyst</span>
-                                  <span className="ml-auto shrink-0 text-[11px] font-medium text-[#22C55E]">success</span>
+                                  <div className="mt-0.5 flex size-4 shrink-0 items-center justify-center rounded-full bg-[#22C55E]/15 text-[12px] font-bold text-[#22C55E]">{"\u2713"}</div>
+                                  <span className="text-sm leading-relaxed text-foreground/80">Action approved by analyst</span>
+                                  <span className="ml-auto shrink-0 text-[13px] font-medium text-[#22C55E]">success</span>
                                 </li>
                                 <li className="flex items-start gap-2">
-                                  <div className="mt-0.5 flex size-4 shrink-0 items-center justify-center rounded-full bg-[#22C55E]/15 text-[10px] font-bold text-[#22C55E]">{"\u2713"}</div>
-                                  <span className="text-[13px] leading-relaxed text-foreground/80">{modifiedDescriptions[action.id] || action.description}</span>
-                                  <span className="ml-auto shrink-0 text-[11px] font-medium text-[#22C55E]">success</span>
+                                  <div className="mt-0.5 flex size-4 shrink-0 items-center justify-center rounded-full bg-[#22C55E]/15 text-[12px] font-bold text-[#22C55E]">{"\u2713"}</div>
+                                  <span className="text-sm leading-relaxed text-foreground/80">{modifiedDescriptions[action.id] || action.description}</span>
+                                  <span className="ml-auto shrink-0 text-[13px] font-medium text-[#22C55E]">success</span>
                                 </li>
                                 <li className="flex items-start gap-2">
-                                  <div className="mt-0.5 flex size-4 shrink-0 items-center justify-center rounded-full bg-[#22C55E]/15 text-[10px] font-bold text-[#22C55E]">{"\u2713"}</div>
-                                  <span className="text-[13px] leading-relaxed text-foreground/80">Changes applied successfully</span>
-                                  <span className="ml-auto shrink-0 text-[11px] font-medium text-[#22C55E]">success</span>
+                                  <div className="mt-0.5 flex size-4 shrink-0 items-center justify-center rounded-full bg-[#22C55E]/15 text-[12px] font-bold text-[#22C55E]">{"\u2713"}</div>
+                                  <span className="text-sm leading-relaxed text-foreground/80">Changes applied successfully</span>
+                                  <span className="ml-auto shrink-0 text-[13px] font-medium text-[#22C55E]">success</span>
                                 </li>
                               </ol>
                             </div>
@@ -438,22 +438,22 @@ export function ScreenRemediation({ caseExecutedActions = [], initialTab = "pend
                       </div>
                       <div className="flex-1">
                         <div className="flex items-center gap-2">
-                          <span className="text-[12px] font-mono text-muted-foreground">{group.timestamp}</span>
-                          <span className="rounded-full bg-muted px-2 py-0.5 text-[12px] font-medium text-muted-foreground">Case Action</span>
-                          <span className="text-sm font-medium text-foreground">{group.vendor}</span>
-                          <span className="rounded-full bg-primary/10 px-2 py-0.5 text-[12px] font-medium text-primary">From Cases</span>
-                          <span className="ml-auto rounded-full px-2 py-0.5 text-[12px] font-semibold bg-[#22C55E]/10 text-[#22C55E]">
+                          <span className="text-sm font-mono text-muted-foreground">{group.timestamp}</span>
+                          <span className="rounded-full bg-muted px-2 py-0.5 text-sm font-medium text-muted-foreground">Case Action</span>
+                          <span className="text-base font-medium text-foreground">{group.vendor}</span>
+                          <span className="rounded-full bg-primary/10 px-2 py-0.5 text-sm font-medium text-primary">From Cases</span>
+                          <span className="ml-auto rounded-full px-2 py-0.5 text-sm font-semibold bg-[#22C55E]/10 text-[#22C55E]">
                             success
                           </span>
                           <ChevronDown className={cn("size-3 text-muted-foreground transition-transform", isExpanded && "rotate-180")} />
                         </div>
-                        <p className="mt-2 text-sm leading-relaxed text-foreground/80">
+                        <p className="mt-2 text-base leading-relaxed text-foreground/80">
                           Executed {group.actionLabels.length} recommended action{group.actionLabels.length !== 1 ? "s" : ""} from Case {group.caseId}
                         </p>
                         <div className="mt-2 flex items-center gap-3">
                           <button
                             onClick={(e) => { e.stopPropagation(); setExpandedExecuted(isExpanded ? null : groupId) }}
-                            className="flex items-center gap-1 text-[12px] font-medium text-muted-foreground hover:text-foreground"
+                            className="flex items-center gap-1 text-sm font-medium text-muted-foreground hover:text-foreground"
                           >
                             <ChevronDown className={cn("size-3 transition-transform", isExpanded && "rotate-180")} />
                             {isExpanded ? "Hide Details" : "View Details"}
@@ -461,13 +461,13 @@ export function ScreenRemediation({ caseExecutedActions = [], initialTab = "pend
                         </div>
                         {isExpanded && (
                           <div className="mt-3 rounded-md border border-border bg-muted/30 p-3">
-                            <p className="text-[12px] font-semibold text-muted-foreground uppercase tracking-wide">Actions Taken</p>
+                            <p className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">Actions Taken</p>
                             <ol className="mt-2 flex flex-col gap-1.5">
                               {group.actionLabels.map((label, i) => (
                                 <li key={i} className="flex items-start gap-2">
-                                  <div className="mt-0.5 flex size-4 shrink-0 items-center justify-center rounded-full bg-[#22C55E]/15 text-[10px] font-bold text-[#22C55E]">{"\u2713"}</div>
-                                  <span className="text-[13px] leading-relaxed text-foreground/80">{label}</span>
-                                  <span className="ml-auto shrink-0 text-[11px] font-medium text-[#22C55E]">success</span>
+                                  <div className="mt-0.5 flex size-4 shrink-0 items-center justify-center rounded-full bg-[#22C55E]/15 text-[12px] font-bold text-[#22C55E]">{"\u2713"}</div>
+                                  <span className="text-sm leading-relaxed text-foreground/80">{label}</span>
+                                  <span className="ml-auto shrink-0 text-[13px] font-medium text-[#22C55E]">success</span>
                                 </li>
                               ))}
                             </ol>
@@ -504,11 +504,11 @@ export function ScreenRemediation({ caseExecutedActions = [], initialTab = "pend
                       </div>
                       <div className="flex-1">
                         <div className="flex items-center gap-2">
-                          <span className="text-[12px] font-mono text-muted-foreground">{action.timestamp}</span>
-                          <span className="rounded-full bg-muted px-2 py-0.5 text-[12px] font-medium text-muted-foreground">{action.type}</span>
-                          <span className="text-sm font-medium text-foreground">{action.vendor}</span>
+                          <span className="text-sm font-mono text-muted-foreground">{action.timestamp}</span>
+                          <span className="rounded-full bg-muted px-2 py-0.5 text-sm font-medium text-muted-foreground">{action.type}</span>
+                          <span className="text-base font-medium text-foreground">{action.vendor}</span>
                           <span className={cn(
-                            "ml-auto rounded-full px-2 py-0.5 text-[12px] font-semibold capitalize",
+                            "ml-auto rounded-full px-2 py-0.5 text-sm font-semibold capitalize",
                             action.outcome === "success" ? "bg-[#22C55E]/10 text-[#22C55E]" :
                             action.outcome === "partial" ? "bg-[#EAB308]/10 text-[#EAB308]" :
                             "bg-[#EF4444]/10 text-[#EF4444]"
@@ -517,16 +517,16 @@ export function ScreenRemediation({ caseExecutedActions = [], initialTab = "pend
                           </span>
                           <ChevronDown className={cn("size-3 text-muted-foreground transition-transform", isExpanded && "rotate-180")} />
                         </div>
-                        <p className="mt-2 text-sm leading-relaxed text-foreground/80">{action.description}</p>
+                        <p className="mt-2 text-base leading-relaxed text-foreground/80">{action.description}</p>
                         <div className="mt-2 flex items-center gap-3">
                           {action.reversible && (
-                            <button onClick={(e) => e.stopPropagation()} className="flex items-center gap-1 text-[12px] font-medium text-primary hover:underline">
+                            <button onClick={(e) => e.stopPropagation()} className="flex items-center gap-1 text-sm font-medium text-primary hover:underline">
                               <Undo2 className="size-3" /> Undo
                             </button>
                           )}
                           <button
                             onClick={(e) => { e.stopPropagation(); setExpandedExecuted(isExpanded ? null : action.id) }}
-                            className="flex items-center gap-1 text-[12px] font-medium text-muted-foreground hover:text-foreground"
+                            className="flex items-center gap-1 text-sm font-medium text-muted-foreground hover:text-foreground"
                           >
                             <ChevronDown className={cn("size-3 transition-transform", isExpanded && "rotate-180")} />
                             {isExpanded ? "Hide Details" : "View Details"}
@@ -536,12 +536,12 @@ export function ScreenRemediation({ caseExecutedActions = [], initialTab = "pend
                         {/* Expanded action steps */}
                         {isExpanded && (
                           <div className="mt-3 rounded-md border border-border bg-muted/30 p-3">
-                            <p className="text-[12px] font-semibold text-muted-foreground uppercase tracking-wide">Actions Taken</p>
+                            <p className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">Actions Taken</p>
                             <ol className="mt-2 flex flex-col gap-1.5">
                               {action.actions.map((a, i) => (
                                 <li key={i} className="flex items-start gap-2">
                                   <div className={cn(
-                                    "mt-0.5 flex size-4 shrink-0 items-center justify-center rounded-full text-[10px] font-bold",
+                                    "mt-0.5 flex size-4 shrink-0 items-center justify-center rounded-full text-[12px] font-bold",
                                     a.result === "success" ? "bg-[#22C55E]/15 text-[#22C55E]" :
                                     a.result === "partial" ? "bg-[#EAB308]/15 text-[#EAB308]" :
                                     a.result === "failed" ? "bg-[#EF4444]/15 text-[#EF4444]" :
@@ -552,13 +552,13 @@ export function ScreenRemediation({ caseExecutedActions = [], initialTab = "pend
                                      a.result === "failed" ? "\u2717" : "\u2014"}
                                   </div>
                                   <span className={cn(
-                                    "text-[13px] leading-relaxed",
+                                    "text-sm leading-relaxed",
                                     a.result === "skipped" ? "text-muted-foreground" : "text-foreground/80"
                                   )}>
                                     {a.step}
                                   </span>
                                   <span className={cn(
-                                    "ml-auto shrink-0 text-[11px] font-medium capitalize",
+                                    "ml-auto shrink-0 text-[13px] font-medium capitalize",
                                     a.result === "success" ? "text-[#22C55E]" :
                                     a.result === "partial" ? "text-[#EAB308]" :
                                     a.result === "failed" ? "text-[#EF4444]" :
@@ -597,9 +597,9 @@ export function ScreenRemediation({ caseExecutedActions = [], initialTab = "pend
                          <Eye className="size-4 text-[#3B82F6]" />}
                       </div>
                       <div>
-                        <h4 className="text-sm font-semibold text-foreground">{pb.name}</h4>
+                        <h4 className="text-base font-semibold text-foreground">{pb.name}</h4>
                         <span className={cn(
-                          "rounded-full px-2 py-0.5 text-[11px] font-medium capitalize",
+                          "rounded-full px-2 py-0.5 text-[13px] font-medium capitalize",
                           pb.mode === "autonomous" ? "bg-[#22C55E]/10 text-[#22C55E]" :
                           pb.mode === "human-approval" ? "bg-primary/10 text-primary" :
                           "bg-[#3B82F6]/10 text-[#3B82F6]"
@@ -613,23 +613,23 @@ export function ScreenRemediation({ caseExecutedActions = [], initialTab = "pend
                       onCheckedChange={(v) => setPlaybookStates((prev) => ({ ...prev, [pb.id]: v }))}
                     />
                   </div>
-                  <p className="mt-3 text-sm text-muted-foreground">{pb.description}</p>
+                  <p className="mt-3 text-base text-muted-foreground">{pb.description}</p>
                   <div className="mt-3 rounded-md bg-muted/50 p-2.5">
-                    <p className="text-[12px] font-medium text-muted-foreground">Trigger</p>
-                    <p className="mt-0.5 text-[13px] text-foreground/80">{pb.trigger}</p>
+                    <p className="text-sm font-medium text-muted-foreground">Trigger</p>
+                    <p className="mt-0.5 text-sm text-foreground/80">{pb.trigger}</p>
                   </div>
                   <div className="mt-2">
-                    <p className="text-[12px] font-medium text-muted-foreground">Actions</p>
+                    <p className="text-sm font-medium text-muted-foreground">Actions</p>
                     <ul className="mt-1 flex flex-col gap-1">
                       {pb.actions.map((a, i) => (
-                        <li key={i} className="flex items-center gap-1.5 text-[13px] text-foreground/80">
+                        <li key={i} className="flex items-center gap-1.5 text-sm text-foreground/80">
                           <span className="size-1 rounded-full bg-muted-foreground/40" />
                           {a}
                         </li>
                       ))}
                     </ul>
                   </div>
-                  <button className="mt-3 text-[12px] font-medium text-primary hover:underline">
+                  <button className="mt-3 text-sm font-medium text-primary hover:underline">
                     Edit Playbook
                   </button>
                 </div>
@@ -645,12 +645,12 @@ export function ScreenRemediation({ caseExecutedActions = [], initialTab = "pend
 function ReasoningStep({ step, title, detail }: { step: number; title: string; detail: string }) {
   return (
     <li className="flex gap-3">
-      <div className="flex size-5 shrink-0 items-center justify-center rounded-full bg-primary/15 text-[11px] font-bold text-primary">
+      <div className="flex size-5 shrink-0 items-center justify-center rounded-full bg-primary/15 text-[13px] font-bold text-primary">
         {step}
       </div>
       <div>
-        <p className="text-[13px] font-semibold text-foreground">{title}</p>
-        <p className="mt-0.5 text-sm leading-relaxed text-foreground/70">{detail}</p>
+        <p className="text-sm font-semibold text-foreground">{title}</p>
+        <p className="mt-0.5 text-base leading-relaxed text-foreground/70">{detail}</p>
       </div>
     </li>
   )

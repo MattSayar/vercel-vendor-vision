@@ -35,10 +35,10 @@ export function SidebarNav({ active, onNavigate }: SidebarNavProps) {
           <ShieldCheck className="size-4.5 text-sidebar-primary-foreground" />
         </div>
         <div className="flex flex-col text-left">
-          <span className="text-sm font-semibold tracking-tight text-sidebar-foreground">
+          <span className="text-base font-semibold tracking-tight text-sidebar-foreground">
             VendorVision
           </span>
-          <span className="text-[12px] font-medium uppercase tracking-widest text-sidebar-foreground/50">
+          <span className="text-sm font-medium uppercase tracking-widest text-sidebar-foreground/50">
             Abnormal
           </span>
         </div>
@@ -53,7 +53,7 @@ export function SidebarNav({ active, onNavigate }: SidebarNavProps) {
               key={item.id}
               onClick={() => onNavigate(item.id)}
               className={cn(
-                "flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors",
+                "flex items-center gap-3 rounded-md px-3 py-2 text-base font-medium transition-colors",
                 isActive
                   ? "bg-sidebar-accent text-sidebar-accent-foreground"
                   : "text-sidebar-foreground/60 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground"
@@ -68,12 +68,12 @@ export function SidebarNav({ active, onNavigate }: SidebarNavProps) {
 
       {/* User */}
       <div className="flex items-center gap-3 border-t border-sidebar-border px-5 py-4">
-        <div className="flex size-8 items-center justify-center rounded-full bg-sidebar-accent text-sm font-semibold text-sidebar-accent-foreground">
+        <div className="flex size-8 items-center justify-center rounded-full bg-sidebar-accent text-base font-semibold text-sidebar-accent-foreground">
           JD
         </div>
         <div className="flex flex-col">
-          <span className="text-sm font-medium text-sidebar-foreground">Jane Doe</span>
-          <span className="text-[12px] text-sidebar-foreground/50">SOC Analyst</span>
+          <span className="text-base font-medium text-sidebar-foreground">Jane Doe</span>
+          <span className="text-sm text-sidebar-foreground/50">SOC Analyst</span>
         </div>
         <button onClick={() => onNavigate("easter-egg")} className="ml-auto text-sidebar-foreground/40 hover:text-sidebar-foreground/70">
           <Settings className="size-3.5" />

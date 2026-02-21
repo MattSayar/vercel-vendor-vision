@@ -146,7 +146,7 @@ export function ScreenEasterEgg() {
         {/* Ground line */}
         <line x1="60" y1="400" x2="440" y2="400" stroke="currentColor" strokeWidth="2" strokeDasharray="8 6" className="text-border" />
       </svg>
-      <p className="text-sm text-muted-foreground">Nothing to see here. Just a pelican on a bike.</p>
+      <p className="text-base text-muted-foreground">Nothing to see here. Just a pelican on a bike.</p>
     </div>
   )
 }

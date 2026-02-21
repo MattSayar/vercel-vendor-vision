@@ -33,7 +33,7 @@ export function TopBar({ screen, timeRange, onTimeRangeChange, onNavigate }: Top
   return (
     <header className="flex h-14 shrink-0 items-center gap-4 border-b border-border bg-card px-6">
       {/* Breadcrumb */}
-      <nav className="flex items-center gap-1.5 text-sm" aria-label="Breadcrumb">
+      <nav className="flex items-center gap-1.5 text-base" aria-label="Breadcrumb">
         <button onClick={() => onNavigate("dashboard")} className="text-muted-foreground hover:text-foreground transition-colors">
           VendorVision
         </button>
@@ -59,7 +59,7 @@ export function TopBar({ screen, timeRange, onTimeRangeChange, onNavigate }: Top
           value={globalSearch}
           onChange={(e) => setGlobalSearch(e.target.value)}
           placeholder="Search vendors, cases, indicators..."
-          className="h-8 w-72 rounded-md border border-input bg-background pl-9 pr-8 text-sm text-foreground placeholder:text-muted-foreground focus:border-ring focus:outline-none"
+          className="h-8 w-72 rounded-md border border-input bg-background pl-9 pr-8 text-base text-foreground placeholder:text-muted-foreground focus:border-ring focus:outline-none"
         />
         {globalSearch && (
           <button onClick={() => setGlobalSearch("")} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground">
@@ -82,7 +82,7 @@ export function TopBar({ screen, timeRange, onTimeRangeChange, onNavigate }: Top
       {/* Notification Bell */}
       <button className="relative flex size-8 items-center justify-center rounded-md text-muted-foreground hover:bg-muted hover:text-foreground">
         <Bell className="size-4" />
-        <span className="absolute -right-0.5 -top-0.5 flex size-4 items-center justify-center rounded-full bg-[#EF4444] text-[11px] font-bold text-[#FFFFFF]">
+        <span className="absolute -right-0.5 -top-0.5 flex size-4 items-center justify-center rounded-full bg-[#EF4444] text-[13px] font-bold text-[#FFFFFF]">
           3
         </span>
       </button>
@@ -93,7 +93,7 @@ export function TopBar({ screen, timeRange, onTimeRangeChange, onNavigate }: Top
           <button
             key={range}
             onClick={() => onTimeRangeChange(range)}
-            className={`rounded-sm px-2.5 py-1 text-sm font-medium transition-colors ${
+            className={`rounded-sm px-2.5 py-1 text-base font-medium transition-colors ${
               timeRange === range
                 ? "bg-primary text-primary-foreground"
                 : "text-muted-foreground hover:bg-muted hover:text-foreground"

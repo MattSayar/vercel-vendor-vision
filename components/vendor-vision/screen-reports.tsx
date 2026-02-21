@@ -43,13 +43,13 @@ export function ScreenReports({ onNavigateToVendor }: ReportsProps) {
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-xl font-bold text-foreground text-balance">Supply Chain Risk Posture — Executive Summary</h1>
-            <p className="mt-1 text-sm text-muted-foreground">Last updated: Feb 20, 2026 at 3:00 PM</p>
+            <p className="mt-1 text-base text-muted-foreground">Last updated: Feb 20, 2026 at 3:00 PM</p>
           </div>
           <div className="flex items-center gap-2">
-            <button className="flex items-center gap-1.5 rounded-md border border-input px-3 py-1.5 text-sm font-medium text-foreground hover:bg-muted transition-colors">
+            <button className="flex items-center gap-1.5 rounded-md border border-input px-3 py-1.5 text-base font-medium text-foreground hover:bg-muted transition-colors">
               <Download className="size-3" /> Export PDF
             </button>
-            <button className="flex items-center gap-1.5 rounded-md border border-input px-3 py-1.5 text-sm font-medium text-foreground hover:bg-muted transition-colors">
+            <button className="flex items-center gap-1.5 rounded-md border border-input px-3 py-1.5 text-base font-medium text-foreground hover:bg-muted transition-colors">
               <Calendar className="size-3" /> Schedule Report
             </button>
           </div>
@@ -97,7 +97,7 @@ export function ScreenReports({ onNavigateToVendor }: ReportsProps) {
 
         {/* Row 2: Risk Posture Trend */}
         <div className="mt-6 rounded-lg border border-border bg-card p-5">
-          <h3 className="text-sm font-semibold text-foreground">Risk Posture Trend (Quarterly)</h3>
+          <h3 className="text-base font-semibold text-foreground">Risk Posture Trend (Quarterly)</h3>
           <ResponsiveContainer width="100%" height={280}>
             <AreaChart data={riskPostureTrend} margin={{ top: 15, right: 30, left: -20, bottom: 0 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
@@ -138,9 +138,9 @@ export function ScreenReports({ onNavigateToVendor }: ReportsProps) {
         <div className="mt-6 grid grid-cols-2 gap-4">
           {/* Top Risk Vendors */}
           <div className="rounded-lg border border-border bg-card p-5">
-            <h3 className="text-sm font-semibold text-foreground">Top Risk Vendors</h3>
+            <h3 className="text-base font-semibold text-foreground">Top Risk Vendors</h3>
             <div className="mt-3 overflow-hidden rounded-md border border-border">
-              <table className="w-full text-sm">
+              <table className="w-full text-base">
                 <thead>
                   <tr className="border-b border-border bg-muted/50">
                     <th className="px-3 py-2 text-left font-medium text-muted-foreground">Rank</th>
@@ -161,7 +161,7 @@ export function ScreenReports({ onNavigateToVendor }: ReportsProps) {
                       <td className="px-3 py-2.5 font-medium text-foreground">{v.name}</td>
                       <td className="px-3 py-2.5">
                         <span className={cn(
-                          "inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-[12px] font-semibold",
+                          "inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-sm font-semibold",
                           v.riskScore >= 80 ? "bg-[#EF4444]/10 text-[#EF4444] border-[#EF4444]/20" :
                           v.riskScore >= 60 ? "bg-[#F97316]/10 text-[#F97316] border-[#F97316]/20" :
                           v.riskScore >= 40 ? "bg-[#EAB308]/10 text-[#EAB308] border-[#EAB308]/20" :
@@ -173,7 +173,7 @@ export function ScreenReports({ onNavigateToVendor }: ReportsProps) {
                       <td className="px-3 py-2.5 text-muted-foreground max-w-[140px] truncate">{v.scenario.split(",")[0]}</td>
                       <td className="px-3 py-2.5">
                         <span className={cn(
-                          "rounded-full px-2 py-0.5 text-[11px] font-medium",
+                          "rounded-full px-2 py-0.5 text-[13px] font-medium",
                           v.openCases > 0
                             ? "bg-[#EF4444]/10 text-[#EF4444]"
                             : "bg-[#22C55E]/10 text-[#22C55E]"
@@ -194,23 +194,23 @@ export function ScreenReports({ onNavigateToVendor }: ReportsProps) {
               <div className="flex size-6 items-center justify-center rounded-md bg-primary/10">
                 <Sparkles className="size-3.5 text-primary" />
               </div>
-              <h3 className="text-sm font-semibold text-foreground">Key Insights</h3>
-              <span className="rounded-full bg-primary/10 px-2 py-0.5 text-[11px] font-medium text-primary">AI Generated</span>
+              <h3 className="text-base font-semibold text-foreground">Key Insights</h3>
+              <span className="rounded-full bg-primary/10 px-2 py-0.5 text-[13px] font-medium text-primary">AI Generated</span>
             </div>
             <div className="mt-4 rounded-md border-l-4 border-l-primary bg-primary/[0.03] p-4">
-              <p className="text-sm leading-relaxed text-foreground/80">
+              <p className="text-base leading-relaxed text-foreground/80">
                 Over the past 30 days, your vendor risk posture improved from B to B+, driven primarily by the successful remediation of 23 vendor risk cases, 17 of which were resolved autonomously. Key developments:
               </p>
               <ul className="mt-3 flex flex-col gap-2.5">
-                <li className="flex gap-2 text-sm leading-relaxed text-foreground/80">
+                <li className="flex gap-2 text-base leading-relaxed text-foreground/80">
                   <span className="mt-0.5 shrink-0 font-bold text-foreground">(1)</span>
                   Acme Corp remains your highest-risk vendor due to a confirmed breach — remediation is in progress with procurement engaged.
                 </li>
-                <li className="flex gap-2 text-sm leading-relaxed text-foreground/80">
+                <li className="flex gap-2 text-base leading-relaxed text-foreground/80">
                   <span className="mt-0.5 shrink-0 font-bold text-foreground">(2)</span>
                   4 new shadow vendors were discovered communicating with Finance employees — 2 confirmed legitimate, 2 blocked as impersonation attempts.
                 </li>
-                <li className="flex gap-2 text-sm leading-relaxed text-foreground/80">
+                <li className="flex gap-2 text-base leading-relaxed text-foreground/80">
                   <span className="mt-0.5 shrink-0 font-bold text-foreground">(3)</span>
                   Cross-industry intelligence from 847 Abnormal customers indicates elevated supply chain targeting in the financial services sector.
                 </li>
@@ -222,8 +222,8 @@ export function ScreenReports({ onNavigateToVendor }: ReportsProps) {
         {/* Row 4: Compliance */}
         <div className="mt-6 rounded-lg border border-border bg-card p-5">
           <div className="flex items-center justify-between">
-            <h3 className="text-sm font-semibold text-foreground">Compliance & Audit Readiness</h3>
-            <button className="rounded-md bg-primary px-3 py-1.5 text-sm font-semibold text-primary-foreground hover:bg-primary/90 transition-colors">
+            <h3 className="text-base font-semibold text-foreground">Compliance & Audit Readiness</h3>
+            <button className="rounded-md bg-primary px-3 py-1.5 text-base font-semibold text-primary-foreground hover:bg-primary/90 transition-colors">
               Generate Audit Report
             </button>
           </div>
@@ -269,10 +269,10 @@ function ExecCard({
         <div className={cn("flex size-9 items-center justify-center rounded-lg", iconBg)}>
           {icon}
         </div>
-        <span className="text-sm font-medium text-muted-foreground">{label}</span>
+        <span className="text-base font-medium text-muted-foreground">{label}</span>
       </div>
       <p className="mt-4 text-3xl font-bold tracking-tight text-foreground">{value}</p>
-      <p className="mt-1.5 text-[13px] text-muted-foreground">{typeof sub === "string" ? sub : sub}</p>
+      <p className="mt-1.5 text-sm text-muted-foreground">{typeof sub === "string" ? sub : sub}</p>
     </div>
   )
 }
@@ -297,9 +297,9 @@ function ComplianceCard({
         <AlertTriangle className="size-5 text-[#EAB308]" />
       )}
       <div>
-        <p className="text-sm font-semibold text-foreground">{framework}</p>
+        <p className="text-base font-semibold text-foreground">{framework}</p>
         <p className={cn(
-          "text-[12px] font-medium",
+          "text-sm font-medium",
           status === "compliant" ? "text-[#22C55E]" : "text-[#EAB308]"
         )}>
           {status === "compliant" ? "Compliant" : "Gaps Found"} — {detail}
@@ -317,7 +317,7 @@ function Legend({ color, label, dashed }: { color: string; label: string; dashed
       ) : (
         <div className="size-2.5 rounded-sm" style={{ backgroundColor: color }} />
       )}
-      <span className="text-[12px] text-muted-foreground">{label}</span>
+      <span className="text-sm text-muted-foreground">{label}</span>
     </div>
   )
 }

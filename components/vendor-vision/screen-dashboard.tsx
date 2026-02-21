@@ -101,7 +101,7 @@ export function ScreenDashboard({ onNavigateToVendor, onNavigateToCases, onNavig
         <div className="grid grid-cols-5 gap-4">
           {/* Vendor Risk Heatmap */}
           <div className="col-span-3 rounded-lg border border-border bg-card p-5">
-            <h3 className="mb-4 text-sm font-semibold text-card-foreground">Vendor Ecosystem Risk Map</h3>
+            <h3 className="mb-4 text-base font-semibold text-card-foreground">Vendor Ecosystem Risk Map</h3>
             <div className="grid grid-cols-4 gap-2">
               {[...vendors].sort((a, b) => b.riskScore - a.riskScore).map((v) => (
                 <VendorTile key={v.id} vendor={v} onClick={() => onNavigateToVendor(v.id)} />
@@ -111,7 +111,7 @@ export function ScreenDashboard({ onNavigateToVendor, onNavigateToCases, onNavig
 
           {/* AI Activity Feed */}
           <div className="col-span-2 rounded-lg border border-border bg-card p-5">
-            <h3 className="mb-4 text-sm font-semibold text-card-foreground">AI Activity Feed</h3>
+            <h3 className="mb-4 text-base font-semibold text-card-foreground">AI Activity Feed</h3>
             <div className="flex flex-col gap-3">
               {activityFeed.map((item) => {
                 // Build linked description: vendor names → vendor page, case numbers → cases page
@@ -138,8 +138,8 @@ export function ScreenDashboard({ onNavigateToVendor, onNavigateToCases, onNavig
                     <div className="mt-1 h-full w-px bg-border" />
                   </div>
                   <div className="flex-1 pb-3">
-                    <span className="text-[12px] font-medium text-muted-foreground">{item.time}</span>
-                    <p className="mt-0.5 text-sm leading-relaxed text-foreground/80">
+                    <span className="text-sm font-medium text-muted-foreground">{item.time}</span>
+                    <p className="mt-0.5 text-base leading-relaxed text-foreground/80">
                       {vendorParts.map((part, i) => (
                         <span key={i}>
                           {linkify(part)}
@@ -166,9 +166,9 @@ export function ScreenDashboard({ onNavigateToVendor, onNavigateToCases, onNavig
         <div className="grid grid-cols-5 gap-4">
           {/* Trending Risk Vendors */}
           <div className="col-span-3 rounded-lg border border-border bg-card p-5">
-            <h3 className="mb-4 text-sm font-semibold text-card-foreground">Trending Risk Vendors</h3>
+            <h3 className="mb-4 text-base font-semibold text-card-foreground">Trending Risk Vendors</h3>
             <div className="overflow-hidden rounded-md border border-border">
-              <table className="w-full text-sm">
+              <table className="w-full text-base">
                 <thead>
                   <tr className="border-b border-border bg-muted/50">
                     <th className="px-3 py-2 text-left font-medium text-muted-foreground">Vendor Name</th>
@@ -187,7 +187,7 @@ export function ScreenDashboard({ onNavigateToVendor, onNavigateToCases, onNavig
                     >
                       <td className="px-3 py-2.5 font-medium text-foreground">{vendor.name}</td>
                       <td className="px-3 py-2.5">
-                        <span className={`inline-flex items-center gap-1.5 rounded-full border px-2 py-0.5 text-[12px] font-semibold ${getSeverityColor(vendor.severity)}`}>
+                        <span className={`inline-flex items-center gap-1.5 rounded-full border px-2 py-0.5 text-sm font-semibold ${getSeverityColor(vendor.severity)}`}>
                           <span className={`size-1.5 rounded-full ${getSeverityDot(vendor.severity)}`} />
                           {vendor.riskScore}
                         </span>
@@ -209,7 +209,7 @@ export function ScreenDashboard({ onNavigateToVendor, onNavigateToCases, onNavig
 
           {/* Risk Distribution Chart */}
           <div className="col-span-2 rounded-lg border border-border bg-card p-5">
-            <h3 className="mb-4 text-sm font-semibold text-card-foreground">Risk Distribution Over Time</h3>
+            <h3 className="mb-4 text-base font-semibold text-card-foreground">Risk Distribution Over Time</h3>
             <ResponsiveContainer width="100%" height={220}>
               <AreaChart data={riskDistributionOverTime} margin={{ top: 5, right: 5, left: -20, bottom: 0 }}>
                 <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
@@ -255,10 +255,10 @@ function MetricCard({
     >
       <div className="flex items-center gap-2">
         <div className={`flex size-7 items-center justify-center rounded-md ${iconBg}`}>{icon}</div>
-        <span className="text-sm font-medium text-muted-foreground">{label}</span>
+        <span className="text-base font-medium text-muted-foreground">{label}</span>
       </div>
       <p className="mt-3 text-2xl font-bold tracking-tight text-card-foreground">{value}</p>
-      <p className="mt-1 text-[13px] text-muted-foreground">{typeof sub === "string" ? sub : sub}</p>
+      <p className="mt-1 text-sm text-muted-foreground">{typeof sub === "string" ? sub : sub}</p>
     </div>
   )
 }
@@ -287,12 +287,12 @@ function VendorTile({ vendor, onClick }: { vendor: Vendor; onClick: () => void }
           onClick={onClick}
           className={`flex flex-col justify-between rounded-md border p-2.5 text-left transition-all hover:shadow-md ${sizeClass} ${borderColor}`}
         >
-          <span className="text-[13px] font-medium text-foreground truncate">{vendor.name}</span>
+          <span className="text-sm font-medium text-foreground truncate">{vendor.name}</span>
           <div className="mt-2 flex items-center justify-between">
-            <span className={`text-sm font-bold ${vendor.severity === "critical" ? "text-[#EF4444]" : vendor.severity === "high" ? "text-[#F97316]" : vendor.severity === "medium" ? "text-[#EAB308]" : "text-[#22C55E]"}`}>
+            <span className={`text-base font-bold ${vendor.severity === "critical" ? "text-[#EF4444]" : vendor.severity === "high" ? "text-[#F97316]" : vendor.severity === "medium" ? "text-[#EAB308]" : "text-[#22C55E]"}`}>
               {vendor.riskScore}
             </span>
-            <span className={`rounded-sm px-1.5 py-0.5 text-[11px] font-medium capitalize ${getSeverityColor(vendor.severity)}`}>
+            <span className={`rounded-sm px-1.5 py-0.5 text-[13px] font-medium capitalize ${getSeverityColor(vendor.severity)}`}>
               {vendor.severity}
             </span>
           </div>
@@ -300,7 +300,7 @@ function VendorTile({ vendor, onClick }: { vendor: Vendor; onClick: () => void }
       </TooltipTrigger>
       <TooltipContent side="top" className="max-w-[200px]">
         <p className="font-semibold">{vendor.name}</p>
-        <p className="text-[12px]">Risk: {vendor.riskScore} | {vendor.emails30d} emails/30d | {vendor.openCases} cases</p>
+        <p className="text-sm">Risk: {vendor.riskScore} | {vendor.emails30d} emails/30d | {vendor.openCases} cases</p>
       </TooltipContent>
     </Tooltip>
   )
