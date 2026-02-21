@@ -7,7 +7,9 @@ import { Badge } from "@/components/ui/badge"
 import {
   vendors,
   vendorDetailData,
+  riskCases,
   getSeverityColor,
+  getSeverityDot,
   getConfidenceColor,
   type Vendor,
 } from "@/lib/demo-data"
@@ -19,6 +21,7 @@ import {
   FileWarning,
   Shield,
   ChevronDown,
+  ExternalLink,
 } from "lucide-react"
 import {
   RadarChart,
@@ -41,9 +44,10 @@ import { cn } from "@/lib/utils"
 interface VendorDetailProps {
   vendorId: string
   onBack: () => void
+  onNavigateToCases?: (search?: string) => void
 }
 
-export function ScreenVendorDetail({ vendorId, onBack }: VendorDetailProps) {
+export function ScreenVendorDetail({ vendorId, onBack, onNavigateToCases }: VendorDetailProps) {
   const vendor = vendors.find((v) => v.id === vendorId) || vendors[0]
   const detail = vendorDetailData[vendor.id] || vendorDetailData["v1"]
   const [sourceFilter, setSourceFilter] = useState<string>("all")
@@ -426,14 +430,64 @@ export function ScreenVendorDetail({ vendorId, onBack }: VendorDetailProps) {
 
           {/* Cases Tab */}
           <TabsContent value="cases" className="mt-4">
-            <div className="rounded-lg border border-border bg-card p-5">
-              <h3 className="text-sm font-semibold text-foreground">Open Cases for {vendor.name}</h3>
-              <p className="mt-2 text-xs text-muted-foreground">
-                {vendor.openCases > 0
-                  ? `There are ${vendor.openCases} active case(s) for this vendor. Navigate to the Cases screen for full detail.`
-                  : "No open cases for this vendor."}
-              </p>
-            </div>
+            {(() => {
+              const vendorCases = riskCases.filter((c) => c.vendorId === vendor.id)
+              const openCases = vendorCases.filter((c) => c.status === "open" || c.status === "in-progress")
+              return (
+                <div className="flex flex-col gap-3">
+                  <div className="flex items-center justify-between">
+                    <h3 className="text-sm font-semibold text-foreground">
+                      Cases for {vendor.name} ({openCases.length} open)
+                    </h3>
+                    {onNavigateToCases && vendorCases.length > 0 && (
+                      <button
+                        onClick={() => onNavigateToCases(vendor.name)}
+                        className="flex items-center gap-1.5 text-xs font-medium text-primary hover:underline"
+                      >
+                        View all in Cases <ExternalLink className="size-3" />
+                      </button>
+                    )}
+                  </div>
+                  {vendorCases.length === 0 ? (
+                    <div className="rounded-lg border border-border bg-card p-5">
+                      <p className="text-xs text-muted-foreground">No cases for this vendor.</p>
+                    </div>
+                  ) : (
+                    vendorCases.map((c) => (
+                      <button
+                        key={c.id}
+                        onClick={() => onNavigateToCases?.(c.id)}
+                        className="flex flex-col gap-2 rounded-lg border border-border bg-card p-4 text-left transition-colors hover:border-primary/20 hover:bg-muted/30"
+                      >
+                        <div className="flex items-center gap-2">
+                          <span className={cn("inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-[10px] font-semibold capitalize", getSeverityColor(c.severity))}>
+                            <span className={cn("size-1.5 rounded-full", getSeverityDot(c.severity))} />
+                            {c.severity}
+                          </span>
+                          <span className="font-mono text-[10px] text-muted-foreground">{c.id}</span>
+                          <span className={cn(
+                            "rounded-full px-2 py-0.5 text-[9px] font-medium capitalize",
+                            c.status === "open" ? "bg-[#EF4444]/10 text-[#EF4444]" :
+                            c.status === "in-progress" ? "bg-primary/10 text-primary" :
+                            c.status === "auto-resolved" ? "bg-[#22C55E]/10 text-[#22C55E]" :
+                            "bg-muted text-muted-foreground"
+                          )}>
+                            {c.status}
+                          </span>
+                          <span className="ml-auto text-[10px] text-muted-foreground">{c.created}</span>
+                        </div>
+                        <p className="text-xs leading-relaxed text-foreground/80 line-clamp-2">{c.summary}</p>
+                        <div className="flex items-center gap-1.5 flex-wrap">
+                          {c.tags.map((tag) => (
+                            <span key={tag} className="rounded-full bg-muted px-2 py-0.5 text-[9px] font-medium text-muted-foreground">{tag}</span>
+                          ))}
+                        </div>
+                      </button>
+                    ))
+                  )}
+                </div>
+              )
+            })()}
           </TabsContent>
 
           {/* Audit Log Tab */}

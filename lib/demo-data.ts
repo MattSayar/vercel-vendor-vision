@@ -483,6 +483,48 @@ export const riskCases: RiskCase[] = [
     ],
   },
   {
+    id: "VV-2846",
+    vendorId: "v1",
+    vendorName: "Acme Corp",
+    vendorDomain: "acmecorp.com",
+    severity: "high",
+    status: "open",
+    summary: "Unusual file-sharing activity detected from Acme Corp. 8 sensitive documents accessed outside normal business hours.",
+    created: "4 hours ago",
+    tags: ["Behavioral", "Data Exfiltration Risk"],
+    statusLabel: "Action Required",
+    aiSummary:
+      "Acme Corp (acmecorp.com) triggered a behavioral anomaly alert after 8 shared documents in the Engineering folder were accessed via Acme-linked service accounts between 1:00–3:00 AM EST — well outside established business hours for this vendor. The accessed files include architecture diagrams and API documentation classified as 'Internal Only.' While this may correlate with the ongoing breach investigation (VV-2847), the access pattern suggests potential data staging for exfiltration. No outbound transfers detected yet. Confidence: Medium-High (78%). Recommended: Restrict file-sharing permissions, audit recent downloads, correlate with VV-2847 breach timeline.",
+    evidence: [
+      {
+        source: "VendorBase Behavioral",
+        sourceColor: "text-[#818CF8]",
+        timestamp: "Feb 18, 2:45 AM",
+        description: "8 sensitive documents accessed outside normal business hours (1:00–3:00 AM EST)",
+        confidence: 78,
+      },
+      {
+        source: "Domain Reputation",
+        sourceColor: "text-[#3B82F6]",
+        timestamp: "Feb 18, 3:00 AM",
+        description: "Access originated from IP range not previously associated with Acme Corp",
+        confidence: 72,
+      },
+      {
+        source: "Community Intel",
+        sourceColor: "text-[#22C55E]",
+        timestamp: "Feb 18, 9:00 AM",
+        description: "Similar file-access anomalies reported by 1 other Abnormal customer for Acme Corp",
+        confidence: 61,
+      },
+    ],
+    recommendedActions: [
+      { id: "ra14", label: "Restrict file-sharing permissions for Acme Corp service accounts", checked: true },
+      { id: "ra15", label: "Audit all document downloads from Acme-linked accounts (past 72h)", checked: false },
+      { id: "ra16", label: "Correlate timeline with breach investigation VV-2847", checked: false },
+    ],
+  },
+  {
     id: "VV-2845",
     vendorId: "v2",
     vendorName: "Globex Partners",

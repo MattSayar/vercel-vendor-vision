@@ -56,6 +56,7 @@ export default function VendorVisionApp() {
             <ScreenVendorDetail
               vendorId={selectedVendorId}
               onBack={() => setScreen("vendors")}
+              onNavigateToCases={navigateToCases}
             />
           )}
           {screen === "remediation" && <ScreenRemediation caseExecutedActions={caseExecutedActions} />}
