@@ -123,13 +123,13 @@ export function ScreenCases({ initialSearch = "", onActionExecuted, onNavigateTo
       <div className="flex w-[420px] shrink-0 flex-col border-r border-border bg-card">
         {/* Filters */}
         <div className="border-b border-border p-4">
-          <div className="flex items-center gap-1 overflow-x-auto">
+          <div className="flex items-center gap-0.5 flex-wrap">
             {statusTabs.map((tab) => (
               <button
                 key={tab.value}
                 onClick={() => setStatusFilter(tab.value)}
                 className={cn(
-                  "shrink-0 rounded-md px-3 py-1.5 text-base font-medium transition-colors",
+                  "rounded-md px-2 py-1.5 text-sm font-medium transition-colors",
                   statusFilter === tab.value
                     ? "bg-primary text-primary-foreground"
                     : "text-muted-foreground hover:bg-muted"
