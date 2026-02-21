@@ -51,7 +51,7 @@ export function ScreenCases({ initialSearch = "", onActionExecuted, onNavigateTo
     setSearchQuery(initialSearch)
   }, [initialSearch])
 
-  const [actionStates, setActionStates] = useState<Record<string, "approved" | "unchecked">>({})
+  const [actionStates, setActionStates] = useState<Record<string, "checked" | "unchecked">>({})
   const [allApproved, setAllApproved] = useState(false)
 
   const toggleSeverity = (s: Severity) => {
@@ -93,16 +93,16 @@ export function ScreenCases({ initialSearch = "", onActionExecuted, onNavigateTo
 
   const isActionChecked = (action: { id: string; checked: boolean }) => {
     const state = actionStates[action.id]
-    if (state === "approved") return true
+    if (state === "checked") return true
     if (state === "unchecked") return false
     return action.checked // default
   }
 
   const handleApproveAll = () => {
-    const newStates: Record<string, "approved"> = {}
+    const newStates: Record<string, "checked" | "unchecked"> = {}
     selectedCase.recommendedActions.forEach((a) => {
-      if (isActionChecked(a) && actionStates[a.id] !== "approved") {
-        newStates[a.id] = "approved"
+      if (isActionChecked(a)) {
+        newStates[a.id] = "checked"
         emitExecuted(a.label)
       }
     })
@@ -110,16 +110,11 @@ export function ScreenCases({ initialSearch = "", onActionExecuted, onNavigateTo
     setAllApproved(true)
   }
 
-  const handleApproveAction = (actionId: string) => {
+  const handleToggleAction = (actionId: string) => {
     const action = selectedCase.recommendedActions.find((a) => a.id === actionId)
     if (!action) return
     const currentlyChecked = isActionChecked(action)
-    if (currentlyChecked) {
-      setActionStates((prev) => ({ ...prev, [actionId]: "unchecked" }))
-    } else {
-      setActionStates((prev) => ({ ...prev, [actionId]: "approved" }))
-      emitExecuted(action.label)
-    }
+    setActionStates((prev) => ({ ...prev, [actionId]: currentlyChecked ? "unchecked" : "checked" }))
   }
 
   return (
@@ -256,18 +251,17 @@ export function ScreenCases({ initialSearch = "", onActionExecuted, onNavigateTo
             <div className="mt-3 flex flex-col gap-2.5">
               {selectedCase.recommendedActions.map((action) => {
                 const checked = isActionChecked(action)
-                const isApproved = actionStates[action.id] === "approved"
                 return (
                   <div key={action.id} className="flex items-center gap-3 rounded-md border border-border p-3">
                     <Switch
                       checked={checked}
-                      onCheckedChange={() => handleApproveAction(action.id)}
+                      onCheckedChange={() => handleToggleAction(action.id)}
                       disabled={allApproved}
                     />
-                    <span className={cn("text-xs text-foreground/80 flex-1", isApproved && "line-through opacity-60")}>
+                    <span className={cn("text-xs text-foreground/80 flex-1", allApproved && checked && "line-through opacity-60")}>
                       {action.label}
                     </span>
-                    {isApproved && (
+                    {allApproved && checked && (
                       <span className="flex items-center gap-1 text-[10px] font-medium text-[#22C55E]">
                         <CheckCircle2 className="size-3" /> Approved
                       </span>
@@ -300,7 +294,7 @@ export function ScreenCases({ initialSearch = "", onActionExecuted, onNavigateTo
                 <XCircle className="size-3" /> Dismiss Case
               </button>
             </div>
-            {onNavigateToRemediation && Object.values(actionStates).some((s) => s === "approved") && (
+            {onNavigateToRemediation && allApproved && (
               <button
                 onClick={onNavigateToRemediation}
                 className="mt-3 flex w-full items-center justify-center gap-2 rounded-md border border-[#22C55E]/30 bg-[#22C55E]/[0.04] px-4 py-2 text-xs font-medium text-[#22C55E] transition-colors hover:bg-[#22C55E]/10"
