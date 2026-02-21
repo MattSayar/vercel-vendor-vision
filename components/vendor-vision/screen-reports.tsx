@@ -59,11 +59,11 @@ export function ScreenReports({ onNavigateToVendor }: ReportsProps) {
         <div className="mt-6 grid grid-cols-4 gap-4">
           <ExecCard
             icon={<Shield className="size-5" />}
-            iconBg="bg-[#22C55E]/10 text-[#22C55E]"
+            iconBg="bg-success/10 text-success"
             label="Supply Chain Risk Score"
             value="B+"
             sub={
-              <span className="flex items-center gap-1 text-[#22C55E]">
+              <span className="flex items-center gap-1 text-success">
                 <ArrowUpRight className="size-3" /> Improving
               </span>
             }
@@ -77,18 +77,18 @@ export function ScreenReports({ onNavigateToVendor }: ReportsProps) {
           />
           <ExecCard
             icon={<ShieldCheck className="size-5" />}
-            iconBg="bg-[#3B82F6]/10 text-[#3B82F6]"
+            iconBg="bg-info/10 text-info"
             label="Incidents Prevented (30d)"
             value="23"
             sub="est. $2.1M in avoided losses"
           />
           <ExecCard
             icon={<TrendingUp className="size-5" />}
-            iconBg="bg-[#818CF8]/10 text-[#818CF8]"
+            iconBg="bg-purple/10 text-purple"
             label="Autonomous Resolution Rate"
             value="73%"
             sub={
-              <span className="flex items-center gap-1 text-[#22C55E]">
+              <span className="flex items-center gap-1 text-success">
                 <ArrowUpRight className="size-3" /> from 58% last quarter
               </span>
             }
@@ -120,22 +120,22 @@ export function ScreenReports({ onNavigateToVendor }: ReportsProps) {
               <RTooltip
                 contentStyle={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: 8, fontSize: 11 }}
               />
-              <Area type="monotone" yAxisId="left" dataKey="critical" stackId="1" stroke="#EF4444" fill="#EF4444" fillOpacity={0.6} />
-              <Area type="monotone" yAxisId="left" dataKey="high" stackId="1" stroke="#F97316" fill="#F97316" fillOpacity={0.5} />
-              <Area type="monotone" yAxisId="left" dataKey="medium" stackId="1" stroke="#EAB308" fill="#EAB308" fillOpacity={0.4} />
-              <Line type="monotone" yAxisId="right" dataKey="autoRate" stroke="#818CF8" strokeWidth={2.5} dot={{ fill: "#818CF8", r: 4 }} strokeDasharray="5 5" name="Auto Resolution %" />
+              <Area type="monotone" yAxisId="left" dataKey="critical" stackId="1" stroke="var(--danger)" fill="var(--danger)" fillOpacity={0.6} />
+              <Area type="monotone" yAxisId="left" dataKey="high" stackId="1" stroke="var(--orange)" fill="var(--orange)" fillOpacity={0.5} />
+              <Area type="monotone" yAxisId="left" dataKey="medium" stackId="1" stroke="var(--warning)" fill="var(--warning)" fillOpacity={0.4} />
+              <Line type="monotone" yAxisId="right" dataKey="autoRate" stroke="var(--purple)" strokeWidth={2.5} dot={{ fill: "var(--purple)", r: 4 }} strokeDasharray="5 5" name="Auto Resolution %" />
             </AreaChart>
           </ResponsiveContainer>
           <div className="mt-2 flex items-center justify-center gap-6">
-            <Legend color="#EF4444" label="Critical" />
-            <Legend color="#F97316" label="High" />
-            <Legend color="#EAB308" label="Medium" />
-            <Legend color="#818CF8" label="Auto Resolution Rate" dashed />
+            <Legend color="var(--danger)" label="Critical" />
+            <Legend color="var(--orange)" label="High" />
+            <Legend color="var(--warning)" label="Medium" />
+            <Legend color="var(--purple)" label="Auto Resolution Rate" dashed />
           </div>
         </div>
 
         {/* Row 3: Top Risk + AI Insights */}
-        <div className="mt-6 grid grid-cols-2 gap-4">
+        <div className="mt-6 grid grid-cols-[1.3fr_1fr] gap-4">
           {/* Top Risk Vendors */}
           <div className="rounded-lg border border-border bg-card p-5">
             <h3 className="text-base font-semibold text-foreground">Top Risk Vendors</h3>
@@ -162,21 +162,21 @@ export function ScreenReports({ onNavigateToVendor }: ReportsProps) {
                       <td className="px-3 py-2.5">
                         <span className={cn(
                           "inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-sm font-semibold",
-                          v.riskScore >= 80 ? "bg-[#EF4444]/10 text-[#EF4444] border-[#EF4444]/20" :
-                          v.riskScore >= 60 ? "bg-[#F97316]/10 text-[#F97316] border-[#F97316]/20" :
-                          v.riskScore >= 40 ? "bg-[#EAB308]/10 text-[#EAB308] border-[#EAB308]/20" :
-                          "bg-[#22C55E]/10 text-[#22C55E] border-[#22C55E]/20"
+                          v.riskScore >= 80 ? "bg-danger/10 text-danger border-danger/20" :
+                          v.riskScore >= 60 ? "bg-orange/10 text-orange border-orange/20" :
+                          v.riskScore >= 40 ? "bg-warning/10 text-warning border-warning/20" :
+                          "bg-success/10 text-success border-success/20"
                         )}>
                           {v.riskScore}
                         </span>
                       </td>
-                      <td className="px-3 py-2.5 text-muted-foreground max-w-[140px] truncate">{v.scenario.split(",")[0]}</td>
+                      <td className="px-3 py-2.5 text-muted-foreground">{v.scenario.split(",")[0]}</td>
                       <td className="px-3 py-2.5">
                         <span className={cn(
                           "rounded-full px-2 py-0.5 text-[13px] font-medium",
                           v.openCases > 0
-                            ? "bg-[#EF4444]/10 text-[#EF4444]"
-                            : "bg-[#22C55E]/10 text-[#22C55E]"
+                            ? "bg-danger/10 text-danger"
+                            : "bg-success/10 text-success"
                         )}>
                           {v.openCases > 0 ? `${v.openCases} case(s)` : "Monitored"}
                         </span>
@@ -289,18 +289,18 @@ function ComplianceCard({
   return (
     <div className={cn(
       "flex items-center gap-3 rounded-md border p-4",
-      status === "compliant" ? "border-[#22C55E]/20 bg-[#22C55E]/[0.03]" : "border-[#EAB308]/20 bg-[#EAB308]/[0.03]"
+      status === "compliant" ? "border-success/20 bg-success/[0.03]" : "border-warning/20 bg-warning/[0.03]"
     )}>
       {status === "compliant" ? (
-        <CheckCircle2 className="size-5 text-[#22C55E]" />
+        <CheckCircle2 className="size-5 text-success" />
       ) : (
-        <AlertTriangle className="size-5 text-[#EAB308]" />
+        <AlertTriangle className="size-5 text-warning" />
       )}
       <div>
         <p className="text-base font-semibold text-foreground">{framework}</p>
         <p className={cn(
           "text-sm font-medium",
-          status === "compliant" ? "text-[#22C55E]" : "text-[#EAB308]"
+          status === "compliant" ? "text-success" : "text-warning"
         )}>
           {status === "compliant" ? "Compliant" : "Gaps Found"} — {detail}
         </p>

@@ -33,7 +33,7 @@ export function TopBar({ screen, timeRange, onTimeRangeChange, onNavigate }: Top
   return (
     <header className="flex h-14 shrink-0 items-center gap-4 border-b border-border bg-card px-6">
       {/* Breadcrumb */}
-      <nav className="flex items-center gap-1.5 text-base" aria-label="Breadcrumb">
+      <nav className="flex items-center gap-1.5 text-base whitespace-nowrap shrink-0" aria-label="Breadcrumb">
         <button onClick={() => onNavigate("dashboard")} className="text-muted-foreground hover:text-foreground transition-colors">
           VendorVision
         </button>
@@ -82,7 +82,7 @@ export function TopBar({ screen, timeRange, onTimeRangeChange, onNavigate }: Top
       {/* Notification Bell */}
       <button className="relative flex size-8 items-center justify-center rounded-md text-muted-foreground hover:bg-muted hover:text-foreground">
         <Bell className="size-4" />
-        <span className="absolute -right-0.5 -top-0.5 flex size-4 items-center justify-center rounded-full bg-[#EF4444] text-[13px] font-bold text-[#FFFFFF]">
+        <span className="absolute -right-0.5 -top-0.5 flex size-4 items-center justify-center rounded-full bg-danger text-[13px] font-bold text-white">
           3
         </span>
       </button>

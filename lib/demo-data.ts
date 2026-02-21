@@ -440,35 +440,35 @@ export const riskCases: RiskCase[] = [
     evidence: [
       {
         source: "VendorBase Behavioral",
-        sourceColor: "text-[#818CF8]",
+        sourceColor: "text-purple",
         timestamp: "Feb 18, 2:15 PM",
         description: "Communication volume with Finance team increased 340% in past 7 days",
         confidence: 82,
       },
       {
         source: "Breach Intelligence",
-        sourceColor: "text-[#EF4444]",
+        sourceColor: "text-danger",
         timestamp: "Feb 17, 6:00 AM",
         description: "acmecorp.com found in HaveIBeenPwned database (Feb 17, 2026)",
         confidence: 95,
       },
       {
         source: "Dark Web",
-        sourceColor: "text-[#F97316]",
+        sourceColor: "text-orange",
         timestamp: "Feb 17, 11:30 PM",
         description: "3 credential pairs matching @acmecorp.com listed on dark web marketplace",
         confidence: 88,
       },
       {
         source: "Domain Reputation",
-        sourceColor: "text-[#3B82F6]",
+        sourceColor: "text-info",
         timestamp: "Feb 15, 3:00 PM",
         description: "SPF record modified on Feb 15, MX record change detected",
         confidence: 71,
       },
       {
         source: "Community Intel",
-        sourceColor: "text-[#22C55E]",
+        sourceColor: "text-success",
         timestamp: "Feb 18, 8:00 AM",
         description: "2 other Abnormal customers flagged Acme Corp vendor risk in past 48h",
         confidence: 76,
@@ -498,21 +498,21 @@ export const riskCases: RiskCase[] = [
     evidence: [
       {
         source: "VendorBase Behavioral",
-        sourceColor: "text-[#818CF8]",
+        sourceColor: "text-purple",
         timestamp: "Feb 18, 2:45 AM",
         description: "8 sensitive documents accessed outside normal business hours (1:00–3:00 AM EST)",
         confidence: 78,
       },
       {
         source: "Domain Reputation",
-        sourceColor: "text-[#3B82F6]",
+        sourceColor: "text-info",
         timestamp: "Feb 18, 3:00 AM",
         description: "Access originated from IP range not previously associated with Acme Corp",
         confidence: 72,
       },
       {
         source: "Community Intel",
-        sourceColor: "text-[#22C55E]",
+        sourceColor: "text-success",
         timestamp: "Feb 18, 9:00 AM",
         description: "Similar file-access anomalies reported by 1 other Abnormal customer for Acme Corp",
         confidence: 61,
@@ -540,21 +540,21 @@ export const riskCases: RiskCase[] = [
     evidence: [
       {
         source: "VendorBase Behavioral",
-        sourceColor: "text-[#818CF8]",
+        sourceColor: "text-purple",
         timestamp: "Feb 18, 10:00 AM",
         description: "3x increase in attachment-bearing emails from Globex in 48h",
         confidence: 72,
       },
       {
         source: "Domain Reputation",
-        sourceColor: "text-[#3B82F6]",
+        sourceColor: "text-info",
         timestamp: "Feb 18, 8:30 AM",
         description: "Login events from 3 new geographic locations (RO, BR, VN)",
         confidence: 68,
       },
       {
         source: "Community Intel",
-        sourceColor: "text-[#22C55E]",
+        sourceColor: "text-success",
         timestamp: "Feb 18, 11:00 AM",
         description: "1 other Abnormal customer reported similar Globex anomalies",
         confidence: 55,
@@ -589,7 +589,7 @@ export const riskCases: RiskCase[] = [
       },
       {
         source: "VendorBase Behavioral",
-        sourceColor: "text-[#818CF8]",
+        sourceColor: "text-purple",
         timestamp: "Feb 17, 2:00 PM",
         description: "Response times from DataFlow contacts increased 180% this week",
         confidence: 65,
@@ -617,21 +617,21 @@ export const riskCases: RiskCase[] = [
     evidence: [
       {
         source: "Domain Reputation",
-        sourceColor: "text-[#3B82F6]",
+        sourceColor: "text-info",
         timestamp: "Feb 17, 4:00 PM",
         description: "Domain registered 3 days ago; hosting on known phishing infrastructure",
         confidence: 96,
       },
       {
         source: "VendorBase Behavioral",
-        sourceColor: "text-[#818CF8]",
+        sourceColor: "text-purple",
         timestamp: "Feb 17, 4:05 PM",
         description: "Zero prior communication history; 4 recipients all in Finance dept",
         confidence: 94,
       },
       {
         source: "Community Intel",
-        sourceColor: "text-[#22C55E]",
+        sourceColor: "text-success",
         timestamp: "Feb 17, 5:00 PM",
         description: "Domain reported by 12 other Abnormal customers in past 24h",
         confidence: 98,
@@ -663,10 +663,10 @@ export const vendorDetailData: Record<string, VendorDetailData> = {
       { date: "Feb", score: 92 },
     ],
     departmentContacts: [
-      { dept: "Engineering", contacts: 18, color: "#3B82F6" },
-      { dept: "Finance", contacts: 14, color: "#22C55E" },
-      { dept: "Legal", contacts: 8, color: "#818CF8" },
-      { dept: "Operations", contacts: 7, color: "#F97316" },
+      { dept: "Engineering", contacts: 18, color: "var(--info)" },
+      { dept: "Finance", contacts: 14, color: "var(--success)" },
+      { dept: "Legal", contacts: 8, color: "var(--purple)" },
+      { dept: "Operations", contacts: 7, color: "var(--orange)" },
     ],
     emailActivity: [
       { day: "Feb 1", sent: 12, received: 38 },
@@ -685,13 +685,13 @@ export const vendorDetailData: Record<string, VendorDetailData> = {
       { date: "Feb 16", from: "s.chen@acmecorp.com", to: "engineering@company.com", subject: "Updated SDK Documentation", attachment: true, anomaly: false },
     ],
     intelSignals: [
-      { id: "is1", timestamp: "Feb 18, 2:15 PM", source: "VendorBase Behavioral", sourceColor: "bg-[#818CF8]/10 text-[#818CF8]", signalType: "Behavioral Anomaly", description: "Communication volume with Finance team increased 340% in past 7 days", confidence: 82, status: "Active" },
-      { id: "is2", timestamp: "Feb 17, 6:00 AM", source: "Breach Intelligence", sourceColor: "bg-[#EF4444]/10 text-[#EF4444]", signalType: "Credential Exposure", description: "acmecorp.com found in HaveIBeenPwned database (Feb 17, 2026)", confidence: 95, status: "Confirmed" },
-      { id: "is3", timestamp: "Feb 17, 11:30 PM", source: "Dark Web Monitoring", sourceColor: "bg-[#F97316]/10 text-[#F97316]", signalType: "Credential Exposure", description: "3 credential pairs matching @acmecorp.com listed on dark web marketplace", confidence: 88, status: "Active" },
-      { id: "is4", timestamp: "Feb 15, 3:00 PM", source: "Domain & Infrastructure", sourceColor: "bg-[#3B82F6]/10 text-[#3B82F6]", signalType: "Infrastructure Change", description: "SPF record modified on Feb 15, MX record change detected", confidence: 71, status: "Monitoring" },
-      { id: "is5", timestamp: "Feb 18, 8:00 AM", source: "Community Intelligence", sourceColor: "bg-[#22C55E]/10 text-[#22C55E]", signalType: "Community Report", description: "2 other Abnormal customers flagged Acme Corp vendor risk in past 48h", confidence: 76, status: "Active" },
+      { id: "is1", timestamp: "Feb 18, 2:15 PM", source: "VendorBase Behavioral", sourceColor: "bg-purple/10 text-purple", signalType: "Behavioral Anomaly", description: "Communication volume with Finance team increased 340% in past 7 days", confidence: 82, status: "Active" },
+      { id: "is2", timestamp: "Feb 17, 6:00 AM", source: "Breach Intelligence", sourceColor: "bg-danger/10 text-danger", signalType: "Credential Exposure", description: "acmecorp.com found in HaveIBeenPwned database (Feb 17, 2026)", confidence: 95, status: "Confirmed" },
+      { id: "is3", timestamp: "Feb 17, 11:30 PM", source: "Dark Web Monitoring", sourceColor: "bg-orange/10 text-orange", signalType: "Credential Exposure", description: "3 credential pairs matching @acmecorp.com listed on dark web marketplace", confidence: 88, status: "Active" },
+      { id: "is4", timestamp: "Feb 15, 3:00 PM", source: "Domain & Infrastructure", sourceColor: "bg-info/10 text-info", signalType: "Infrastructure Change", description: "SPF record modified on Feb 15, MX record change detected", confidence: 71, status: "Monitoring" },
+      { id: "is5", timestamp: "Feb 18, 8:00 AM", source: "Community Intelligence", sourceColor: "bg-success/10 text-success", signalType: "Community Report", description: "2 other Abnormal customers flagged Acme Corp vendor risk in past 48h", confidence: 76, status: "Active" },
       { id: "is6", timestamp: "Feb 14, 10:00 AM", source: "Financial Risk", sourceColor: "bg-[#14B8A6]/10 text-[#14B8A6]", signalType: "Financial Distress", description: "No financial risk indicators detected. D&B score stable at 3 (low risk).", confidence: 90, status: "Clear" },
-      { id: "is7", timestamp: "Feb 12, 1:00 PM", source: "VendorBase Behavioral", sourceColor: "bg-[#818CF8]/10 text-[#818CF8]", signalType: "Behavioral Anomaly", description: "Email response time from Acme contacts shifted 2h later than historical baseline", confidence: 45, status: "Resolved" },
+      { id: "is7", timestamp: "Feb 12, 1:00 PM", source: "VendorBase Behavioral", sourceColor: "bg-purple/10 text-purple", signalType: "Behavioral Anomaly", description: "Email response time from Acme contacts shifted 2h later than historical baseline", confidence: 45, status: "Resolved" },
     ],
     auditEntries: [
       { date: "Feb 18, 2:15 PM", action: "Case #VV-2847 created — Breach indicator detected", by: "AI Agent" },
@@ -709,9 +709,9 @@ export const vendorDetailData: Record<string, VendorDetailData> = {
       { date: "Feb", score: 74 },
     ],
     departmentContacts: [
-      { dept: "Finance", contacts: 10, color: "#22C55E" },
-      { dept: "Engineering", contacts: 8, color: "#3B82F6" },
-      { dept: "Compliance", contacts: 5, color: "#818CF8" },
+      { dept: "Finance", contacts: 10, color: "var(--success)" },
+      { dept: "Engineering", contacts: 8, color: "var(--info)" },
+      { dept: "Compliance", contacts: 5, color: "var(--purple)" },
     ],
     emailActivity: [
       { day: "Feb 1", sent: 8, received: 22 },
@@ -730,11 +730,11 @@ export const vendorDetailData: Record<string, VendorDetailData> = {
       { date: "Feb 16", from: "billing@globex.io", to: "finance@company.com", subject: "Invoice #GLX-2026-0216", attachment: true, anomaly: true },
     ],
     intelSignals: [
-      { id: "gis1", timestamp: "Feb 18, 10:00 AM", source: "VendorBase Behavioral", sourceColor: "bg-[#818CF8]/10 text-[#818CF8]", signalType: "Behavioral Anomaly", description: "3x increase in attachment-bearing emails from Globex in 48h", confidence: 72, status: "Active" },
-      { id: "gis2", timestamp: "Feb 18, 8:30 AM", source: "Domain & Infrastructure", sourceColor: "bg-[#3B82F6]/10 text-[#3B82F6]", signalType: "Login Anomaly", description: "Login events from 3 new geographic locations (RO, BR, VN)", confidence: 68, status: "Active" },
-      { id: "gis3", timestamp: "Feb 18, 11:00 AM", source: "Community Intelligence", sourceColor: "bg-[#22C55E]/10 text-[#22C55E]", signalType: "Community Report", description: "1 other Abnormal customer reported similar Globex anomalies", confidence: 55, status: "Active" },
+      { id: "gis1", timestamp: "Feb 18, 10:00 AM", source: "VendorBase Behavioral", sourceColor: "bg-purple/10 text-purple", signalType: "Behavioral Anomaly", description: "3x increase in attachment-bearing emails from Globex in 48h", confidence: 72, status: "Active" },
+      { id: "gis2", timestamp: "Feb 18, 8:30 AM", source: "Domain & Infrastructure", sourceColor: "bg-info/10 text-info", signalType: "Login Anomaly", description: "Login events from 3 new geographic locations (RO, BR, VN)", confidence: 68, status: "Active" },
+      { id: "gis3", timestamp: "Feb 18, 11:00 AM", source: "Community Intelligence", sourceColor: "bg-success/10 text-success", signalType: "Community Report", description: "1 other Abnormal customer reported similar Globex anomalies", confidence: 55, status: "Active" },
       { id: "gis4", timestamp: "Feb 14, 9:00 AM", source: "Financial Risk", sourceColor: "bg-[#14B8A6]/10 text-[#14B8A6]", signalType: "Financial Health", description: "No financial risk indicators. D&B score stable at 4.", confidence: 85, status: "Clear" },
-      { id: "gis5", timestamp: "Feb 10, 2:00 PM", source: "VendorBase Behavioral", sourceColor: "bg-[#818CF8]/10 text-[#818CF8]", signalType: "Behavioral Baseline", description: "Email volume within normal range. No anomalies detected.", confidence: 90, status: "Resolved" },
+      { id: "gis5", timestamp: "Feb 10, 2:00 PM", source: "VendorBase Behavioral", sourceColor: "bg-purple/10 text-purple", signalType: "Behavioral Baseline", description: "Email volume within normal range. No anomalies detected.", confidence: 90, status: "Resolved" },
     ],
     auditEntries: [
       { date: "Feb 18, 10:30 AM", action: "Case #VV-2845 created — Anomalous login geography detected", by: "AI Agent" },
@@ -752,8 +752,8 @@ export const vendorDetailData: Record<string, VendorDetailData> = {
       { date: "Feb", score: 68 },
     ],
     departmentContacts: [
-      { dept: "Engineering", contacts: 19, color: "#3B82F6" },
-      { dept: "Analytics", contacts: 12, color: "#818CF8" },
+      { dept: "Engineering", contacts: 19, color: "var(--info)" },
+      { dept: "Analytics", contacts: 12, color: "var(--purple)" },
     ],
     emailActivity: [
       { day: "Feb 1", sent: 14, received: 32 },
@@ -773,10 +773,10 @@ export const vendorDetailData: Record<string, VendorDetailData> = {
     ],
     intelSignals: [
       { id: "dis1", timestamp: "Feb 18, 6:00 AM", source: "Financial Risk", sourceColor: "bg-[#14B8A6]/10 text-[#14B8A6]", signalType: "Financial Distress", description: "D&B Viability Rating dropped from 4 to 7 (elevated risk)", confidence: 91, status: "Confirmed" },
-      { id: "dis2", timestamp: "Feb 17, 2:00 PM", source: "VendorBase Behavioral", sourceColor: "bg-[#818CF8]/10 text-[#818CF8]", signalType: "Behavioral Anomaly", description: "Response times from DataFlow contacts increased 180% this week", confidence: 65, status: "Active" },
+      { id: "dis2", timestamp: "Feb 17, 2:00 PM", source: "VendorBase Behavioral", sourceColor: "bg-purple/10 text-purple", signalType: "Behavioral Anomaly", description: "Response times from DataFlow contacts increased 180% this week", confidence: 65, status: "Active" },
       { id: "dis3", timestamp: "Feb 15, 10:00 AM", source: "Financial Risk", sourceColor: "bg-[#14B8A6]/10 text-[#14B8A6]", signalType: "Workforce Change", description: "Layoff announcements: 23% workforce reduction reported in SEC filing", confidence: 88, status: "Confirmed" },
       { id: "dis4", timestamp: "Feb 12, 8:00 AM", source: "Financial Risk", sourceColor: "bg-[#14B8A6]/10 text-[#14B8A6]", signalType: "Executive Departure", description: "CTO and VP Engineering departures confirmed via LinkedIn", confidence: 82, status: "Active" },
-      { id: "dis5", timestamp: "Feb 8, 11:00 AM", source: "Domain & Infrastructure", sourceColor: "bg-[#3B82F6]/10 text-[#3B82F6]", signalType: "Infrastructure Change", description: "No domain or infrastructure anomalies detected", confidence: 92, status: "Clear" },
+      { id: "dis5", timestamp: "Feb 8, 11:00 AM", source: "Domain & Infrastructure", sourceColor: "bg-info/10 text-info", signalType: "Infrastructure Change", description: "No domain or infrastructure anomalies detected", confidence: 92, status: "Clear" },
     ],
     auditEntries: [
       { date: "Feb 18, 6:30 AM", action: "Case #VV-2841 created — D&B financial score drop detected", by: "AI Agent" },
@@ -794,8 +794,8 @@ export const vendorDetailData: Record<string, VendorDetailData> = {
       { date: "Feb", score: 45 },
     ],
     departmentContacts: [
-      { dept: "IT", contacts: 9, color: "#3B82F6" },
-      { dept: "Operations", contacts: 6, color: "#F97316" },
+      { dept: "IT", contacts: 9, color: "var(--info)" },
+      { dept: "Operations", contacts: 6, color: "var(--orange)" },
     ],
     emailActivity: [
       { day: "Feb 1", sent: 4, received: 10 },
@@ -813,8 +813,8 @@ export const vendorDetailData: Record<string, VendorDetailData> = {
       { date: "Feb 10", from: "noreply@initech.co", to: "it@company.com", subject: "Patch Notes v4.2.1", attachment: true, anomaly: false },
     ],
     intelSignals: [
-      { id: "iis1", timestamp: "Feb 16, 9:00 AM", source: "Domain & Infrastructure", sourceColor: "bg-[#3B82F6]/10 text-[#3B82F6]", signalType: "Domain Reputation", description: "Minor DMARC policy change detected on initech.co — p=quarantine → p=none", confidence: 58, status: "Monitoring" },
-      { id: "iis2", timestamp: "Feb 10, 3:00 PM", source: "VendorBase Behavioral", sourceColor: "bg-[#818CF8]/10 text-[#818CF8]", signalType: "Behavioral Baseline", description: "Email volume and patterns within normal range", confidence: 90, status: "Clear" },
+      { id: "iis1", timestamp: "Feb 16, 9:00 AM", source: "Domain & Infrastructure", sourceColor: "bg-info/10 text-info", signalType: "Domain Reputation", description: "Minor DMARC policy change detected on initech.co — p=quarantine → p=none", confidence: 58, status: "Monitoring" },
+      { id: "iis2", timestamp: "Feb 10, 3:00 PM", source: "VendorBase Behavioral", sourceColor: "bg-purple/10 text-purple", signalType: "Behavioral Baseline", description: "Email volume and patterns within normal range", confidence: 90, status: "Clear" },
       { id: "iis3", timestamp: "Feb 5, 11:00 AM", source: "Financial Risk", sourceColor: "bg-[#14B8A6]/10 text-[#14B8A6]", signalType: "Financial Health", description: "D&B score stable at 5 (moderate). No change.", confidence: 85, status: "Clear" },
     ],
     auditEntries: [
@@ -831,7 +831,7 @@ export const vendorDetailData: Record<string, VendorDetailData> = {
       { date: "Feb", score: 38 },
     ],
     departmentContacts: [
-      { dept: "Engineering", contacts: 8, color: "#3B82F6" },
+      { dept: "Engineering", contacts: 8, color: "var(--info)" },
     ],
     emailActivity: [
       { day: "Feb 1", sent: 2, received: 6 },
@@ -848,9 +848,9 @@ export const vendorDetailData: Record<string, VendorDetailData> = {
       { date: "Feb 10", from: "noreply@proliasys.com", to: "engineering@company.com", subject: "Maintenance Complete — No Downtime", attachment: false, anomaly: false },
     ],
     intelSignals: [
-      { id: "pis1", timestamp: "Feb 12, 10:00 AM", source: "Community Intelligence", sourceColor: "bg-[#22C55E]/10 text-[#22C55E]", signalType: "Community Report", description: "Previous community risk report reviewed — confirmed false positive", confidence: 88, status: "Resolved" },
-      { id: "pis2", timestamp: "Feb 5, 2:00 PM", source: "VendorBase Behavioral", sourceColor: "bg-[#818CF8]/10 text-[#818CF8]", signalType: "Behavioral Baseline", description: "All communication patterns within normal range", confidence: 92, status: "Clear" },
-      { id: "pis3", timestamp: "Jan 20, 9:00 AM", source: "Domain & Infrastructure", sourceColor: "bg-[#3B82F6]/10 text-[#3B82F6]", signalType: "Infrastructure Check", description: "SSL cert renewed. No anomalies in DNS or hosting.", confidence: 95, status: "Clear" },
+      { id: "pis1", timestamp: "Feb 12, 10:00 AM", source: "Community Intelligence", sourceColor: "bg-success/10 text-success", signalType: "Community Report", description: "Previous community risk report reviewed — confirmed false positive", confidence: 88, status: "Resolved" },
+      { id: "pis2", timestamp: "Feb 5, 2:00 PM", source: "VendorBase Behavioral", sourceColor: "bg-purple/10 text-purple", signalType: "Behavioral Baseline", description: "All communication patterns within normal range", confidence: 92, status: "Clear" },
+      { id: "pis3", timestamp: "Jan 20, 9:00 AM", source: "Domain & Infrastructure", sourceColor: "bg-info/10 text-info", signalType: "Infrastructure Check", description: "SSL cert renewed. No anomalies in DNS or hosting.", confidence: 95, status: "Clear" },
     ],
     auditEntries: [
       { date: "Feb 12, 10:30 AM", action: "Community risk report dismissed — Confirmed false positive", by: "AI Agent" },
@@ -867,11 +867,11 @@ export const vendorDetailData: Record<string, VendorDetailData> = {
       { date: "Feb", score: 12 },
     ],
     departmentContacts: [
-      { dept: "Legal", contacts: 16, color: "#818CF8" },
-      { dept: "Compliance", contacts: 12, color: "#22C55E" },
+      { dept: "Legal", contacts: 16, color: "var(--purple)" },
+      { dept: "Compliance", contacts: 12, color: "var(--success)" },
       { dept: "Finance", contacts: 10, color: "#14B8A6" },
-      { dept: "Executive", contacts: 8, color: "#F97316" },
-      { dept: "Operations", contacts: 6, color: "#3B82F6" },
+      { dept: "Executive", contacts: 8, color: "var(--orange)" },
+      { dept: "Operations", contacts: 6, color: "var(--info)" },
     ],
     emailActivity: [
       { day: "Feb 1", sent: 30, received: 68 },
@@ -889,9 +889,9 @@ export const vendorDetailData: Record<string, VendorDetailData> = {
       { date: "Feb 14", from: "compliance@sterling-assoc.com", to: "compliance@company.com", subject: "Annual Compliance Certification — 2026", attachment: true, anomaly: false },
     ],
     intelSignals: [
-      { id: "sis1", timestamp: "Feb 15, 9:00 AM", source: "VendorBase Behavioral", sourceColor: "bg-[#818CF8]/10 text-[#818CF8]", signalType: "Behavioral Baseline", description: "All communication patterns stable. Volume consistent with 5-year baseline.", confidence: 96, status: "Clear" },
+      { id: "sis1", timestamp: "Feb 15, 9:00 AM", source: "VendorBase Behavioral", sourceColor: "bg-purple/10 text-purple", signalType: "Behavioral Baseline", description: "All communication patterns stable. Volume consistent with 5-year baseline.", confidence: 96, status: "Clear" },
       { id: "sis2", timestamp: "Feb 10, 2:00 PM", source: "Financial Risk", sourceColor: "bg-[#14B8A6]/10 text-[#14B8A6]", signalType: "Financial Health", description: "D&B score stable at 2 (low risk). Excellent financial health.", confidence: 94, status: "Clear" },
-      { id: "sis3", timestamp: "Feb 5, 11:00 AM", source: "Domain & Infrastructure", sourceColor: "bg-[#3B82F6]/10 text-[#3B82F6]", signalType: "Infrastructure Check", description: "All domain records nominal. DMARC/SPF/DKIM fully configured.", confidence: 97, status: "Clear" },
+      { id: "sis3", timestamp: "Feb 5, 11:00 AM", source: "Domain & Infrastructure", sourceColor: "bg-info/10 text-info", signalType: "Infrastructure Check", description: "All domain records nominal. DMARC/SPF/DKIM fully configured.", confidence: 97, status: "Clear" },
     ],
     auditEntries: [
       { date: "Feb 10, 9:00 AM", action: "Quarterly vendor assessment completed — Score: 12 (Low Risk)", by: "Jane Doe" },
@@ -904,7 +904,7 @@ export const vendorDetailData: Record<string, VendorDetailData> = {
       { date: "Feb 17", score: 95 },
     ],
     departmentContacts: [
-      { dept: "Finance", contacts: 4, color: "#22C55E" },
+      { dept: "Finance", contacts: 4, color: "var(--success)" },
     ],
     emailActivity: [
       { day: "Feb 17", sent: 0, received: 8, anomaly: true },
@@ -916,9 +916,9 @@ export const vendorDetailData: Record<string, VendorDetailData> = {
       { date: "Feb 17", from: "noreply@quickbooks-invoicing.net", to: "finance@company.com", subject: "Account Suspended — Click to Reactivate", attachment: false, anomaly: true },
     ],
     intelSignals: [
-      { id: "qis1", timestamp: "Feb 17, 4:00 PM", source: "Domain & Infrastructure", sourceColor: "bg-[#3B82F6]/10 text-[#3B82F6]", signalType: "Suspicious Domain", description: "Domain registered 3 days ago; hosting on known phishing infrastructure", confidence: 96, status: "Confirmed" },
-      { id: "qis2", timestamp: "Feb 17, 4:05 PM", source: "VendorBase Behavioral", sourceColor: "bg-[#818CF8]/10 text-[#818CF8]", signalType: "Shadow Vendor", description: "Zero prior communication history; 4 recipients all in Finance dept", confidence: 94, status: "Confirmed" },
-      { id: "qis3", timestamp: "Feb 17, 5:00 PM", source: "Community Intelligence", sourceColor: "bg-[#22C55E]/10 text-[#22C55E]", signalType: "Community Report", description: "Domain reported by 12 other Abnormal customers in past 24h", confidence: 98, status: "Confirmed" },
+      { id: "qis1", timestamp: "Feb 17, 4:00 PM", source: "Domain & Infrastructure", sourceColor: "bg-info/10 text-info", signalType: "Suspicious Domain", description: "Domain registered 3 days ago; hosting on known phishing infrastructure", confidence: 96, status: "Confirmed" },
+      { id: "qis2", timestamp: "Feb 17, 4:05 PM", source: "VendorBase Behavioral", sourceColor: "bg-purple/10 text-purple", signalType: "Shadow Vendor", description: "Zero prior communication history; 4 recipients all in Finance dept", confidence: 94, status: "Confirmed" },
+      { id: "qis3", timestamp: "Feb 17, 5:00 PM", source: "Community Intelligence", sourceColor: "bg-success/10 text-success", signalType: "Community Report", description: "Domain reported by 12 other Abnormal customers in past 24h", confidence: 98, status: "Confirmed" },
     ],
     auditEntries: [
       { date: "Feb 17, 5:30 PM", action: "Domain quickbooks-invoicing.net permanently blocked", by: "AI Agent" },
@@ -933,8 +933,8 @@ export const vendorDetailData: Record<string, VendorDetailData> = {
       { date: "Dec", score: 15 }, { date: "Jan", score: 14 }, { date: "Feb", score: 15 },
     ],
     departmentContacts: [
-      { dept: "Engineering", contacts: 8, color: "#3B82F6" },
-      { dept: "IT", contacts: 4, color: "#F97316" },
+      { dept: "Engineering", contacts: 8, color: "var(--info)" },
+      { dept: "IT", contacts: 4, color: "var(--orange)" },
     ],
     emailActivity: [
       { day: "Feb 1", sent: 6, received: 14 }, { day: "Feb 4", sent: 8, received: 16 },
@@ -947,7 +947,7 @@ export const vendorDetailData: Record<string, VendorDetailData> = {
       { date: "Feb 18", from: "support@cloudsyncpro.com", to: "it@company.com", subject: "Scheduled maintenance window Feb 22", attachment: true, anomaly: false },
     ],
     intelSignals: [
-      { id: "cs1", timestamp: "Jan 15, 10:00 AM", source: "Domain & Infrastructure", sourceColor: "bg-[#3B82F6]/10 text-[#3B82F6]", signalType: "SSL Renewal", description: "SSL certificate renewed on schedule; no anomalies", confidence: 95, status: "Clear" },
+      { id: "cs1", timestamp: "Jan 15, 10:00 AM", source: "Domain & Infrastructure", sourceColor: "bg-info/10 text-info", signalType: "SSL Renewal", description: "SSL certificate renewed on schedule; no anomalies", confidence: 95, status: "Clear" },
     ],
     auditEntries: [
       { date: "Feb 10", action: "Annual vendor review completed — no issues found", by: "Jane Doe" },
@@ -960,7 +960,7 @@ export const vendorDetailData: Record<string, VendorDetailData> = {
       { date: "Dec", score: 8 }, { date: "Jan", score: 7 }, { date: "Feb", score: 8 },
     ],
     departmentContacts: [
-      { dept: "IT", contacts: 6, color: "#3B82F6" },
+      { dept: "IT", contacts: 6, color: "var(--info)" },
     ],
     emailActivity: [
       { day: "Feb 1", sent: 1, received: 4 }, { day: "Feb 4", sent: 2, received: 3 },
@@ -972,7 +972,7 @@ export const vendorDetailData: Record<string, VendorDetailData> = {
       { date: "Feb 18", from: "alerts@netguard.co.uk", to: "soc@company.com", subject: "Monthly threat report — January 2026", attachment: true, anomaly: false },
     ],
     intelSignals: [
-      { id: "ng1", timestamp: "Feb 1, 9:00 AM", source: "Community Intelligence", sourceColor: "bg-[#22C55E]/10 text-[#22C55E]", signalType: "Reputation Check", description: "NetGuard maintains clean reputation across all community feeds", confidence: 98, status: "Clear" },
+      { id: "ng1", timestamp: "Feb 1, 9:00 AM", source: "Community Intelligence", sourceColor: "bg-success/10 text-success", signalType: "Reputation Check", description: "NetGuard maintains clean reputation across all community feeds", confidence: 98, status: "Clear" },
     ],
     auditEntries: [
       { date: "Feb 1", action: "Quarterly security review — SOC 2 report received", by: "Jane Doe" },
@@ -984,8 +984,8 @@ export const vendorDetailData: Record<string, VendorDetailData> = {
       { date: "Dec", score: 10 }, { date: "Jan", score: 12 }, { date: "Feb", score: 11 },
     ],
     departmentContacts: [
-      { dept: "Finance", contacts: 12, color: "#22C55E" },
-      { dept: "Operations", contacts: 6, color: "#F97316" },
+      { dept: "Finance", contacts: 12, color: "var(--success)" },
+      { dept: "Operations", contacts: 6, color: "var(--orange)" },
     ],
     emailActivity: [
       { day: "Feb 1", sent: 10, received: 22 }, { day: "Feb 4", sent: 12, received: 25 },
@@ -1011,7 +1011,7 @@ export const vendorDetailData: Record<string, VendorDetailData> = {
       { date: "Dec", score: 5 }, { date: "Jan", score: 6 }, { date: "Feb", score: 6 },
     ],
     departmentContacts: [
-      { dept: "Engineering", contacts: 9, color: "#3B82F6" },
+      { dept: "Engineering", contacts: 9, color: "var(--info)" },
     ],
     emailActivity: [
       { day: "Feb 1", sent: 3, received: 6 }, { day: "Feb 4", sent: 2, received: 8 },
@@ -1023,7 +1023,7 @@ export const vendorDetailData: Record<string, VendorDetailData> = {
       { date: "Feb 19", from: "updates@securestack.io", to: "eng@company.com", subject: "SecureStack v4.2 release notes", attachment: true, anomaly: false },
     ],
     intelSignals: [
-      { id: "ss1", timestamp: "Feb 5, 11:00 AM", source: "Domain & Infrastructure", sourceColor: "bg-[#3B82F6]/10 text-[#3B82F6]", signalType: "Infrastructure Check", description: "All endpoints healthy; SOC 2 Type II audit passed Dec 2025", confidence: 99, status: "Clear" },
+      { id: "ss1", timestamp: "Feb 5, 11:00 AM", source: "Domain & Infrastructure", sourceColor: "bg-info/10 text-info", signalType: "Infrastructure Check", description: "All endpoints healthy; SOC 2 Type II audit passed Dec 2025", confidence: 99, status: "Clear" },
     ],
     auditEntries: [
       { date: "Feb 5", action: "SOC 2 Type II audit report reviewed — compliant", by: "Jane Doe" },
@@ -1035,9 +1035,9 @@ export const vendorDetailData: Record<string, VendorDetailData> = {
       { date: "Dec", score: 17 }, { date: "Jan", score: 19 }, { date: "Feb", score: 19 },
     ],
     departmentContacts: [
-      { dept: "Engineering", contacts: 6, color: "#3B82F6" },
-      { dept: "Operations", contacts: 5, color: "#F97316" },
-      { dept: "Executive", contacts: 3, color: "#818CF8" },
+      { dept: "Engineering", contacts: 6, color: "var(--info)" },
+      { dept: "Operations", contacts: 5, color: "var(--orange)" },
+      { dept: "Executive", contacts: 3, color: "var(--purple)" },
     ],
     emailActivity: [
       { day: "Feb 1", sent: 5, received: 10 }, { day: "Feb 4", sent: 6, received: 12 },
@@ -1050,7 +1050,7 @@ export const vendorDetailData: Record<string, VendorDetailData> = {
       { date: "Feb 18", from: "billing@techbridge.co", to: "procurement@company.com", subject: "February consulting hours invoice", attachment: true, anomaly: false },
     ],
     intelSignals: [
-      { id: "tb1", timestamp: "Jan 10, 3:00 PM", source: "Domain & Infrastructure", sourceColor: "bg-[#3B82F6]/10 text-[#3B82F6]", signalType: "Domain Age", description: "Domain techbridge.co registered 2.5 years ago; minor age flag but consistent activity", confidence: 72, status: "Monitoring" },
+      { id: "tb1", timestamp: "Jan 10, 3:00 PM", source: "Domain & Infrastructure", sourceColor: "bg-info/10 text-info", signalType: "Domain Age", description: "Domain techbridge.co registered 2.5 years ago; minor age flag but consistent activity", confidence: 72, status: "Monitoring" },
     ],
     auditEntries: [
       { date: "Feb 12", action: "Consulting engagement review — satisfactory performance", by: "Jane Doe" },
@@ -1221,24 +1221,24 @@ export const riskPostureTrend = [
 
 export function getSeverityColor(severity: Severity): string {
   switch (severity) {
-    case "critical": return "bg-[#EF4444]/10 text-[#EF4444] border-[#EF4444]/20"
-    case "high": return "bg-[#F97316]/10 text-[#F97316] border-[#F97316]/20"
-    case "medium": return "bg-[#EAB308]/10 text-[#EAB308] border-[#EAB308]/20"
-    case "low": return "bg-[#22C55E]/10 text-[#22C55E] border-[#22C55E]/20"
+    case "critical": return "bg-danger/10 text-danger border-danger/20"
+    case "high": return "bg-orange/10 text-orange border-orange/20"
+    case "medium": return "bg-warning/10 text-warning border-warning/20"
+    case "low": return "bg-success/10 text-success border-success/20"
   }
 }
 
 export function getSeverityDot(severity: Severity): string {
   switch (severity) {
-    case "critical": return "bg-[#EF4444]"
-    case "high": return "bg-[#F97316]"
-    case "medium": return "bg-[#EAB308]"
-    case "low": return "bg-[#22C55E]"
+    case "critical": return "bg-danger"
+    case "high": return "bg-orange"
+    case "medium": return "bg-warning"
+    case "low": return "bg-success"
   }
 }
 
 export function getConfidenceColor(confidence: number): string {
-  if (confidence >= 80) return "text-[#22C55E]"
-  if (confidence >= 50) return "text-[#EAB308]"
-  return "text-[#EF4444]"
+  if (confidence >= 80) return "text-success"
+  if (confidence >= 50) return "text-warning"
+  return "text-danger"
 }

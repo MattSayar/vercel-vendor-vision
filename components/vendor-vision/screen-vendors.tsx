@@ -81,19 +81,19 @@ export function ScreenVendors({ onNavigateToVendor }: VendorsProps) {
           />
           <SummaryCard
             icon={<FileWarning className="size-4" />}
-            iconBg="bg-[#EF4444]/10 text-[#EF4444]"
+            iconBg="bg-danger/10 text-danger"
             label="Critical Risk"
             value={String(criticalCount)}
           />
           <SummaryCard
             icon={<FileWarning className="size-4" />}
-            iconBg="bg-[#F97316]/10 text-[#F97316]"
+            iconBg="bg-orange/10 text-orange"
             label="High Risk"
             value={String(highCount)}
           />
           <SummaryCard
             icon={<FileWarning className="size-4" />}
-            iconBg="bg-[#EAB308]/10 text-[#EAB308]"
+            iconBg="bg-warning/10 text-warning"
             label="Open Cases"
             value={String(totalCases)}
           />
@@ -138,17 +138,27 @@ export function ScreenVendors({ onNavigateToVendor }: VendorsProps) {
         {/* Vendor Table */}
         <div className="rounded-lg border border-border bg-card">
           <div className="overflow-hidden rounded-lg">
-            <table className="w-full text-base">
+            <table className="w-full table-fixed text-base">
+              <colgroup>
+                <col className="w-[18%]" />
+                <col className="w-[10%]" />
+                <col className="w-[22%]" />
+                <col className="w-[13%]" />
+                <col className="w-[10%]" />
+                <col className="w-[9%]" />
+                <col className="w-[8%]" />
+                <col className="w-[10%]" />
+              </colgroup>
               <thead>
                 <tr className="border-b border-border bg-muted/50">
-                  <th className="px-4 py-3 text-left font-medium text-muted-foreground">Vendor</th>
+                  <th className="px-3 py-3 text-left font-medium text-muted-foreground">Vendor</th>
                   <SortableHeader label="Risk Score" field="riskScore" current={sortField} asc={sortAsc} onSort={handleSort} />
-                  <th className="px-4 py-3 text-left font-medium text-muted-foreground">Scenario</th>
-                  <th className="px-4 py-3 text-left font-medium text-muted-foreground">Industry</th>
+                  <th className="px-3 py-3 text-left font-medium text-muted-foreground">Scenario</th>
+                  <th className="px-3 py-3 text-left font-medium text-muted-foreground">Industry</th>
                   <SortableHeader label="Emails (30d)" field="emails30d" current={sortField} asc={sortAsc} onSort={handleSort} />
-                  <th className="px-4 py-3 text-left font-medium text-muted-foreground">Contacts</th>
+                  <th className="px-3 py-3 text-left font-medium text-muted-foreground">Contacts</th>
                   <SortableHeader label="Cases" field="openCases" current={sortField} asc={sortAsc} onSort={handleSort} />
-                  <th className="px-4 py-3 text-left font-medium text-muted-foreground">Contract</th>
+                  <th className="px-3 py-3 text-left font-medium text-muted-foreground">Contract</th>
                 </tr>
               </thead>
               <tbody>
@@ -158,46 +168,46 @@ export function ScreenVendors({ onNavigateToVendor }: VendorsProps) {
                     onClick={() => onNavigateToVendor(v.id)}
                     className="border-b border-border last:border-0 cursor-pointer hover:bg-muted/30 transition-colors"
                   >
-                    <td className="px-4 py-3">
-                      <div className="flex items-center gap-3">
-                        <div className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-base font-bold text-primary">
+                    <td className="px-3 py-3">
+                      <div className="flex items-center gap-2">
+                        <div className="flex size-7 shrink-0 items-center justify-center rounded-md bg-primary/10 text-sm font-bold text-primary">
                           {v.name.charAt(0)}
                         </div>
-                        <div>
-                          <p className="font-medium text-foreground">{v.name}</p>
-                          <p className="text-sm text-muted-foreground">{v.domain}</p>
+                        <div className="min-w-0">
+                          <p className="font-medium text-foreground truncate">{v.name}</p>
+                          <p className="text-sm text-muted-foreground truncate">{v.domain}</p>
                         </div>
                       </div>
                     </td>
-                    <td className="px-4 py-3">
+                    <td className="px-3 py-3">
                       <span className={cn("inline-flex items-center gap-1.5 rounded-full border px-2 py-0.5 text-sm font-semibold", getSeverityColor(v.severity))}>
                         <span className={cn("size-1.5 rounded-full", getSeverityDot(v.severity))} />
                         {v.riskScore}
                       </span>
                     </td>
-                    <td className="max-w-[180px] px-4 py-3 text-muted-foreground truncate">{v.scenario}</td>
-                    <td className="px-4 py-3 text-muted-foreground">{v.industry}</td>
-                    <td className="px-4 py-3 text-muted-foreground">{v.emails30d.toLocaleString()}</td>
-                    <td className="px-4 py-3">
+                    <td className="px-3 py-3 text-muted-foreground truncate">{v.scenario}</td>
+                    <td className="px-3 py-3 text-muted-foreground truncate">{v.industry}</td>
+                    <td className="px-3 py-3 text-muted-foreground">{v.emails30d.toLocaleString()}</td>
+                    <td className="px-3 py-3">
                       <div className="flex items-center gap-1 text-muted-foreground">
                         <Users className="size-3" />
                         {v.internalContacts}
                       </div>
                     </td>
-                    <td className="px-4 py-3">
+                    <td className="px-3 py-3">
                       {v.openCases > 0 ? (
-                        <span className="rounded-full bg-[#EF4444]/10 px-2 py-0.5 text-sm font-medium text-[#EF4444]">
+                        <span className="whitespace-nowrap rounded-full bg-danger/10 px-2 py-0.5 text-sm font-medium text-danger">
                           {v.openCases} open
                         </span>
                       ) : (
                         <span className="text-muted-foreground">0</span>
                       )}
                     </td>
-                    <td className="px-4 py-3">
+                    <td className="px-3 py-3">
                       <span className={cn(
-                        "rounded-full px-2 py-0.5 text-sm font-medium",
+                        "whitespace-nowrap rounded-full px-2 py-0.5 text-sm font-medium",
                         v.contractStatus === "Active"
-                          ? "bg-[#22C55E]/10 text-[#22C55E]"
+                          ? "bg-success/10 text-success"
                           : "bg-muted text-muted-foreground"
                       )}>
                         {v.contractStatus}
@@ -256,7 +266,7 @@ function SortableHeader({
   onSort: (field: SortField) => void
 }) {
   return (
-    <th className="px-4 py-3 text-left font-medium text-muted-foreground">
+    <th className="px-3 py-3 text-left font-medium text-muted-foreground">
       <button onClick={() => onSort(field)} className="flex items-center gap-1 hover:text-foreground transition-colors">
         {label}
         <ArrowUpDown className={cn("size-3", current === field ? "text-foreground" : "text-muted-foreground/40")} />

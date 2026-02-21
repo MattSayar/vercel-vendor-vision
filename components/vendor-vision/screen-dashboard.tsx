@@ -38,10 +38,10 @@ interface DashboardProps {
 }
 
 const levelColors: Record<string, string> = {
-  critical: "bg-[#EF4444]",
-  warning: "bg-[#F97316]",
-  success: "bg-[#22C55E]",
-  info: "bg-[#3B82F6]",
+  critical: "bg-danger",
+  warning: "bg-orange",
+  success: "bg-success",
+  info: "bg-info",
 }
 
 const trendingVendors = [
@@ -68,7 +68,7 @@ export function ScreenDashboard({ onNavigateToVendor, onNavigateToCases, onNavig
           />
           <MetricCard
             icon={<AlertTriangle className="size-4" />}
-            iconBg="bg-[#EF4444]/10 text-[#EF4444]"
+            iconBg="bg-danger/10 text-danger"
             label="Active Risk Cases"
             value="23"
             sub="5 Critical · 8 High · 10 Medium"
@@ -76,7 +76,7 @@ export function ScreenDashboard({ onNavigateToVendor, onNavigateToCases, onNavig
           />
           <MetricCard
             icon={<CheckCircle2 className="size-4" />}
-            iconBg="bg-[#22C55E]/10 text-[#22C55E]"
+            iconBg="bg-success/10 text-success"
             label="Auto-Resolved (30d)"
             value="187"
             sub="73% autonomous resolution rate"
@@ -84,12 +84,12 @@ export function ScreenDashboard({ onNavigateToVendor, onNavigateToCases, onNavig
           />
           <MetricCard
             icon={<Clock className="size-4" />}
-            iconBg="bg-[#3B82F6]/10 text-[#3B82F6]"
+            iconBg="bg-info/10 text-info"
             label="Avg. Time to Remediate"
             value="14 min"
             sub={
               <span className="flex items-center gap-1">
-                <ArrowDownRight className="size-3 text-[#22C55E]" />
+                <ArrowDownRight className="size-3 text-success" />
                 89% vs. manual baseline
               </span>
             }
@@ -193,7 +193,7 @@ export function ScreenDashboard({ onNavigateToVendor, onNavigateToCases, onNavig
                         </span>
                       </td>
                       <td className="px-3 py-2.5">
-                        <span className={`flex items-center gap-0.5 font-medium ${trend === "up" ? "text-[#EF4444]" : "text-[#22C55E]"}`}>
+                        <span className={`flex items-center gap-0.5 font-medium ${trend === "up" ? "text-danger" : "text-success"}`}>
                           {trend === "up" ? <ArrowUpRight className="size-3" /> : <ArrowDownRight className="size-3" />}
                           {change}
                         </span>
@@ -219,9 +219,9 @@ export function ScreenDashboard({ onNavigateToVendor, onNavigateToCases, onNavig
                   contentStyle={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: 8, fontSize: 11 }}
                   labelStyle={{ fontWeight: 600, marginBottom: 4 }}
                 />
-                <Area type="monotone" dataKey="critical" stackId="1" stroke="#EF4444" fill="#EF4444" fillOpacity={0.6} />
-                <Area type="monotone" dataKey="high" stackId="1" stroke="#F97316" fill="#F97316" fillOpacity={0.5} />
-                <Area type="monotone" dataKey="medium" stackId="1" stroke="#EAB308" fill="#EAB308" fillOpacity={0.4} />
+                <Area type="monotone" dataKey="critical" stackId="1" stroke="var(--danger)" fill="var(--danger)" fillOpacity={0.6} />
+                <Area type="monotone" dataKey="high" stackId="1" stroke="var(--orange)" fill="var(--orange)" fillOpacity={0.5} />
+                <Area type="monotone" dataKey="medium" stackId="1" stroke="var(--warning)" fill="var(--warning)" fillOpacity={0.4} />
               </AreaChart>
             </ResponsiveContainer>
           </div>
@@ -273,12 +273,12 @@ function VendorTile({ vendor, onClick }: { vendor: Vendor; onClick: () => void }
 
   const borderColor =
     vendor.severity === "critical"
-      ? "border-[#EF4444]/30 bg-[#EF4444]/5"
+      ? "border-danger/30 bg-danger/5"
       : vendor.severity === "high"
-        ? "border-[#F97316]/30 bg-[#F97316]/5"
+        ? "border-orange/30 bg-orange/5"
         : vendor.severity === "medium"
-          ? "border-[#EAB308]/30 bg-[#EAB308]/5"
-          : "border-[#22C55E]/20 bg-[#22C55E]/5"
+          ? "border-warning/30 bg-warning/5"
+          : "border-success/20 bg-success/5"
 
   return (
     <Tooltip>
@@ -289,7 +289,7 @@ function VendorTile({ vendor, onClick }: { vendor: Vendor; onClick: () => void }
         >
           <span className="text-sm font-medium text-foreground truncate">{vendor.name}</span>
           <div className="mt-2 flex items-center justify-between">
-            <span className={`text-base font-bold ${vendor.severity === "critical" ? "text-[#EF4444]" : vendor.severity === "high" ? "text-[#F97316]" : vendor.severity === "medium" ? "text-[#EAB308]" : "text-[#22C55E]"}`}>
+            <span className={`text-base font-bold ${vendor.severity === "critical" ? "text-danger" : vendor.severity === "high" ? "text-orange" : vendor.severity === "medium" ? "text-warning" : "text-success"}`}>
               {vendor.riskScore}
             </span>
             <span className={`rounded-sm px-1.5 py-0.5 text-[13px] font-medium capitalize ${getSeverityColor(vendor.severity)}`}>

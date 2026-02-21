@@ -182,8 +182,8 @@ export function ScreenRemediation({ caseExecutedActions = [], initialTab = "pend
                     onClick={() => state === "pending" && toggleReasoning(action.id)}
                     className={cn(
                       "rounded-lg border bg-card transition-all",
-                      state === "approved" ? "border-[#22C55E]/30 bg-[#22C55E]/[0.02]" :
-                      state === "rejected" ? "border-[#EF4444]/30 bg-[#EF4444]/[0.02] opacity-60" :
+                      state === "approved" ? "border-success/30 bg-success/[0.02]" :
+                      state === "rejected" ? "border-danger/30 bg-danger/[0.02] opacity-60" :
                       "border-border hover:border-primary/20 hover:bg-muted/30 cursor-pointer"
                     )}
                   >
@@ -191,14 +191,14 @@ export function ScreenRemediation({ caseExecutedActions = [], initialTab = "pend
                       <div className="flex items-start gap-4">
                         <div className={cn(
                           "flex size-9 shrink-0 items-center justify-center rounded-lg",
-                          state === "approved" ? "bg-[#22C55E]/10" :
-                          state === "rejected" ? "bg-[#EF4444]/10" :
+                          state === "approved" ? "bg-success/10" :
+                          state === "rejected" ? "bg-danger/10" :
                           "bg-primary/10"
                         )}>
                           <ShieldCheck className={cn(
                             "size-4.5",
-                            state === "approved" ? "text-[#22C55E]" :
-                            state === "rejected" ? "text-[#EF4444]" :
+                            state === "approved" ? "text-success" :
+                            state === "rejected" ? "text-danger" :
                             "text-primary"
                           )} />
                         </div>
@@ -206,12 +206,12 @@ export function ScreenRemediation({ caseExecutedActions = [], initialTab = "pend
                           <div className="flex items-center gap-2">
                             <span className="rounded-full bg-muted px-2 py-0.5 text-sm font-medium text-muted-foreground">{action.type}</span>
                             {state === "approved" && (
-                              <span className="flex items-center gap-1 text-sm font-medium text-[#22C55E]">
+                              <span className="flex items-center gap-1 text-sm font-medium text-success">
                                 <CheckCircle2 className="size-3" /> Approved
                               </span>
                             )}
                             {state === "rejected" && (
-                              <span className="flex items-center gap-1 text-sm font-medium text-[#EF4444]">
+                              <span className="flex items-center gap-1 text-sm font-medium text-danger">
                                 <XCircle className="size-3" /> Rejected
                               </span>
                             )}
@@ -235,7 +235,7 @@ export function ScreenRemediation({ caseExecutedActions = [], initialTab = "pend
                           <div className="flex items-center gap-2" onClick={(e) => e.stopPropagation()}>
                             <button
                               onClick={() => handleAction(action.id, "approved")}
-                              className="rounded-md bg-[#22C55E] px-3 py-1.5 text-base font-semibold text-[#FFFFFF] hover:bg-[#22C55E]/90 transition-colors"
+                              className="rounded-md bg-success px-3 py-1.5 text-base font-semibold text-white hover:bg-success/90 transition-colors"
                             >
                               Approve
                             </button>
@@ -244,15 +244,15 @@ export function ScreenRemediation({ caseExecutedActions = [], initialTab = "pend
                               className={cn(
                                 "rounded-md px-3 py-1.5 text-base font-semibold transition-colors",
                                 isModifying
-                                  ? "bg-[#3B82F6] text-[#FFFFFF]"
-                                  : "rounded-md bg-[#3B82F6] text-[#FFFFFF] hover:bg-[#3B82F6]/90"
+                                  ? "bg-info text-white"
+                                  : "rounded-md bg-info text-white hover:bg-info/90"
                               )}
                             >
                               Modify
                             </button>
                             <button
                               onClick={() => handleAction(action.id, "rejected")}
-                              className="rounded-md border border-[#EF4444]/30 px-3 py-1.5 text-base font-semibold text-[#EF4444] hover:bg-[#EF4444]/5 transition-colors"
+                              className="rounded-md border border-danger/30 px-3 py-1.5 text-base font-semibold text-danger hover:bg-danger/5 transition-colors"
                             >
                               Reject
                             </button>
@@ -296,7 +296,7 @@ export function ScreenRemediation({ caseExecutedActions = [], initialTab = "pend
 
                       {/* Modify Panel */}
                       {isModifying && (
-                        <div className="mt-4 rounded-md border border-[#3B82F6]/20 bg-[#3B82F6]/[0.03] p-4" onClick={(e) => e.stopPropagation()}>
+                        <div className="mt-4 rounded-md border border-info/20 bg-info/[0.03] p-4" onClick={(e) => e.stopPropagation()}>
                           <p className="text-sm font-semibold text-foreground">Modify Remediation Action</p>
                           <div className="mt-3 flex flex-col gap-3">
                             <div>
@@ -330,7 +330,7 @@ export function ScreenRemediation({ caseExecutedActions = [], initialTab = "pend
                             <div className="flex items-center gap-2">
                               <button
                                 onClick={() => handleAction(action.id, "approved")}
-                                className="rounded-md bg-[#22C55E] px-3 py-1.5 text-base font-semibold text-[#FFFFFF] hover:bg-[#22C55E]/90 transition-colors"
+                                className="rounded-md bg-success px-3 py-1.5 text-base font-semibold text-white hover:bg-success/90 transition-colors"
                               >
                                 Save & Approve
                               </button>
@@ -364,18 +364,18 @@ export function ScreenRemediation({ caseExecutedActions = [], initialTab = "pend
                     <div
                       key={action.id}
                       onClick={() => setExpandedExecuted(isExpanded ? null : action.id)}
-                      className="rounded-lg border border-[#22C55E]/30 bg-[#22C55E]/[0.02] p-5 hover:border-primary/20 hover:bg-muted/30 cursor-pointer transition-all"
+                      className="rounded-lg border border-success/30 bg-success/[0.02] p-5 hover:border-primary/20 hover:bg-muted/30 cursor-pointer transition-all"
                     >
                       <div className="flex items-start gap-4">
-                        <div className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-[#22C55E]/10">
-                          <CheckCircle2 className="size-4.5 text-[#22C55E]" />
+                        <div className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-success/10">
+                          <CheckCircle2 className="size-4.5 text-success" />
                         </div>
                         <div className="flex-1">
                           <div className="flex items-center gap-2">
                             <span className="text-sm font-mono text-muted-foreground">Just now</span>
                             <span className="rounded-full bg-muted px-2 py-0.5 text-sm font-medium text-muted-foreground">{action.type}</span>
                             <span className="rounded-full bg-primary/10 px-2 py-0.5 text-sm font-medium text-primary">You approved</span>
-                            <span className="ml-auto rounded-full px-2 py-0.5 text-sm font-semibold bg-[#22C55E]/10 text-[#22C55E]">
+                            <span className="ml-auto rounded-full px-2 py-0.5 text-sm font-semibold bg-success/10 text-success">
                               success
                             </span>
                             <ChevronDown className={cn("size-3 text-muted-foreground transition-transform", isExpanded && "rotate-180")} />
@@ -400,19 +400,19 @@ export function ScreenRemediation({ caseExecutedActions = [], initialTab = "pend
                               <p className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">Actions Taken</p>
                               <ol className="mt-2 flex flex-col gap-1.5">
                                 <li className="flex items-start gap-2">
-                                  <div className="mt-0.5 flex size-4 shrink-0 items-center justify-center rounded-full bg-[#22C55E]/15 text-[12px] font-bold text-[#22C55E]">{"\u2713"}</div>
+                                  <div className="mt-0.5 flex size-4 shrink-0 items-center justify-center rounded-full bg-success/15 text-[12px] font-bold text-success">{"\u2713"}</div>
                                   <span className="text-sm leading-relaxed text-foreground/80">Action approved by analyst</span>
-                                  <span className="ml-auto shrink-0 text-[13px] font-medium text-[#22C55E]">success</span>
+                                  <span className="ml-auto shrink-0 text-[13px] font-medium text-success">success</span>
                                 </li>
                                 <li className="flex items-start gap-2">
-                                  <div className="mt-0.5 flex size-4 shrink-0 items-center justify-center rounded-full bg-[#22C55E]/15 text-[12px] font-bold text-[#22C55E]">{"\u2713"}</div>
+                                  <div className="mt-0.5 flex size-4 shrink-0 items-center justify-center rounded-full bg-success/15 text-[12px] font-bold text-success">{"\u2713"}</div>
                                   <span className="text-sm leading-relaxed text-foreground/80">{modifiedDescriptions[action.id] || action.description}</span>
-                                  <span className="ml-auto shrink-0 text-[13px] font-medium text-[#22C55E]">success</span>
+                                  <span className="ml-auto shrink-0 text-[13px] font-medium text-success">success</span>
                                 </li>
                                 <li className="flex items-start gap-2">
-                                  <div className="mt-0.5 flex size-4 shrink-0 items-center justify-center rounded-full bg-[#22C55E]/15 text-[12px] font-bold text-[#22C55E]">{"\u2713"}</div>
+                                  <div className="mt-0.5 flex size-4 shrink-0 items-center justify-center rounded-full bg-success/15 text-[12px] font-bold text-success">{"\u2713"}</div>
                                   <span className="text-sm leading-relaxed text-foreground/80">Changes applied successfully</span>
-                                  <span className="ml-auto shrink-0 text-[13px] font-medium text-[#22C55E]">success</span>
+                                  <span className="ml-auto shrink-0 text-[13px] font-medium text-success">success</span>
                                 </li>
                               </ol>
                             </div>
@@ -433,8 +433,8 @@ export function ScreenRemediation({ caseExecutedActions = [], initialTab = "pend
                     className="rounded-lg border border-border bg-card p-5 hover:border-primary/20 hover:bg-muted/30 cursor-pointer transition-all"
                   >
                     <div className="flex items-start gap-4">
-                      <div className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-[#22C55E]/10">
-                        <CheckCircle2 className="size-4.5 text-[#22C55E]" />
+                      <div className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-success/10">
+                        <CheckCircle2 className="size-4.5 text-success" />
                       </div>
                       <div className="flex-1">
                         <div className="flex items-center gap-2">
@@ -442,7 +442,7 @@ export function ScreenRemediation({ caseExecutedActions = [], initialTab = "pend
                           <span className="rounded-full bg-muted px-2 py-0.5 text-sm font-medium text-muted-foreground">Case Action</span>
                           <span className="text-base font-medium text-foreground">{group.vendor}</span>
                           <span className="rounded-full bg-primary/10 px-2 py-0.5 text-sm font-medium text-primary">From Cases</span>
-                          <span className="ml-auto rounded-full px-2 py-0.5 text-sm font-semibold bg-[#22C55E]/10 text-[#22C55E]">
+                          <span className="ml-auto rounded-full px-2 py-0.5 text-sm font-semibold bg-success/10 text-success">
                             success
                           </span>
                           <ChevronDown className={cn("size-3 text-muted-foreground transition-transform", isExpanded && "rotate-180")} />
@@ -465,9 +465,9 @@ export function ScreenRemediation({ caseExecutedActions = [], initialTab = "pend
                             <ol className="mt-2 flex flex-col gap-1.5">
                               {group.actionLabels.map((label, i) => (
                                 <li key={i} className="flex items-start gap-2">
-                                  <div className="mt-0.5 flex size-4 shrink-0 items-center justify-center rounded-full bg-[#22C55E]/15 text-[12px] font-bold text-[#22C55E]">{"\u2713"}</div>
+                                  <div className="mt-0.5 flex size-4 shrink-0 items-center justify-center rounded-full bg-success/15 text-[12px] font-bold text-success">{"\u2713"}</div>
                                   <span className="text-sm leading-relaxed text-foreground/80">{label}</span>
-                                  <span className="ml-auto shrink-0 text-[13px] font-medium text-[#22C55E]">success</span>
+                                  <span className="ml-auto shrink-0 text-[13px] font-medium text-success">success</span>
                                 </li>
                               ))}
                             </ol>
@@ -490,16 +490,16 @@ export function ScreenRemediation({ caseExecutedActions = [], initialTab = "pend
                     <div className="flex items-start gap-4">
                       <div className={cn(
                         "flex size-9 shrink-0 items-center justify-center rounded-lg",
-                        action.outcome === "success" ? "bg-[#22C55E]/10" :
-                        action.outcome === "partial" ? "bg-[#EAB308]/10" :
-                        "bg-[#EF4444]/10"
+                        action.outcome === "success" ? "bg-success/10" :
+                        action.outcome === "partial" ? "bg-warning/10" :
+                        "bg-danger/10"
                       )}>
                         {action.outcome === "success" ? (
-                          <CheckCircle2 className="size-4.5 text-[#22C55E]" />
+                          <CheckCircle2 className="size-4.5 text-success" />
                         ) : action.outcome === "partial" ? (
-                          <AlertTriangle className="size-4.5 text-[#EAB308]" />
+                          <AlertTriangle className="size-4.5 text-warning" />
                         ) : (
-                          <XCircle className="size-4.5 text-[#EF4444]" />
+                          <XCircle className="size-4.5 text-danger" />
                         )}
                       </div>
                       <div className="flex-1">
@@ -509,9 +509,9 @@ export function ScreenRemediation({ caseExecutedActions = [], initialTab = "pend
                           <span className="text-base font-medium text-foreground">{action.vendor}</span>
                           <span className={cn(
                             "ml-auto rounded-full px-2 py-0.5 text-sm font-semibold capitalize",
-                            action.outcome === "success" ? "bg-[#22C55E]/10 text-[#22C55E]" :
-                            action.outcome === "partial" ? "bg-[#EAB308]/10 text-[#EAB308]" :
-                            "bg-[#EF4444]/10 text-[#EF4444]"
+                            action.outcome === "success" ? "bg-success/10 text-success" :
+                            action.outcome === "partial" ? "bg-warning/10 text-warning" :
+                            "bg-danger/10 text-danger"
                           )}>
                             {action.outcome}
                           </span>
@@ -542,9 +542,9 @@ export function ScreenRemediation({ caseExecutedActions = [], initialTab = "pend
                                 <li key={i} className="flex items-start gap-2">
                                   <div className={cn(
                                     "mt-0.5 flex size-4 shrink-0 items-center justify-center rounded-full text-[12px] font-bold",
-                                    a.result === "success" ? "bg-[#22C55E]/15 text-[#22C55E]" :
-                                    a.result === "partial" ? "bg-[#EAB308]/15 text-[#EAB308]" :
-                                    a.result === "failed" ? "bg-[#EF4444]/15 text-[#EF4444]" :
+                                    a.result === "success" ? "bg-success/15 text-success" :
+                                    a.result === "partial" ? "bg-warning/15 text-warning" :
+                                    a.result === "failed" ? "bg-danger/15 text-danger" :
                                     "bg-muted text-muted-foreground"
                                   )}>
                                     {a.result === "success" ? "\u2713" :
@@ -559,9 +559,9 @@ export function ScreenRemediation({ caseExecutedActions = [], initialTab = "pend
                                   </span>
                                   <span className={cn(
                                     "ml-auto shrink-0 text-[13px] font-medium capitalize",
-                                    a.result === "success" ? "text-[#22C55E]" :
-                                    a.result === "partial" ? "text-[#EAB308]" :
-                                    a.result === "failed" ? "text-[#EF4444]" :
+                                    a.result === "success" ? "text-success" :
+                                    a.result === "partial" ? "text-warning" :
+                                    a.result === "failed" ? "text-danger" :
                                     "text-muted-foreground"
                                   )}>
                                     {a.result}
@@ -588,21 +588,21 @@ export function ScreenRemediation({ caseExecutedActions = [], initialTab = "pend
                     <div className="flex items-center gap-2">
                       <div className={cn(
                         "flex size-8 items-center justify-center rounded-lg",
-                        pb.mode === "autonomous" ? "bg-[#22C55E]/10" :
+                        pb.mode === "autonomous" ? "bg-success/10" :
                         pb.mode === "human-approval" ? "bg-primary/10" :
-                        "bg-[#3B82F6]/10"
+                        "bg-info/10"
                       )}>
-                        {pb.mode === "autonomous" ? <Zap className="size-4 text-[#22C55E]" /> :
+                        {pb.mode === "autonomous" ? <Zap className="size-4 text-success" /> :
                          pb.mode === "human-approval" ? <UserCheck className="size-4 text-primary" /> :
-                         <Eye className="size-4 text-[#3B82F6]" />}
+                         <Eye className="size-4 text-info" />}
                       </div>
                       <div>
                         <h4 className="text-base font-semibold text-foreground">{pb.name}</h4>
                         <span className={cn(
                           "rounded-full px-2 py-0.5 text-[13px] font-medium capitalize",
-                          pb.mode === "autonomous" ? "bg-[#22C55E]/10 text-[#22C55E]" :
+                          pb.mode === "autonomous" ? "bg-success/10 text-success" :
                           pb.mode === "human-approval" ? "bg-primary/10 text-primary" :
-                          "bg-[#3B82F6]/10 text-[#3B82F6]"
+                          "bg-info/10 text-info"
                         )}>
                           {pb.mode.replace("-", " ")}
                         </span>

@@ -208,10 +208,10 @@ export function ScreenCases({ initialSearch = "", onActionExecuted, onNavigateTo
                   ))}
                   <span className={cn(
                     "ml-auto rounded-full px-2 py-0.5 text-[13px] font-medium",
-                    c.statusLabel === "Awaiting Review" ? "bg-[#EF4444]/10 text-[#EF4444]" :
+                    c.statusLabel === "Awaiting Review" ? "bg-danger/10 text-danger" :
                     c.statusLabel === "AI Investigating" ? "bg-primary/10 text-primary" :
-                    c.statusLabel === "Action Required" ? "bg-[#F97316]/10 text-[#F97316]" :
-                    "bg-[#22C55E]/10 text-[#22C55E]"
+                    c.statusLabel === "Action Required" ? "bg-orange/10 text-orange" :
+                    "bg-success/10 text-success"
                   )}>
                     {c.statusLabel}
                   </span>
@@ -262,7 +262,7 @@ export function ScreenCases({ initialSearch = "", onActionExecuted, onNavigateTo
                       {action.label}
                     </span>
                     {allApproved && checked && (
-                      <span className="flex items-center gap-1 text-sm font-medium text-[#22C55E]">
+                      <span className="flex items-center gap-1 text-sm font-medium text-success">
                         <CheckCircle2 className="size-3" /> Approved
                       </span>
                     )}
@@ -277,7 +277,7 @@ export function ScreenCases({ initialSearch = "", onActionExecuted, onNavigateTo
                 className={cn(
                   "rounded-md px-4 py-2 text-base font-semibold transition-colors",
                   allApproved
-                    ? "bg-[#22C55E]/10 text-[#22C55E] cursor-default"
+                    ? "bg-success/10 text-success cursor-default"
                     : "bg-primary text-primary-foreground hover:bg-primary/90"
                 )}
               >
@@ -297,7 +297,7 @@ export function ScreenCases({ initialSearch = "", onActionExecuted, onNavigateTo
             {onNavigateToRemediation && allApproved && (
               <button
                 onClick={onNavigateToRemediation}
-                className="mt-3 flex w-full items-center justify-center gap-2 rounded-md border border-[#22C55E]/30 bg-[#22C55E]/[0.04] px-4 py-2 text-base font-medium text-[#22C55E] transition-colors hover:bg-[#22C55E]/10"
+                className="mt-3 flex w-full items-center justify-center gap-2 rounded-md border border-success/30 bg-success/[0.04] px-4 py-2 text-base font-medium text-success transition-colors hover:bg-success/10"
               >
                 <CheckCircle2 className="size-3.5" />
                 View executed actions in Remediation

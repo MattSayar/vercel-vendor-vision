@@ -91,7 +91,7 @@ export function ScreenVendorDetail({ vendorId, onBack, onNavigateToCases }: Vend
                       <circle cx="32" cy="32" r="28" fill="none" stroke="var(--border)" strokeWidth="4" />
                       <circle
                         cx="32" cy="32" r="28" fill="none"
-                        stroke={vendor.riskScore >= 80 ? "#EF4444" : vendor.riskScore >= 60 ? "#F97316" : vendor.riskScore >= 40 ? "#EAB308" : "#22C55E"}
+                        stroke={vendor.riskScore >= 80 ? "var(--danger)" : vendor.riskScore >= 60 ? "var(--orange)" : vendor.riskScore >= 40 ? "var(--warning)" : "var(--success)"}
                         strokeWidth="4"
                         strokeDasharray={`${(vendor.riskScore / 100) * 175.93} 175.93`}
                         strokeLinecap="round"
@@ -160,7 +160,7 @@ export function ScreenVendorDetail({ vendorId, onBack, onNavigateToCases }: Vend
                     <PolarGrid stroke="var(--border)" />
                     <PolarAngleAxis dataKey="subject" tick={{ fontSize: 10, fill: "var(--muted-foreground)" }} />
                     <PolarRadiusAxis domain={[0, 100]} tick={{ fontSize: 9 }} axisLine={false} />
-                    <Radar name="Risk" dataKey="value" stroke="#818CF8" fill="#818CF8" fillOpacity={0.25} strokeWidth={2} />
+                    <Radar name="Risk" dataKey="value" stroke="var(--purple)" fill="var(--purple)" fillOpacity={0.25} strokeWidth={2} />
                   </RadarChart>
                 </ResponsiveContainer>
                 <div className="mt-2 flex flex-col gap-2">
@@ -199,7 +199,7 @@ export function ScreenVendorDetail({ vendorId, onBack, onNavigateToCases }: Vend
                     <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
                     <XAxis dataKey="date" tick={{ fontSize: 10, fill: "var(--muted-foreground)" }} tickLine={false} axisLine={false} />
                     <YAxis domain={[0, 100]} tick={{ fontSize: 10, fill: "var(--muted-foreground)" }} tickLine={false} axisLine={false} />
-                    <Line type="monotone" dataKey="score" stroke="#EF4444" strokeWidth={2} dot={{ fill: "#EF4444", r: 3 }} />
+                    <Line type="monotone" dataKey="score" stroke="var(--danger)" strokeWidth={2} dot={{ fill: "var(--danger)", r: 3 }} />
                   </LineChart>
                 </ResponsiveContainer>
               </div>
@@ -260,10 +260,10 @@ export function ScreenVendorDetail({ vendorId, onBack, onNavigateToCases }: Vend
                         <td className="px-3 py-2.5">
                           <span className={cn(
                             "rounded-full px-2 py-0.5 text-sm font-medium",
-                            signal.status === "Active" ? "bg-[#EF4444]/10 text-[#EF4444]" :
-                            signal.status === "Confirmed" ? "bg-[#F97316]/10 text-[#F97316]" :
-                            signal.status === "Monitoring" ? "bg-[#3B82F6]/10 text-[#3B82F6]" :
-                            signal.status === "Clear" ? "bg-[#22C55E]/10 text-[#22C55E]" :
+                            signal.status === "Active" ? "bg-danger/10 text-danger" :
+                            signal.status === "Confirmed" ? "bg-orange/10 text-orange" :
+                            signal.status === "Monitoring" ? "bg-info/10 text-info" :
+                            signal.status === "Clear" ? "bg-success/10 text-success" :
                             "bg-muted text-muted-foreground"
                           )}>
                             {signal.status}
@@ -327,7 +327,7 @@ export function ScreenVendorDetail({ vendorId, onBack, onNavigateToCases }: Vend
                           }}
                         >
                           <div
-                            className="flex items-center justify-center rounded-full text-sm font-semibold text-[#FFFFFF] shadow-md"
+                            className="flex items-center justify-center rounded-full text-sm font-semibold text-white shadow-md"
                             style={{
                               backgroundColor: dept.color,
                               width: nodeSize,
@@ -346,14 +346,14 @@ export function ScreenVendorDetail({ vendorId, onBack, onNavigateToCases }: Vend
               <div className="rounded-lg border border-border bg-card p-5">
                 <h3 className="text-base font-semibold text-foreground">Relationship Insights</h3>
                 <div className="mt-4 flex flex-col gap-4">
-                  <div className="rounded-md border border-[#F97316]/20 bg-[#F97316]/5 p-3">
-                    <p className="text-sm font-semibold text-[#F97316]">Concentration Risk</p>
+                  <div className="rounded-md border border-orange/20 bg-orange/5 p-3">
+                    <p className="text-sm font-semibold text-orange">Concentration Risk</p>
                     <p className="mt-1 text-base text-foreground/80">
                       82% of communication flows through 3 employees in Engineering. Consider diversifying vendor contacts.
                     </p>
                   </div>
-                  <div className="rounded-md border border-[#EAB308]/20 bg-[#EAB308]/5 p-3">
-                    <p className="text-sm font-semibold text-[#EAB308]">Shadow Contacts</p>
+                  <div className="rounded-md border border-warning/20 bg-warning/5 p-3">
+                    <p className="text-sm font-semibold text-warning">Shadow Contacts</p>
                     <p className="mt-1 text-base text-foreground/80">
                       2 employees communicating with {vendor.name} are not in the vendor{"'"}s official contact list.
                     </p>
@@ -384,8 +384,8 @@ export function ScreenVendorDetail({ vendorId, onBack, onNavigateToCases }: Vend
                   <XAxis dataKey="day" tick={{ fontSize: 10, fill: "var(--muted-foreground)" }} tickLine={false} axisLine={false} />
                   <YAxis tick={{ fontSize: 10, fill: "var(--muted-foreground)" }} tickLine={false} axisLine={false} />
                   <RTooltip contentStyle={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: 8, fontSize: 11 }} />
-                  <Bar dataKey="received" fill="#818CF8" radius={[3, 3, 0, 0]} name="Received" />
-                  <Bar dataKey="sent" fill="#818CF8" fillOpacity={0.3} radius={[3, 3, 0, 0]} name="Sent" />
+                  <Bar dataKey="received" fill="var(--purple)" radius={[3, 3, 0, 0]} name="Received" />
+                  <Bar dataKey="sent" fill="var(--purple)" fillOpacity={0.3} radius={[3, 3, 0, 0]} name="Sent" />
                 </BarChart>
               </ResponsiveContainer>
               <div className="mt-4 grid grid-cols-3 gap-4">
@@ -418,7 +418,7 @@ export function ScreenVendorDetail({ vendorId, onBack, onNavigateToCases }: Vend
                         <td className="max-w-[200px] px-3 py-2 text-muted-foreground truncate">{e.subject}</td>
                         <td className="px-3 py-2 text-center">{e.attachment ? "Y" : "N"}</td>
                         <td className="px-3 py-2">
-                          {e.anomaly && <span className="rounded-full bg-[#EF4444]/10 px-2 py-0.5 text-[13px] font-medium text-[#EF4444]">Anomaly</span>}
+                          {e.anomaly && <span className="rounded-full bg-danger/10 px-2 py-0.5 text-[13px] font-medium text-danger">Anomaly</span>}
                         </td>
                       </tr>
                     ))}
@@ -467,9 +467,9 @@ export function ScreenVendorDetail({ vendorId, onBack, onNavigateToCases }: Vend
                           <span className="font-mono text-sm text-muted-foreground">{c.id}</span>
                           <span className={cn(
                             "rounded-full px-2 py-0.5 text-[13px] font-medium capitalize",
-                            c.status === "open" ? "bg-[#EF4444]/10 text-[#EF4444]" :
+                            c.status === "open" ? "bg-danger/10 text-danger" :
                             c.status === "in-progress" ? "bg-primary/10 text-primary" :
-                            c.status === "auto-resolved" ? "bg-[#22C55E]/10 text-[#22C55E]" :
+                            c.status === "auto-resolved" ? "bg-success/10 text-success" :
                             "bg-muted text-muted-foreground"
                           )}>
                             {c.status}
@@ -534,7 +534,7 @@ function MiniStat({ label, value, change }: { label: string; value: string; chan
     <div className="rounded-md border border-border p-3 text-center">
       <p className="text-sm text-muted-foreground">{label}</p>
       <p className="mt-1 text-xl font-bold text-foreground">{value}</p>
-      {change && <p className="text-sm text-[#F97316]">{change}</p>}
+      {change && <p className="text-sm text-orange">{change}</p>}
     </div>
   )
 }
