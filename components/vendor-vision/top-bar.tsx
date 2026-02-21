@@ -59,7 +59,7 @@ export function TopBar({ screen, timeRange, onTimeRangeChange, onNavigate }: Top
           value={globalSearch}
           onChange={(e) => setGlobalSearch(e.target.value)}
           placeholder="Search vendors, cases, indicators..."
-          className="h-8 w-72 rounded-md border border-input bg-background pl-9 pr-8 text-base text-foreground placeholder:text-muted-foreground focus:border-ring focus:outline-none"
+          className="h-9 w-96 rounded-md border border-input bg-background pl-9 pr-8 text-sm text-foreground placeholder:text-muted-foreground focus:border-ring focus:outline-none"
         />
         {globalSearch && (
           <button onClick={() => setGlobalSearch("")} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground">
