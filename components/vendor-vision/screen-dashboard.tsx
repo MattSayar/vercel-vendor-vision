@@ -72,7 +72,7 @@ export function ScreenDashboard({ onNavigateToVendor, onNavigateToCases, onNavig
             label="Active Risk Cases"
             value="23"
             sub="5 Critical · 8 High · 10 Medium"
-            onClick={onNavigateToCases}
+            onClick={() => onNavigateToCases()}
           />
           <MetricCard
             icon={<CheckCircle2 className="size-4" />}
