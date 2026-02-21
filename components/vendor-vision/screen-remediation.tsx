@@ -20,6 +20,8 @@ import {
   Zap,
   Eye,
   UserCheck,
+  Search,
+  X,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 
@@ -38,6 +40,7 @@ export function ScreenRemediation({ caseExecutedActions = [], initialTab = "pend
   const [playbookStates, setPlaybookStates] = useState<Record<string, boolean>>(
     Object.fromEntries(playbooks.map((p) => [p.id, p.enabled]))
   )
+  const [searchQuery, setSearchQuery] = useState("")
 
   const handleAction = (id: string, action: "approved" | "rejected") => {
     setActionStates((prev) => ({ ...prev, [id]: action }))
@@ -81,7 +84,14 @@ export function ScreenRemediation({ caseExecutedActions = [], initialTab = "pend
     }
   }
 
-  const pendingCount = pendingActions.filter((a) => (actionStates[a.id] || "pending") === "pending").length
+  const q = searchQuery.toLowerCase()
+
+  const filteredPending = pendingActions.filter((a) => {
+    if (!q) return true
+    return `${a.type} ${a.description} ${a.trigger} ${a.impact}`.toLowerCase().includes(q)
+  })
+
+  const pendingCount = filteredPending.filter((a) => (actionStates[a.id] || "pending") === "pending").length
 
   // Group case executed actions by case ID
   const groupedCaseActions: { caseId: string; vendor: string; actionLabels: string[]; timestamp: string }[] = []
@@ -97,6 +107,21 @@ export function ScreenRemediation({ caseExecutedActions = [], initialTab = "pend
       groupedCaseActions.push({ caseId, vendor: action.vendor, actionLabels: [label], timestamp: action.timestamp })
     }
   }
+
+  const filteredGroupedCaseActions = groupedCaseActions.filter((g) => {
+    if (!q) return true
+    return `${g.caseId} ${g.vendor} ${g.actionLabels.join(" ")}`.toLowerCase().includes(q)
+  })
+
+  const filteredExecuted = executedActions.filter((a) => {
+    if (!q) return true
+    return `${a.type} ${a.vendor} ${a.description}`.toLowerCase().includes(q)
+  })
+
+  const filteredPlaybooks = playbooks.filter((p) => {
+    if (!q) return true
+    return `${p.name} ${p.description} ${p.trigger} ${p.actions.join(" ")}`.toLowerCase().includes(q)
+  })
 
   return (
     <ScrollArea className="h-[calc(100vh-3.5rem)]">
@@ -125,10 +150,27 @@ export function ScreenRemediation({ caseExecutedActions = [], initialTab = "pend
             </TabsTrigger>
           </TabsList>
 
+          {/* Search */}
+          <div className="relative mt-4">
+            <Search className="absolute left-2.5 top-1/2 size-3 -translate-y-1/2 text-muted-foreground" />
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Filter actions, vendors, playbooks..."
+              className="h-8 w-full rounded-md border border-input bg-background pl-7 pr-7 text-xs text-foreground placeholder:text-muted-foreground focus:border-ring focus:outline-none"
+            />
+            {searchQuery && (
+              <button onClick={() => setSearchQuery("")} className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground">
+                <X className="size-3" />
+              </button>
+            )}
+          </div>
+
           {/* Pending Approval */}
           <TabsContent value="pending" className="mt-4">
             <div className="flex flex-col gap-3">
-              {pendingActions.map((action) => {
+              {filteredPending.map((action) => {
                 const state = actionStates[action.id] || "pending"
                 const isReasoningOpen = expandedReasoning === action.id
                 const isModifying = modifyingAction === action.id
@@ -315,6 +357,7 @@ export function ScreenRemediation({ caseExecutedActions = [], initialTab = "pend
               {/* Newly approved actions from pending tab */}
               {pendingActions
                 .filter((a) => actionStates[a.id] === "approved")
+                .filter((a) => !q || `${a.type} ${a.description}`.toLowerCase().includes(q))
                 .map((action) => {
                   const isExpanded = expandedExecuted === action.id
                   return (
@@ -380,7 +423,7 @@ export function ScreenRemediation({ caseExecutedActions = [], initialTab = "pend
                   )
                 })}
               {/* Actions executed from Cases page (grouped by case) */}
-              {groupedCaseActions.map((group) => {
+              {filteredGroupedCaseActions.map((group) => {
                 const groupId = `case-${group.caseId}`
                 const isExpanded = expandedExecuted === groupId
                 return (
@@ -436,7 +479,7 @@ export function ScreenRemediation({ caseExecutedActions = [], initialTab = "pend
                 )
               })}
               {/* Pre-existing executed actions */}
-              {executedActions.map((action) => {
+              {filteredExecuted.map((action) => {
                 const isExpanded = expandedExecuted === action.id
                 return (
                   <div
@@ -539,7 +582,7 @@ export function ScreenRemediation({ caseExecutedActions = [], initialTab = "pend
           {/* Playbook Library */}
           <TabsContent value="playbooks" className="mt-4">
             <div className="grid grid-cols-2 gap-4">
-              {playbooks.map((pb) => (
+              {filteredPlaybooks.map((pb) => (
                 <div key={pb.id} className="rounded-lg border border-border bg-card p-5">
                   <div className="flex items-start justify-between">
                     <div className="flex items-center gap-2">
