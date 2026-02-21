@@ -49,7 +49,7 @@ export function ScreenCases({ initialSearch = "", onActionExecuted }: ScreenCase
     setSearchQuery(initialSearch)
   }, [initialSearch])
 
-  const [actionStates, setActionStates] = useState<Record<string, "pending" | "approved">>({})
+  const [actionStates, setActionStates] = useState<Record<string, "approved" | "unchecked">>({})
   const [allApproved, setAllApproved] = useState(false)
 
   const toggleSeverity = (s: Severity) => {
@@ -89,10 +89,17 @@ export function ScreenCases({ initialSearch = "", onActionExecuted }: ScreenCase
     })
   }
 
+  const isActionChecked = (action: { id: string; checked: boolean }) => {
+    const state = actionStates[action.id]
+    if (state === "approved") return true
+    if (state === "unchecked") return false
+    return action.checked // default
+  }
+
   const handleApproveAll = () => {
     const newStates: Record<string, "approved"> = {}
     selectedCase.recommendedActions.forEach((a) => {
-      if (actionStates[a.id] !== "approved") {
+      if (isActionChecked(a) && actionStates[a.id] !== "approved") {
         newStates[a.id] = "approved"
         emitExecuted(a.label)
       }
@@ -102,11 +109,14 @@ export function ScreenCases({ initialSearch = "", onActionExecuted }: ScreenCase
   }
 
   const handleApproveAction = (actionId: string) => {
-    const wasApproved = actionStates[actionId] === "approved"
-    setActionStates((prev) => ({ ...prev, [actionId]: wasApproved ? "pending" : "approved" }))
-    if (!wasApproved) {
-      const action = selectedCase.recommendedActions.find((a) => a.id === actionId)
-      if (action) emitExecuted(action.label)
+    const action = selectedCase.recommendedActions.find((a) => a.id === actionId)
+    if (!action) return
+    const currentlyChecked = isActionChecked(action)
+    if (currentlyChecked) {
+      setActionStates((prev) => ({ ...prev, [actionId]: "unchecked" }))
+    } else {
+      setActionStates((prev) => ({ ...prev, [actionId]: "approved" }))
+      emitExecuted(action.label)
     }
   }
 
@@ -243,11 +253,12 @@ export function ScreenCases({ initialSearch = "", onActionExecuted }: ScreenCase
             <h3 className="text-sm font-semibold text-foreground">Recommended Actions</h3>
             <div className="mt-3 flex flex-col gap-2.5">
               {selectedCase.recommendedActions.map((action) => {
-                const isApproved = allApproved || actionStates[action.id] === "approved"
+                const checked = isActionChecked(action)
+                const isApproved = actionStates[action.id] === "approved"
                 return (
                   <div key={action.id} className="flex items-center gap-3 rounded-md border border-border p-3">
                     <Switch
-                      checked={isApproved || action.checked}
+                      checked={checked}
                       onCheckedChange={() => handleApproveAction(action.id)}
                       disabled={allApproved}
                     />
