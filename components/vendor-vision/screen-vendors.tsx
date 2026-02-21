@@ -32,7 +32,7 @@ export function ScreenVendors({ onNavigateToVendor }: VendorsProps) {
   const [searchQuery, setSearchQuery] = useState("")
   const [activeSeverities, setActiveSeverities] = useState<Set<Severity>>(new Set(severityFilters))
   const [sortField, setSortField] = useState<SortField>("riskScore")
-  const [sortAsc, setSortAsc] = useState(false)
+  const [sortAsc, setSortAsc] = useState(true)
 
   const toggleSeverity = (s: Severity) => {
     setActiveSeverities((prev) => {
