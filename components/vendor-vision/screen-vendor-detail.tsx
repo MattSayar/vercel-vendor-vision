@@ -77,8 +77,8 @@ export function ScreenVendorDetail({ vendorId, onBack, onNavigateToCases }: Vend
             <div className="flex-1">
               <div className="flex items-center gap-3">
                 <h2 className="text-lg font-bold text-foreground">{vendor.name}</h2>
-                <span className="text-xs text-muted-foreground">{vendor.domain}</span>
-                <button onClick={onBack} className="ml-auto text-xs text-primary hover:underline">
+                <span className="text-sm text-muted-foreground">{vendor.domain}</span>
+                <button onClick={onBack} className="ml-auto text-sm text-primary hover:underline">
                   Back to Vendors
                 </button>
               </div>
@@ -101,8 +101,8 @@ export function ScreenVendorDetail({ vendorId, onBack, onNavigateToCases }: Vend
                     <span className="absolute text-sm font-bold text-foreground">{vendor.riskScore}</span>
                   </div>
                   <div>
-                    <p className="text-xs font-semibold text-foreground">Composite Risk Score</p>
-                    <p className={cn("text-[10px] font-medium capitalize", getSeverityColor(vendor.severity).split(" ")[1])}>
+                    <p className="text-sm font-semibold text-foreground">Composite Risk Score</p>
+                    <p className={cn("text-[12px] font-medium capitalize", getSeverityColor(vendor.severity).split(" ")[1])}>
                       {vendor.severity} Risk
                     </p>
                   </div>
@@ -110,7 +110,7 @@ export function ScreenVendorDetail({ vendorId, onBack, onNavigateToCases }: Vend
 
                 <div className="h-10 w-px bg-border" />
 
-                <div className="flex flex-wrap gap-x-6 gap-y-1 text-xs">
+                <div className="flex flex-wrap gap-x-6 gap-y-1 text-sm">
                   <Stat label="Active Since" value={vendor.activeSince} />
                   <Stat label="Internal Contacts" value={String(vendor.internalContacts)} />
                   <Stat label="Departments" value={String(vendor.departments)} />
@@ -121,13 +121,13 @@ export function ScreenVendorDetail({ vendorId, onBack, onNavigateToCases }: Vend
 
               {/* Action Buttons */}
               <div className="mt-4 flex items-center gap-2">
-                <button className="rounded-md bg-primary px-3 py-1.5 text-xs font-semibold text-primary-foreground hover:bg-primary/90 transition-colors">
+                <button className="rounded-md bg-primary px-3 py-1.5 text-sm font-semibold text-primary-foreground hover:bg-primary/90 transition-colors">
                   Create Case
                 </button>
-                <button className="rounded-md border border-input px-3 py-1.5 text-xs font-semibold text-foreground hover:bg-muted transition-colors">
+                <button className="rounded-md border border-input px-3 py-1.5 text-sm font-semibold text-foreground hover:bg-muted transition-colors">
                   Quarantine Emails
                 </button>
-                <button className="rounded-md border border-input px-3 py-1.5 text-xs font-semibold text-foreground hover:bg-muted transition-colors">
+                <button className="rounded-md border border-input px-3 py-1.5 text-sm font-semibold text-foreground hover:bg-muted transition-colors">
                   Request Assessment
                 </button>
               </div>
@@ -142,7 +142,7 @@ export function ScreenVendorDetail({ vendorId, onBack, onNavigateToCases }: Vend
               <TabsTrigger
                 key={tab}
                 value={tab.toLowerCase().replace(/ /g, "-")}
-                className="rounded-none border-b-2 border-transparent px-4 py-2.5 text-xs data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none"
+                className="rounded-none border-b-2 border-transparent px-4 py-2.5 text-sm data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none"
               >
                 {tab}
               </TabsTrigger>
@@ -166,14 +166,14 @@ export function ScreenVendorDetail({ vendorId, onBack, onNavigateToCases }: Vend
                 <div className="mt-2 flex flex-col gap-2">
                   {radarData.map((d) => (
                     <div key={d.subject} className="flex items-center gap-3">
-                      <span className="w-24 text-[11px] text-muted-foreground">{d.subject}</span>
+                      <span className="w-24 text-[13px] text-muted-foreground">{d.subject}</span>
                       <div className="flex-1 h-2 rounded-full bg-muted overflow-hidden">
                         <div
                           className="h-full rounded-full bg-primary/70"
                           style={{ width: `${d.value}%` }}
                         />
                       </div>
-                      <span className="w-8 text-right text-[11px] font-semibold text-foreground">{d.value}</span>
+                      <span className="w-8 text-right text-[13px] font-semibold text-foreground">{d.value}</span>
                     </div>
                   ))}
                 </div>
@@ -193,7 +193,7 @@ export function ScreenVendorDetail({ vendorId, onBack, onNavigateToCases }: Vend
                   <ProfileRow label="Renewal Date" value={vendor.renewalDate} />
                 </div>
 
-                <h4 className="mt-6 text-xs font-semibold text-foreground">Historical Risk Trend</h4>
+                <h4 className="mt-6 text-sm font-semibold text-foreground">Historical Risk Trend</h4>
                 <ResponsiveContainer width="100%" height={120}>
                   <LineChart data={detail.historicalRisk} margin={{ top: 10, right: 5, left: -20, bottom: 0 }}>
                     <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
@@ -212,13 +212,13 @@ export function ScreenVendorDetail({ vendorId, onBack, onNavigateToCases }: Vend
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-sm font-semibold text-foreground">Intelligence Signals</h3>
                 <div className="flex items-center gap-2">
-                  <span className="text-[10px] text-muted-foreground">Filter by source:</span>
+                  <span className="text-[12px] text-muted-foreground">Filter by source:</span>
                   {["all", "behavioral", "breach", "dark web", "domain", "community", "financial"].map((f) => (
                     <button
                       key={f}
                       onClick={() => setSourceFilter(f)}
                       className={cn(
-                        "rounded-md px-2 py-1 text-[10px] font-medium capitalize transition-colors",
+                        "rounded-md px-2 py-1 text-[12px] font-medium capitalize transition-colors",
                         sourceFilter === f
                           ? "bg-primary text-primary-foreground"
                           : "bg-muted text-muted-foreground hover:text-foreground"
@@ -230,7 +230,7 @@ export function ScreenVendorDetail({ vendorId, onBack, onNavigateToCases }: Vend
                 </div>
               </div>
               <div className="overflow-hidden rounded-md border border-border">
-                <table className="w-full text-xs">
+                <table className="w-full text-sm">
                   <thead>
                     <tr className="border-b border-border bg-muted/50">
                       <th className="px-3 py-2 text-left font-medium text-muted-foreground">Timestamp</th>
@@ -246,7 +246,7 @@ export function ScreenVendorDetail({ vendorId, onBack, onNavigateToCases }: Vend
                       <tr key={signal.id} className="border-b border-border last:border-0">
                         <td className="px-3 py-2.5 font-mono text-muted-foreground">{signal.timestamp}</td>
                         <td className="px-3 py-2.5">
-                          <span className={cn("rounded-full px-2 py-0.5 text-[10px] font-semibold", signal.sourceColor)}>
+                          <span className={cn("rounded-full px-2 py-0.5 text-[12px] font-semibold", signal.sourceColor)}>
                             {signal.source}
                           </span>
                         </td>
@@ -259,7 +259,7 @@ export function ScreenVendorDetail({ vendorId, onBack, onNavigateToCases }: Vend
                         </td>
                         <td className="px-3 py-2.5">
                           <span className={cn(
-                            "rounded-full px-2 py-0.5 text-[10px] font-medium",
+                            "rounded-full px-2 py-0.5 text-[12px] font-medium",
                             signal.status === "Active" ? "bg-[#EF4444]/10 text-[#EF4444]" :
                             signal.status === "Confirmed" ? "bg-[#F97316]/10 text-[#F97316]" :
                             signal.status === "Monitoring" ? "bg-[#3B82F6]/10 text-[#3B82F6]" :
@@ -305,7 +305,7 @@ export function ScreenVendorDetail({ vendorId, onBack, onNavigateToCases }: Vend
                     </svg>
                     {/* Center vendor node */}
                     <div
-                      className="absolute flex size-20 items-center justify-center rounded-full bg-primary text-xs font-bold text-primary-foreground shadow-lg"
+                      className="absolute flex size-20 items-center justify-center rounded-full bg-primary text-sm font-bold text-primary-foreground shadow-lg"
                       style={{ left: 200 - 40, top: 150 - 40 }}
                     >
                       {vendor.name.split(" ")[0]}
@@ -327,7 +327,7 @@ export function ScreenVendorDetail({ vendorId, onBack, onNavigateToCases }: Vend
                           }}
                         >
                           <div
-                            className="flex items-center justify-center rounded-full text-[10px] font-semibold text-[#FFFFFF] shadow-md"
+                            className="flex items-center justify-center rounded-full text-[12px] font-semibold text-[#FFFFFF] shadow-md"
                             style={{
                               backgroundColor: dept.color,
                               width: nodeSize,
@@ -336,7 +336,7 @@ export function ScreenVendorDetail({ vendorId, onBack, onNavigateToCases }: Vend
                           >
                             {dept.contacts}
                           </div>
-                          <span className="text-[10px] font-medium text-foreground whitespace-nowrap">{dept.dept}</span>
+                          <span className="text-[12px] font-medium text-foreground whitespace-nowrap">{dept.dept}</span>
                         </div>
                       )
                     })}
@@ -347,25 +347,25 @@ export function ScreenVendorDetail({ vendorId, onBack, onNavigateToCases }: Vend
                 <h3 className="text-sm font-semibold text-foreground">Relationship Insights</h3>
                 <div className="mt-4 flex flex-col gap-4">
                   <div className="rounded-md border border-[#F97316]/20 bg-[#F97316]/5 p-3">
-                    <p className="text-[10px] font-semibold text-[#F97316]">Concentration Risk</p>
-                    <p className="mt-1 text-xs text-foreground/80">
+                    <p className="text-[12px] font-semibold text-[#F97316]">Concentration Risk</p>
+                    <p className="mt-1 text-sm text-foreground/80">
                       82% of communication flows through 3 employees in Engineering. Consider diversifying vendor contacts.
                     </p>
                   </div>
                   <div className="rounded-md border border-[#EAB308]/20 bg-[#EAB308]/5 p-3">
-                    <p className="text-[10px] font-semibold text-[#EAB308]">Shadow Contacts</p>
-                    <p className="mt-1 text-xs text-foreground/80">
+                    <p className="text-[12px] font-semibold text-[#EAB308]">Shadow Contacts</p>
+                    <p className="mt-1 text-sm text-foreground/80">
                       2 employees communicating with {vendor.name} are not in the vendor{"'"}s official contact list.
                     </p>
                   </div>
                   <div className="mt-2 flex flex-col gap-2">
-                    <p className="text-[10px] font-medium text-muted-foreground">Top Contacts</p>
+                    <p className="text-[12px] font-medium text-muted-foreground">Top Contacts</p>
                     {["Sarah Chen, VP Eng", "Mike Torres, SRE Lead", "Lisa Park, Finance"].map((c) => (
                       <div key={c} className="flex items-center gap-2 rounded-md border border-border p-2">
-                        <div className="flex size-6 items-center justify-center rounded-full bg-muted text-[9px] font-bold text-muted-foreground">
+                        <div className="flex size-6 items-center justify-center rounded-full bg-muted text-[11px] font-bold text-muted-foreground">
                           {c.charAt(0)}
                         </div>
-                        <span className="text-[11px] text-foreground">{c}</span>
+                        <span className="text-[13px] text-foreground">{c}</span>
                       </div>
                     ))}
                   </div>
@@ -398,7 +398,7 @@ export function ScreenVendorDetail({ vendorId, onBack, onNavigateToCases }: Vend
             <div className="mt-4 rounded-lg border border-border bg-card p-5">
               <h3 className="text-sm font-semibold text-foreground">Recent Email Metadata</h3>
               <div className="mt-3 overflow-hidden rounded-md border border-border">
-                <table className="w-full text-xs">
+                <table className="w-full text-sm">
                   <thead>
                     <tr className="border-b border-border bg-muted/50">
                       <th className="px-3 py-2 text-left font-medium text-muted-foreground">Date</th>
@@ -418,7 +418,7 @@ export function ScreenVendorDetail({ vendorId, onBack, onNavigateToCases }: Vend
                         <td className="max-w-[200px] px-3 py-2 text-muted-foreground truncate">{e.subject}</td>
                         <td className="px-3 py-2 text-center">{e.attachment ? "Y" : "N"}</td>
                         <td className="px-3 py-2">
-                          {e.anomaly && <span className="rounded-full bg-[#EF4444]/10 px-2 py-0.5 text-[9px] font-medium text-[#EF4444]">Anomaly</span>}
+                          {e.anomaly && <span className="rounded-full bg-[#EF4444]/10 px-2 py-0.5 text-[11px] font-medium text-[#EF4444]">Anomaly</span>}
                         </td>
                       </tr>
                     ))}
@@ -442,7 +442,7 @@ export function ScreenVendorDetail({ vendorId, onBack, onNavigateToCases }: Vend
                     {onNavigateToCases && vendorCases.length > 0 && (
                       <button
                         onClick={() => onNavigateToCases(vendor.name)}
-                        className="flex items-center gap-1.5 text-xs font-medium text-primary hover:underline"
+                        className="flex items-center gap-1.5 text-sm font-medium text-primary hover:underline"
                       >
                         View all in Cases <ExternalLink className="size-3" />
                       </button>
@@ -450,7 +450,7 @@ export function ScreenVendorDetail({ vendorId, onBack, onNavigateToCases }: Vend
                   </div>
                   {vendorCases.length === 0 ? (
                     <div className="rounded-lg border border-border bg-card p-5">
-                      <p className="text-xs text-muted-foreground">No cases for this vendor.</p>
+                      <p className="text-sm text-muted-foreground">No cases for this vendor.</p>
                     </div>
                   ) : (
                     vendorCases.map((c) => (
@@ -460,13 +460,13 @@ export function ScreenVendorDetail({ vendorId, onBack, onNavigateToCases }: Vend
                         className="flex flex-col gap-2 rounded-lg border border-border bg-card p-4 text-left transition-colors hover:border-primary/20 hover:bg-muted/30"
                       >
                         <div className="flex items-center gap-2">
-                          <span className={cn("inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-[10px] font-semibold capitalize", getSeverityColor(c.severity))}>
+                          <span className={cn("inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-[12px] font-semibold capitalize", getSeverityColor(c.severity))}>
                             <span className={cn("size-1.5 rounded-full", getSeverityDot(c.severity))} />
                             {c.severity}
                           </span>
-                          <span className="font-mono text-[10px] text-muted-foreground">{c.id}</span>
+                          <span className="font-mono text-[12px] text-muted-foreground">{c.id}</span>
                           <span className={cn(
-                            "rounded-full px-2 py-0.5 text-[9px] font-medium capitalize",
+                            "rounded-full px-2 py-0.5 text-[11px] font-medium capitalize",
                             c.status === "open" ? "bg-[#EF4444]/10 text-[#EF4444]" :
                             c.status === "in-progress" ? "bg-primary/10 text-primary" :
                             c.status === "auto-resolved" ? "bg-[#22C55E]/10 text-[#22C55E]" :
@@ -474,12 +474,12 @@ export function ScreenVendorDetail({ vendorId, onBack, onNavigateToCases }: Vend
                           )}>
                             {c.status}
                           </span>
-                          <span className="ml-auto text-[10px] text-muted-foreground">{c.created}</span>
+                          <span className="ml-auto text-[12px] text-muted-foreground">{c.created}</span>
                         </div>
-                        <p className="text-xs leading-relaxed text-foreground/80 line-clamp-2">{c.summary}</p>
+                        <p className="text-sm leading-relaxed text-foreground/80 line-clamp-2">{c.summary}</p>
                         <div className="flex items-center gap-1.5 flex-wrap">
                           {c.tags.map((tag) => (
-                            <span key={tag} className="rounded-full bg-muted px-2 py-0.5 text-[9px] font-medium text-muted-foreground">{tag}</span>
+                            <span key={tag} className="rounded-full bg-muted px-2 py-0.5 text-[11px] font-medium text-muted-foreground">{tag}</span>
                           ))}
                         </div>
                       </button>
@@ -497,9 +497,9 @@ export function ScreenVendorDetail({ vendorId, onBack, onNavigateToCases }: Vend
               <div className="mt-3 flex flex-col gap-2">
                 {detail.auditEntries.map((entry, i) => (
                   <div key={i} className="flex items-center gap-3 rounded-md border border-border p-3">
-                    <span className="font-mono text-[10px] text-muted-foreground">{entry.date}</span>
-                    <span className="text-xs text-foreground">{entry.action}</span>
-                    <span className="ml-auto text-[10px] text-muted-foreground">{entry.by}</span>
+                    <span className="font-mono text-[12px] text-muted-foreground">{entry.date}</span>
+                    <span className="text-sm text-foreground">{entry.action}</span>
+                    <span className="ml-auto text-[12px] text-muted-foreground">{entry.by}</span>
                   </div>
                 ))}
               </div>
@@ -514,7 +514,7 @@ export function ScreenVendorDetail({ vendorId, onBack, onNavigateToCases }: Vend
 function Stat({ label, value }: { label: string; value: string }) {
   return (
     <div>
-      <p className="text-[10px] text-muted-foreground">{label}</p>
+      <p className="text-[12px] text-muted-foreground">{label}</p>
       <p className="font-semibold text-foreground">{value}</p>
     </div>
   )
@@ -523,8 +523,8 @@ function Stat({ label, value }: { label: string; value: string }) {
 function ProfileRow({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex items-center justify-between">
-      <span className="text-[11px] text-muted-foreground">{label}</span>
-      <span className="text-[11px] font-medium text-foreground">{value}</span>
+      <span className="text-[13px] text-muted-foreground">{label}</span>
+      <span className="text-[13px] font-medium text-foreground">{value}</span>
     </div>
   )
 }
@@ -532,9 +532,9 @@ function ProfileRow({ label, value }: { label: string; value: string }) {
 function MiniStat({ label, value, change }: { label: string; value: string; change?: string }) {
   return (
     <div className="rounded-md border border-border p-3 text-center">
-      <p className="text-[10px] text-muted-foreground">{label}</p>
+      <p className="text-[12px] text-muted-foreground">{label}</p>
       <p className="mt-1 text-lg font-bold text-foreground">{value}</p>
-      {change && <p className="text-[10px] text-[#F97316]">{change}</p>}
+      {change && <p className="text-[12px] text-[#F97316]">{change}</p>}
     </div>
   )
 }

@@ -38,7 +38,7 @@ export function SidebarNav({ active, onNavigate }: SidebarNavProps) {
           <span className="text-sm font-semibold tracking-tight text-sidebar-foreground">
             VendorVision
           </span>
-          <span className="text-[10px] font-medium uppercase tracking-widest text-sidebar-foreground/50">
+          <span className="text-[12px] font-medium uppercase tracking-widest text-sidebar-foreground/50">
             Abnormal
           </span>
         </div>
@@ -68,12 +68,12 @@ export function SidebarNav({ active, onNavigate }: SidebarNavProps) {
 
       {/* User */}
       <div className="flex items-center gap-3 border-t border-sidebar-border px-5 py-4">
-        <div className="flex size-8 items-center justify-center rounded-full bg-sidebar-accent text-xs font-semibold text-sidebar-accent-foreground">
+        <div className="flex size-8 items-center justify-center rounded-full bg-sidebar-accent text-sm font-semibold text-sidebar-accent-foreground">
           JD
         </div>
         <div className="flex flex-col">
-          <span className="text-xs font-medium text-sidebar-foreground">Jane Doe</span>
-          <span className="text-[10px] text-sidebar-foreground/50">SOC Analyst</span>
+          <span className="text-sm font-medium text-sidebar-foreground">Jane Doe</span>
+          <span className="text-[12px] text-sidebar-foreground/50">SOC Analyst</span>
         </div>
         <button onClick={() => onNavigate("easter-egg")} className="ml-auto text-sidebar-foreground/40 hover:text-sidebar-foreground/70">
           <Settings className="size-3.5" />

@@ -129,7 +129,7 @@ export function ScreenCases({ initialSearch = "", onActionExecuted, onNavigateTo
                 key={tab.value}
                 onClick={() => setStatusFilter(tab.value)}
                 className={cn(
-                  "shrink-0 rounded-md px-3 py-1.5 text-xs font-medium transition-colors",
+                  "shrink-0 rounded-md px-3 py-1.5 text-sm font-medium transition-colors",
                   statusFilter === tab.value
                     ? "bg-primary text-primary-foreground"
                     : "text-muted-foreground hover:bg-muted"
@@ -145,7 +145,7 @@ export function ScreenCases({ initialSearch = "", onActionExecuted, onNavigateTo
                 key={s}
                 onClick={() => toggleSeverity(s)}
                 className={cn(
-                  "flex items-center gap-1.5 rounded-md border px-2.5 py-1 text-[10px] font-semibold capitalize transition-colors",
+                  "flex items-center gap-1.5 rounded-md border px-2.5 py-1 text-[12px] font-semibold capitalize transition-colors",
                   activeSeverities.has(s)
                     ? getSeverityColor(s)
                     : "border-border bg-muted/50 text-muted-foreground"
@@ -163,7 +163,7 @@ export function ScreenCases({ initialSearch = "", onActionExecuted, onNavigateTo
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search within cases..."
-              className="h-7 w-full rounded-md border border-input bg-background pl-7 pr-7 text-xs text-foreground placeholder:text-muted-foreground focus:border-ring focus:outline-none"
+              className="h-7 w-full rounded-md border border-input bg-background pl-7 pr-7 text-sm text-foreground placeholder:text-muted-foreground focus:border-ring focus:outline-none"
             />
             {searchQuery && (
               <button onClick={() => setSearchQuery("")} className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground">
@@ -188,26 +188,26 @@ export function ScreenCases({ initialSearch = "", onActionExecuted, onNavigateTo
                 )}
               >
                 <div className="flex items-center gap-2">
-                  <span className={cn("inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-[10px] font-semibold capitalize", getSeverityColor(c.severity))}>
+                  <span className={cn("inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-[12px] font-semibold capitalize", getSeverityColor(c.severity))}>
                     <span className={cn("size-1.5 rounded-full", getSeverityDot(c.severity))} />
                     {c.severity}
                   </span>
-                  <span className="font-mono text-[10px] text-muted-foreground">{c.id}</span>
-                  <span className="ml-auto text-[10px] text-muted-foreground">{c.created}</span>
+                  <span className="font-mono text-[12px] text-muted-foreground">{c.id}</span>
+                  <span className="ml-auto text-[12px] text-muted-foreground">{c.created}</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <div className="flex size-6 items-center justify-center rounded-md bg-muted text-[10px] font-bold text-muted-foreground">
+                  <div className="flex size-6 items-center justify-center rounded-md bg-muted text-[12px] font-bold text-muted-foreground">
                     {c.vendorName.charAt(0)}
                   </div>
-                  <span className="text-xs font-semibold text-foreground">{c.vendorName}</span>
+                  <span className="text-sm font-semibold text-foreground">{c.vendorName}</span>
                 </div>
-                <p className="text-[11px] leading-relaxed text-muted-foreground line-clamp-2">{c.summary}</p>
+                <p className="text-[13px] leading-relaxed text-muted-foreground line-clamp-2">{c.summary}</p>
                 <div className="flex items-center gap-1.5 flex-wrap">
                   {c.tags.map((tag) => (
-                    <span key={tag} className="rounded-full bg-muted px-2 py-0.5 text-[9px] font-medium text-muted-foreground">{tag}</span>
+                    <span key={tag} className="rounded-full bg-muted px-2 py-0.5 text-[11px] font-medium text-muted-foreground">{tag}</span>
                   ))}
                   <span className={cn(
-                    "ml-auto rounded-full px-2 py-0.5 text-[9px] font-medium",
+                    "ml-auto rounded-full px-2 py-0.5 text-[11px] font-medium",
                     c.statusLabel === "Awaiting Review" ? "bg-[#EF4444]/10 text-[#EF4444]" :
                     c.statusLabel === "AI Investigating" ? "bg-primary/10 text-primary" :
                     c.statusLabel === "Action Required" ? "bg-[#F97316]/10 text-[#F97316]" :
@@ -230,16 +230,16 @@ export function ScreenCases({ initialSearch = "", onActionExecuted, onNavigateTo
             <div>
               <div className="flex items-center gap-3">
                 <h2 className="text-lg font-bold text-foreground">{selectedCase.vendorName}</h2>
-                <span className={cn("inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-[11px] font-semibold", getSeverityColor(selectedCase.severity))}>
+                <span className={cn("inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-[13px] font-semibold", getSeverityColor(selectedCase.severity))}>
                   Score: {riskCases.find(c => c.id === selectedCase.id) ? vendors.find(v => v.id === selectedCase.vendorId)?.riskScore ?? "N/A" : "N/A"}
                 </span>
               </div>
-              <p className="mt-1 text-xs text-muted-foreground">{selectedCase.id} · Created {selectedCase.created}</p>
+              <p className="mt-1 text-sm text-muted-foreground">{selectedCase.id} · Created {selectedCase.created}</p>
             </div>
             <div className="flex items-center gap-2">
               <div className="flex items-center gap-2 rounded-md border border-input px-3 py-1.5">
-                <span className="text-xs text-muted-foreground">Status:</span>
-                <span className="text-xs font-medium capitalize text-foreground">{selectedCase.status}</span>
+                <span className="text-sm text-muted-foreground">Status:</span>
+                <span className="text-sm font-medium capitalize text-foreground">{selectedCase.status}</span>
                 <ChevronDown className="size-3 text-muted-foreground" />
               </div>
             </div>
@@ -258,11 +258,11 @@ export function ScreenCases({ initialSearch = "", onActionExecuted, onNavigateTo
                       onCheckedChange={() => handleToggleAction(action.id)}
                       disabled={allApproved}
                     />
-                    <span className={cn("text-xs text-foreground/80 flex-1", allApproved && checked && "line-through opacity-60")}>
+                    <span className={cn("text-sm text-foreground/80 flex-1", allApproved && checked && "line-through opacity-60")}>
                       {action.label}
                     </span>
                     {allApproved && checked && (
-                      <span className="flex items-center gap-1 text-[10px] font-medium text-[#22C55E]">
+                      <span className="flex items-center gap-1 text-[12px] font-medium text-[#22C55E]">
                         <CheckCircle2 className="size-3" /> Approved
                       </span>
                     )}
@@ -275,7 +275,7 @@ export function ScreenCases({ initialSearch = "", onActionExecuted, onNavigateTo
                 onClick={handleApproveAll}
                 disabled={allApproved}
                 className={cn(
-                  "rounded-md px-4 py-2 text-xs font-semibold transition-colors",
+                  "rounded-md px-4 py-2 text-sm font-semibold transition-colors",
                   allApproved
                     ? "bg-[#22C55E]/10 text-[#22C55E] cursor-default"
                     : "bg-primary text-primary-foreground hover:bg-primary/90"
@@ -286,18 +286,18 @@ export function ScreenCases({ initialSearch = "", onActionExecuted, onNavigateTo
                 ) : "Approve All Recommended"}
               </button>
               {!allApproved && (
-                <button className="rounded-md border border-input px-4 py-2 text-xs font-semibold text-foreground hover:bg-muted transition-colors">
+                <button className="rounded-md border border-input px-4 py-2 text-sm font-semibold text-foreground hover:bg-muted transition-colors">
                   Customize & Execute
                 </button>
               )}
-              <button className="ml-auto text-xs text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1">
+              <button className="ml-auto text-sm text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1">
                 <XCircle className="size-3" /> Dismiss Case
               </button>
             </div>
             {onNavigateToRemediation && allApproved && (
               <button
                 onClick={onNavigateToRemediation}
-                className="mt-3 flex w-full items-center justify-center gap-2 rounded-md border border-[#22C55E]/30 bg-[#22C55E]/[0.04] px-4 py-2 text-xs font-medium text-[#22C55E] transition-colors hover:bg-[#22C55E]/10"
+                className="mt-3 flex w-full items-center justify-center gap-2 rounded-md border border-[#22C55E]/30 bg-[#22C55E]/[0.04] px-4 py-2 text-sm font-medium text-[#22C55E] transition-colors hover:bg-[#22C55E]/10"
               >
                 <CheckCircle2 className="size-3.5" />
                 View executed actions in Remediation
@@ -314,7 +314,7 @@ export function ScreenCases({ initialSearch = "", onActionExecuted, onNavigateTo
               </div>
               <h3 className="text-sm font-semibold text-foreground">AI Investigation Summary</h3>
             </div>
-            <p className="mt-3 text-xs leading-relaxed text-foreground/80">{selectedCase.aiSummary}</p>
+            <p className="mt-3 text-sm leading-relaxed text-foreground/80">{selectedCase.aiSummary}</p>
           </div>
 
           {/* Evidence Timeline */}
@@ -329,15 +329,15 @@ export function ScreenCases({ initialSearch = "", onActionExecuted, onNavigateTo
                   </div>
                   <div className="flex-1">
                     <div className="flex items-center gap-2">
-                      <Badge variant="outline" className={cn("text-[10px] font-semibold", ev.sourceColor)}>
+                      <Badge variant="outline" className={cn("text-[12px] font-semibold", ev.sourceColor)}>
                         {ev.source}
                       </Badge>
-                      <span className="text-[10px] text-muted-foreground">{ev.timestamp}</span>
-                      <span className={cn("ml-auto text-[10px] font-semibold", getConfidenceColor(ev.confidence))}>
+                      <span className="text-[12px] text-muted-foreground">{ev.timestamp}</span>
+                      <span className={cn("ml-auto text-[12px] font-semibold", getConfidenceColor(ev.confidence))}>
                         {ev.confidence}% confidence
                       </span>
                     </div>
-                    <p className="mt-1.5 text-xs leading-relaxed text-foreground/80">{ev.description}</p>
+                    <p className="mt-1.5 text-sm leading-relaxed text-foreground/80">{ev.description}</p>
                   </div>
                 </div>
               ))}
