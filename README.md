@@ -11,7 +11,7 @@ Supply chain risk intelligence dashboard built for Abnormal Security.
 
 ```bash
 pnpm install
-pnpm dev
+pnpm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) in your browser.
@@ -19,7 +19,7 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 ## Other Commands
 
 ```bash
-pnpm build   # Production build
-pnpm start   # Start production server
-pnpm lint    # Run ESLint
+pnpm run build   # Production build
+pnpm run start   # Start production server
+pnpm run lint    # Run ESLint
 ```
