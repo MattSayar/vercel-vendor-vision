@@ -51,6 +51,8 @@ export function ScreenVendorDetail({ vendorId, onBack, onNavigateToCases }: Vend
   const vendor = vendors.find((v) => v.id === vendorId) || vendors[0]
   const detail = vendorDetailData[vendor.id] || vendorDetailData["v1"]
   const [sourceFilter, setSourceFilter] = useState<string>("all")
+  const [expandedSignals, setExpandedSignals] = useState<Set<string>>(new Set())
+  const [expandedEmails, setExpandedEmails] = useState<Set<number>>(new Set())
 
   const radarData = [
     { subject: "Behavioral", value: vendor.riskComponents.behavioral, fullMark: 100 },
@@ -242,8 +244,18 @@ export function ScreenVendorDetail({ vendorId, onBack, onNavigateToCases }: Vend
                     </tr>
                   </thead>
                   <tbody>
-                    {filteredSignals.map((signal) => (
-                      <tr key={signal.id} className="border-b border-border last:border-0">
+                    {filteredSignals.map((signal) => {
+                      const isExpanded = expandedSignals.has(signal.id)
+                      return (
+                      <tr
+                        key={signal.id}
+                        className="border-b border-border last:border-0 cursor-pointer hover:bg-muted/30 transition-colors"
+                        onClick={() => setExpandedSignals((prev) => {
+                          const next = new Set(prev)
+                          next.has(signal.id) ? next.delete(signal.id) : next.add(signal.id)
+                          return next
+                        })}
+                      >
                         <td className="px-3 py-2.5 font-mono text-muted-foreground">{signal.timestamp}</td>
                         <td className="px-3 py-2.5">
                           <span className={cn("rounded-full px-2 py-0.5 text-sm font-semibold", signal.sourceColor)}>
@@ -251,7 +263,7 @@ export function ScreenVendorDetail({ vendorId, onBack, onNavigateToCases }: Vend
                           </span>
                         </td>
                         <td className="px-3 py-2.5 text-foreground">{signal.signalType}</td>
-                        <td className="max-w-xs px-3 py-2.5 text-muted-foreground truncate">{signal.description}</td>
+                        <td className={cn("max-w-xs px-3 py-2.5 text-muted-foreground", isExpanded ? "whitespace-normal" : "truncate")}>{signal.description}</td>
                         <td className="px-3 py-2.5">
                           <span className={cn("font-semibold", getConfidenceColor(signal.confidence))}>
                             {signal.confidence}%
@@ -270,7 +282,8 @@ export function ScreenVendorDetail({ vendorId, onBack, onNavigateToCases }: Vend
                           </span>
                         </td>
                       </tr>
-                    ))}
+                      )
+                    })}
                   </tbody>
                 </table>
               </div>
@@ -410,18 +423,29 @@ export function ScreenVendorDetail({ vendorId, onBack, onNavigateToCases }: Vend
                     </tr>
                   </thead>
                   <tbody>
-                    {detail.emailMetadata.map((e, i) => (
-                      <tr key={i} className="border-b border-border last:border-0">
+                    {detail.emailMetadata.map((e, i) => {
+                      const isExpanded = expandedEmails.has(i)
+                      return (
+                      <tr
+                        key={i}
+                        className="border-b border-border last:border-0 cursor-pointer hover:bg-muted/30 transition-colors"
+                        onClick={() => setExpandedEmails((prev) => {
+                          const next = new Set(prev)
+                          next.has(i) ? next.delete(i) : next.add(i)
+                          return next
+                        })}
+                      >
                         <td className="px-3 py-2 font-mono text-muted-foreground">{e.date}</td>
                         <td className="px-3 py-2 text-foreground">{e.from}</td>
                         <td className="px-3 py-2 text-foreground">{e.to}</td>
-                        <td className="max-w-[200px] px-3 py-2 text-muted-foreground truncate">{e.subject}</td>
+                        <td className={cn("max-w-[200px] px-3 py-2 text-muted-foreground", isExpanded ? "whitespace-normal" : "truncate")}>{e.subject}</td>
                         <td className="px-3 py-2 text-center">{e.attachment ? "Y" : "N"}</td>
                         <td className="px-3 py-2">
                           {e.anomaly && <span className="rounded-full bg-danger/10 px-2 py-0.5 text-[13px] font-medium text-danger">Anomaly</span>}
                         </td>
                       </tr>
-                    ))}
+                      )
+                    })}
                   </tbody>
                 </table>
               </div>
