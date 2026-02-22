@@ -7,7 +7,7 @@ import type { Screen } from "./sidebar-nav"
 
 const screenLabels: Record<Screen, string> = {
   dashboard: "Dashboard",
-  cases: "AI Case Queue",
+  cases: "Case Queue",
   vendors: "Vendor Directory",
   "vendor-detail": "Vendor Deep-Dive",
   remediation: "Automated Remediation",

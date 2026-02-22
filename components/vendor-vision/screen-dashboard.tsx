@@ -100,9 +100,9 @@ export function ScreenDashboard({ onNavigateToVendor, onNavigateToCases, onNavig
         {/* Row 2: Heatmap + Activity Feed */}
         <div className="grid grid-cols-5 gap-4">
           {/* Vendor Risk Heatmap */}
-          <div className="col-span-3 rounded-lg border border-border bg-card p-5">
+          <div className="col-span-3 flex flex-col rounded-lg border border-border bg-card p-5">
             <h3 className="mb-4 text-base font-semibold text-card-foreground">Vendor Ecosystem Risk Map</h3>
-            <div className="grid grid-cols-4 gap-2">
+            <div className="grid flex-1 grid-cols-4 gap-2" style={{ gridAutoRows: "1fr" }}>
               {[...vendors].sort((a, b) => b.riskScore - a.riskScore).map((v) => (
                 <VendorTile key={v.id} vendor={v} onClick={() => onNavigateToVendor(v.id)} />
               ))}
@@ -280,6 +280,13 @@ function VendorTile({ vendor, onClick }: { vendor: Vendor; onClick: () => void }
           ? "border-warning/30 bg-warning/5"
           : "border-success/20 bg-success/5"
 
+  const nameSize =
+    vendor.severity === "critical" ? "text-lg" : vendor.severity === "high" ? "text-base" : "text-sm"
+  const scoreSize =
+    vendor.severity === "critical" ? "text-2xl" : vendor.severity === "high" ? "text-lg" : "text-base"
+  const badgeSize =
+    vendor.severity === "critical" ? "text-sm px-2 py-0.5" : vendor.severity === "high" ? "text-sm px-2 py-0.5" : "text-[13px] px-1.5 py-0.5"
+
   return (
     <Tooltip>
       <TooltipTrigger asChild>
@@ -287,12 +294,12 @@ function VendorTile({ vendor, onClick }: { vendor: Vendor; onClick: () => void }
           onClick={onClick}
           className={`flex flex-col justify-between rounded-md border p-2.5 text-left transition-all hover:shadow-md ${sizeClass} ${borderColor}`}
         >
-          <span className="text-sm font-medium text-foreground truncate">{vendor.name}</span>
+          <span className={`${nameSize} font-medium text-foreground truncate`}>{vendor.name}</span>
           <div className="mt-2 flex items-center justify-between">
-            <span className={`text-base font-bold ${vendor.severity === "critical" ? "text-danger" : vendor.severity === "high" ? "text-orange" : vendor.severity === "medium" ? "text-warning" : "text-success"}`}>
+            <span className={`${scoreSize} font-bold ${vendor.severity === "critical" ? "text-danger" : vendor.severity === "high" ? "text-orange" : vendor.severity === "medium" ? "text-warning" : "text-success"}`}>
               {vendor.riskScore}
             </span>
-            <span className={`rounded-sm px-1.5 py-0.5 text-[13px] font-medium capitalize ${getSeverityColor(vendor.severity)}`}>
+            <span className={`rounded-sm ${badgeSize} font-medium capitalize ${getSeverityColor(vendor.severity)}`}>
               {vendor.severity}
             </span>
           </div>

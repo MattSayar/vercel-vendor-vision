@@ -5,6 +5,13 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import { Badge } from "@/components/ui/badge"
 import { Switch } from "@/components/ui/switch"
 import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+} from "@/components/ui/dropdown-menu"
+import {
   riskCases,
   getSeverityColor,
   getSeverityDot,
@@ -25,12 +32,25 @@ import {
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 
+const STATUS_LABEL_MAP: Record<CaseStatus, string> = {
+  "open": "Awaiting Review",
+  "in-progress": "Investigating",
+  "auto-resolved": "Auto-Resolved",
+  "closed": "Closed",
+}
+
+const statusOptions: { value: CaseStatus; label: string }[] = [
+  { value: "open", label: "Open" },
+  { value: "in-progress", label: "In Progress" },
+  { value: "closed", label: "Closed" },
+]
+
 const statusTabs: { label: string; value: CaseStatus | "all" }[] = [
   { label: "All", value: "all" },
   { label: "Open", value: "open" },
   { label: "In Progress", value: "in-progress" },
   { label: "Auto-Resolved", value: "auto-resolved" },
-  { label: "Dismissed", value: "dismissed" },
+  { label: "Closed", value: "closed" },
 ]
 
 const severityFilters: Severity[] = ["critical", "high", "medium", "low"]
@@ -53,6 +73,13 @@ export function ScreenCases({ initialSearch = "", onActionExecuted, onNavigateTo
 
   const [actionStates, setActionStates] = useState<Record<string, "checked" | "unchecked">>({})
   const [allApproved, setAllApproved] = useState(false)
+  const [statusOverrides, setStatusOverrides] = useState<Record<string, CaseStatus>>({})
+
+  const getEffectiveStatus = (c: RiskCase): CaseStatus =>
+    statusOverrides[c.id] ?? c.status
+
+  const getEffectiveStatusLabel = (c: RiskCase): string =>
+    STATUS_LABEL_MAP[statusOverrides[c.id] ?? c.status] ?? c.statusLabel
 
   const toggleSeverity = (s: Severity) => {
     setActiveSeverities((prev) => {
@@ -64,7 +91,7 @@ export function ScreenCases({ initialSearch = "", onActionExecuted, onNavigateTo
   }
 
   const filteredCases = riskCases.filter((c) => {
-    if (statusFilter !== "all" && c.status !== statusFilter) return false
+    if (statusFilter !== "all" && getEffectiveStatus(c) !== statusFilter) return false
     if (!activeSeverities.has(c.severity)) return false
     if (searchQuery) {
       const q = searchQuery.toLowerCase()
@@ -115,6 +142,26 @@ export function ScreenCases({ initialSearch = "", onActionExecuted, onNavigateTo
     if (!action) return
     const currentlyChecked = isActionChecked(action)
     setActionStates((prev) => ({ ...prev, [actionId]: currentlyChecked ? "unchecked" : "checked" }))
+  }
+
+  const handleStatusChange = (newStatus: CaseStatus) => {
+    setStatusOverrides((prev) => ({ ...prev, [selectedCase.id]: newStatus }))
+    if (onActionExecuted) {
+      const label = statusOptions.find((o) => o.value === newStatus)?.label ?? newStatus
+      onActionExecuted({
+        id: `ce-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
+        timestamp: "Just now",
+        type: "Case Action",
+        vendor: selectedCase.vendorName,
+        outcome: "success",
+        description: `Status changed to "${label}" (from Case ${selectedCase.id})`,
+        reversible: true,
+        actions: [
+          { step: `Analyst changed case status`, result: "success" },
+          { step: `Status changed to "${label}"`, result: "success" },
+        ],
+      })
+    }
   }
 
   return (
@@ -208,12 +255,12 @@ export function ScreenCases({ initialSearch = "", onActionExecuted, onNavigateTo
                   ))}
                   <span className={cn(
                     "ml-auto rounded-full px-2 py-0.5 text-[13px] font-medium",
-                    c.statusLabel === "Awaiting Review" ? "bg-danger/10 text-danger" :
-                    c.statusLabel === "AI Investigating" ? "bg-primary/10 text-primary" :
-                    c.statusLabel === "Action Required" ? "bg-orange/10 text-orange" :
+                    getEffectiveStatusLabel(c) === "Awaiting Review" ? "bg-danger/10 text-danger" :
+                    getEffectiveStatusLabel(c) === "AI Investigating" ? "bg-primary/10 text-primary" :
+                    getEffectiveStatusLabel(c) === "Action Required" ? "bg-orange/10 text-orange" :
                     "bg-success/10 text-success"
                   )}>
-                    {c.statusLabel}
+                    {getEffectiveStatusLabel(c)}
                   </span>
                 </div>
               </button>
@@ -236,13 +283,24 @@ export function ScreenCases({ initialSearch = "", onActionExecuted, onNavigateTo
               </div>
               <p className="mt-1 text-base text-muted-foreground">{selectedCase.id} · Created {selectedCase.created}</p>
             </div>
-            <div className="flex items-center gap-2">
-              <div className="flex items-center gap-2 rounded-md border border-input px-3 py-1.5">
-                <span className="text-base text-muted-foreground">Status:</span>
-                <span className="text-base font-medium capitalize text-foreground">{selectedCase.status}</span>
-                <ChevronDown className="size-3 text-muted-foreground" />
-              </div>
-            </div>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button className="flex items-center gap-2 rounded-md border border-input px-3 py-1.5 hover:bg-muted transition-colors">
+                  <span className="text-base text-muted-foreground">Status:</span>
+                  <span className="text-base font-medium capitalize text-foreground">{getEffectiveStatus(selectedCase)}</span>
+                  <ChevronDown className="size-3 text-muted-foreground" />
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuRadioGroup value={getEffectiveStatus(selectedCase)} onValueChange={(v) => handleStatusChange(v as CaseStatus)}>
+                  {statusOptions.map((opt) => (
+                    <DropdownMenuRadioItem key={opt.value} value={opt.value}>
+                      {opt.label}
+                    </DropdownMenuRadioItem>
+                  ))}
+                </DropdownMenuRadioGroup>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
 
           {/* Recommended Actions */}
@@ -290,8 +348,8 @@ export function ScreenCases({ initialSearch = "", onActionExecuted, onNavigateTo
                   Customize & Execute
                 </button>
               )}
-              <button className="ml-auto text-base text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1">
-                <XCircle className="size-3" /> Dismiss Case
+              <button onClick={() => handleStatusChange("closed")} className="ml-auto text-base text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1">
+                <XCircle className="size-3" /> Close Case
               </button>
             </div>
             {onNavigateToRemediation && allApproved && (

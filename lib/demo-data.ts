@@ -3,7 +3,7 @@
 // ============================================================
 
 export type Severity = "critical" | "high" | "medium" | "low"
-export type CaseStatus = "open" | "in-progress" | "auto-resolved" | "dismissed"
+export type CaseStatus = "open" | "in-progress" | "auto-resolved" | "closed"
 
 export interface Vendor {
   id: string
